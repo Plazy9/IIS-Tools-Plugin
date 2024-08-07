@@ -1,6 +1,7 @@
 <?php
 namespace GlpiPlugin\Iistools;
 
+use Glpi\Application\View\TemplateRenderer;
 use CommonDBTM;
 use CommonGLPI;
 use Computer;
@@ -14,56 +15,61 @@ class iisCars extends CommonDBTM {
 
     public static $rightname = 'plugin_iistools';
 
-   public function showForm($ID, array $options = []) {
-      echo "showformasdf";
-      global $CFG_GLPI;
+    public function showForm($ID, array $options = []) {
+      //echo "showformasdf";
+      $twig = TemplateRenderer::getInstance();
+        $twig->display('@iistools/iiscars_form.html.twig', [
+            'item'             => $this,
+            
+        ]);
+        return true;
+    }
 
-      $this->initForm($ID, $options);
-      $this->showFormHeader($options);
+    function getSearchOptionsNew() {
+        global $DB;
+       $tab = [];
 
-      if (!isset($options['display'])) {
-         //display per default
-         $options['display'] = true;
-      }
+       $tab[] = [
+          'id'                 => 'common',
+          'name'               => __('Characteristics')
+       ];
 
-      $params = $options;
-      //do not display called elements per default; they'll be displayed or returned here
-      $params['display'] = false;
+       $tab[] = [
+          'id'                 => '1',
+          'table'              => self::getTable(),
+          'field'              => 'type',
+          'name'               => __('Car type'),
+          'datatype'           => 'itemlink',
+          'massiveaction'      => false
+       ];
 
-      $out = '<tr>';
-      $out .= '<th>' . __('My label', 'iistools') . '</th>';
 
-      $objectName = autoName(
-         $this->fields["name"],
-         "name",
-         (isset($options['withtemplate']) && $options['withtemplate']==2),
-         $this->getType(),
-         $this->fields["entities_id"]
-      );
 
-      $out .= '<td>';
-      $out .= Html::autocompletionTextField(
-         $this,
-         'name',
-         [
-            'value'     => $objectName,
-            'display'   => false
-         ]
-      );
-      $out .= '</td>';
+       return $tab;
+    }
 
-      $out .= $this->showFormButtons($params);
 
-      if ($options['display'] == true) {
-         echo $out;
-      } else {
-         return $out;
-      }
-      return true;
-   }
+/*
+    public function rawSearchOptions()
+    {
 
-   
+        $tab = [];
 
+        $tab[] = [
+            'id'               => 1,
+            'table'            => $this->getTable(),
+            'field'            => 'type',
+            'name'             => __('Name', 'iistools'),
+            'datatype'         => 'itemlink',
+            'itemlink_type'    => $this->getType(),
+            'massiveaction'    => false,
+        ];
+
+        
+
+        return $tab;
+    }
+*/
 /*
 
 

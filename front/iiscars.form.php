@@ -15,13 +15,15 @@ if (!$plugin->isInstalled('iistools') || !$plugin->isActivated('iistools')) {
 Html::header(iisCars::getTypeName(Session::getPluralNumber()), $_SERVER['PHP_SELF'], "plugins", iisCars::class, '');
 
 
+
 if (isset($_POST['add'])) {
+   
    //Check CREATE ACL
    $iiscars->check(-1, CREATE, $_POST);
    //Do object creation
    $newid = $iiscars->add($_POST);
    //Redirect to newly created object form
-   Html::redirect("{$CFG_GLPI['root_doc']}/plugins/front/iiscars.form.php?id=$newid");
+   Html::redirect("{$CFG_GLPI['root_doc']}/plugins/iistools/front/iiscars.form.php?id=$newid");
 } else if (isset($_POST['update'])) {
    //Check UPDATE ACL
    $iiscars->check($_POST['id'], UPDATE);
@@ -42,7 +44,7 @@ if (isset($_POST['add'])) {
    //Do object purge
    $iiscars->delete($_POST, 1);
    //Redirect to objects list
-   Html::redirect("{$CFG_GLPI['root_doc']}/plugins/front/iiscars.php");
+   Html::redirect("{$CFG_GLPI['root_doc']}/plugins/iistools/front/iiscars.php");
 } else {
    //per default, display object
    $withtemplate = (isset($_GET['withtemplate']) ? $_GET['withtemplate'] : 0);
