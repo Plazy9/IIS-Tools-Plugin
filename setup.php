@@ -11,12 +11,12 @@ define('PLUGIN_IISTOOLS_MAX_GLPI', '10.0.99');
 function plugin_init_iistools() {
     global $PLUGIN_HOOKS;
     $PLUGIN_HOOKS['csrf_compliant']['iistools'] = true;
-
+/*
     $types = ['Central', 'Computer', 'ComputerDisk', 'Notification', 'Phone',
              'Preference', 'Profile', 'Supplier'];
 
     Plugin::registerClass('PluginIistoolsProfile', ['addtabon' => 'Profile']);
-
+*/
     if (iisCars::canView()) { // Right set in change_profile hook
         $PLUGIN_HOOKS['menu_toadd']['iistools'] = ['plugins' => iisCars::class,
                                                   'tools'   => iisCars::class];

@@ -45,39 +45,32 @@
     }|merge(base_option) %}
 
     {{ fields.textField(
-        'type',
-        item.fields.type,
-        __('Car Type', 'iistools'),
-        base_option
-    ) }}
-
-    {{ fields.dropdownYesNo(
-        'color',
-        item.fields.color,
-        __('Car Color', 'iistools'),
-        base_option
-    ) }}
-
-    {{ news_fields.colorField(
-        "color",
-        colors,
-        item.fields.color,
-        __('Emphasis color', 'news'),
-        base_option_small
-    )}}
-
-    {{ fields.textareaField(
         'license_plate',
         item.fields.license_plate,
-        __('license plate', 'iistools'),
-        {
-            'full_width': true,
-            'enable_richtext': true,
-            'enable_images'  : false,
-        }|merge(base_option)
+        __('License plate', 'iistools'),
+        base_option
     ) }}
 
+    {{ fields.textField(
+        'brand',
+        item.fields.brand,
+        __('Car brand', 'iistools'),
+        base_option
+    ) }}
 
+    {{ fields.textField(
+        'type',
+        item.fields.type,
+        __('Car type', 'iistools'),
+        base_option
+    ) }}
+
+    {{ fields.numberField(
+        'key_count',
+        item.fields.key_count,
+        __('Car key count', 'iistools'),
+        {'is_horizontal' : false, min:1}
+    ) }}
 
     <div class="hr-text">
         <i class="ti ti-palette"></i>

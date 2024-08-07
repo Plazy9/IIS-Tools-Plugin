@@ -15,7 +15,6 @@ if (!$plugin->isInstalled('iistools') || !$plugin->isActivated('iistools')) {
 Html::header(iisCars::getTypeName(Session::getPluralNumber()), $_SERVER['PHP_SELF'], "plugins", iisCars::class, '');
 
 
-
 if (isset($_POST['add'])) {
    
    //Check CREATE ACL
