@@ -27,7 +27,7 @@ class PluginIistoolsProfile extends Profile
         $profile->getFromDB($item->getID());
 
         $twig = TemplateRenderer::getInstance();
-        $twig->display("@news/profile.html.twig", [
+        $twig->display("@iistools/profile.html.twig", [
             'id'      => $item->getID(),
             'profile' => $profile,
             'title'   => iisCars::getTypeName(Session::getPluralNumber()),
