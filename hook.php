@@ -135,4 +135,28 @@ function plugin_iistools_uninstall() {
     $DB->query("DELETE FROM `glpi_displaypreferences` WHERE `itemtype` LIKE '%Iistools%';");
 
     return true;
+
+
+
+}
+
+function plugin_iistools_giveItem($type, $ID, $data, $num) {
+   $searchopt = &Search::getOptions($type);
+   $table = $searchopt[$ID]["table"];
+   $field = $searchopt[$ID]["field"];
+
+
+   $table_name_car= "glpi_plugin_iistools_iiscars";
+
+   switch ($table.'.'.$field) {
+      case $table_name_car.".license_plate" :
+         $out = "<a href='".Toolbox::getItemTypeFormURL(iisCars::class)."?id=".$data['id']."'>";
+         $out .= $data[$num][0]['name'];
+         if ($_SESSION["glpiis_ids_visible"] || empty($data[$num][0]['name'])) {
+            $out .= " (".$data["id"].")";
+         }
+         $out .= "</a>";
+         return $out;
+   }
+   return "";
 }

@@ -2,6 +2,7 @@
 namespace GlpiPlugin\Iistools;
 
 use Glpi\Application\View\TemplateRenderer;
+
 use Glpi\Socket;
 use CommonDBTM;
 use CommonGLPI;
@@ -37,8 +38,8 @@ class iisCars extends CommonDBTM {
             'id'                 => 1,
             'table'              => 'glpi_plugin_iistools_iiscars',
             'field'              => 'license_plate',
-            'name'               => __('License plate', 'iistools'),
-            'datatype'         => $this->getType(),
+            'name'               => __('Car license plate', 'iistools'),
+            'datatype'         =>  $this->getType(),
             'massiveaction'    => false,
         ];
         
@@ -48,7 +49,6 @@ class iisCars extends CommonDBTM {
             'field'              => 'brand',
             'name'               => __('Car brand', 'iistools'),
             'datatype'         => $this->getType(),
-            'massiveaction'    => false,
         ];
 
         $tab[] = [
@@ -80,6 +80,8 @@ class iisCars extends CommonDBTM {
         return $tab;
     }
 
+   /*
+
     function getSearchOptionsNew() {
         global $DB;
        $tab = [];
@@ -103,7 +105,7 @@ class iisCars extends CommonDBTM {
        return $tab;
     }
 
-
+*/
     static function getMenuName() {
         return __('IIS plugin');
      }
