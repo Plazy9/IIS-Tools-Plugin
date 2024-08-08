@@ -105,14 +105,16 @@ Elsődleges sofőr - (Cég saját Felhasználóiból)
 
     // install default display preferences
     $dpreferences = new DisplayPreference();
-    $found_dpref = $dpreferences->find(['itemtype' => ['LIKE', 'GlpiPlugin\Iistools\iisCars']]);
+    $found_dpref = $dpreferences->find(['itemtype' => ['LIKE', 'Iistools']]);
     if (count($found_dpref) == 0) {
-        $DB->query("INSERT INTO `glpi_displaypreferences`
+        $query ="INSERT INTO `glpi_displaypreferences`
                      (`itemtype`, `num`, `rank`, `users_id`)
                   VALUES
-                     ('GlpiPlugin\\Iistools\\iisCars', 1, 1, 0),
-                     ('GlpiPlugin\\Iistools\\iisCars', 2, 2, 0),
-                     ('GlpiPlugin\\Iistools\\iisCars', 5, 4, 0)");
+                     ('".addslashes('GlpiPlugin\Iistools\iisCars')."', 1, 1, 0),
+                     ('".addslashes('GlpiPlugin\Iistools\iisCars')."', 2, 2, 0),
+                     ('".addslashes('GlpiPlugin\Iistools\iisCars')."', 5, 4, 0)";
+
+        $DB->query( new QueryExpression($query));
     }
 
 
@@ -130,7 +132,7 @@ function plugin_iistools_uninstall() {
     }
 
     $DB->query("DELETE FROM `glpi_profilerights` WHERE `name` LIKE '%plugin_iistools%';");
-    $DB->query("DELETE FROM `glpi_displaypreferences` WHERE `itemtype` LIKE '%GlpiPlugin\Iistools\iisCars%';");
+    $DB->query("DELETE FROM `glpi_displaypreferences` WHERE `itemtype` LIKE '%Iistools%';");
 
     return true;
 }
