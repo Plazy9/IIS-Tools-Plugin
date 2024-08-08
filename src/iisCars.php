@@ -11,6 +11,7 @@ use Html;
 use Log;
 use MassiveAction;
 use Session;
+use User;
 
 
 class iisCars extends CommonDBTM {
@@ -27,6 +28,41 @@ class iisCars extends CommonDBTM {
         ]);
         return true;
     }
+
+    
+
+
+
+    function showFormx($ID, array $options = []) {
+        global $CFG_GLPI;
+       
+        $this->initForm($ID, $options);
+        $this->showFormHeader($options);
+
+       
+        $userOptions = [];
+        $users = User::getTypeName(1);
+
+        foreach ($users as $user) {
+            $userOptions[$user['id']] = $user['name'];
+        }
+    
+         $userOptions[1] = 'name';
+          $userOptions[2] = 'name2';
+
+        echo "<tr class='tab_bg_1'>";
+
+        echo "<td>" . __('ID') . "</td>";
+        echo "<td>";
+        echo $ID;
+        echo "</td>";
+
+      $this->showFormButtons($options);
+ $form->show();
+      return true;
+
+
+   }
 
     public function rawSearchOptions(){ 
        
@@ -67,6 +103,9 @@ class iisCars extends CommonDBTM {
             'datatype'         => 'number',
             'massiveaction'    => false,
         ];
+
+                
+
         $tab[] = [
             'id'                 => 5,
             'table'              => 'glpi_plugin_iistools_iiscars',
@@ -74,6 +113,7 @@ class iisCars extends CommonDBTM {
             'name'               => __('primary_driver', 'iistools'),
             'datatype'         => $this->getType(),
             'massiveaction'    => false,
+
         ];
 
         

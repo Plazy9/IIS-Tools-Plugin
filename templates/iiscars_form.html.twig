@@ -37,12 +37,17 @@
     {# Horizontal mode solve a few layout problems for this page, such as displaying
        properly a field on an entire row or splitting the layout into 3 columns
        without losing too much space #}
+
     {% set base_option = {
         'is_horizontal' : false,
     } %}
     {% set base_option_small = {
         'field_class' : 'col-xxl-4 col-xl-6',
     }|merge(base_option) %}
+
+
+
+
 
     {{ fields.textField(
         'license_plate',
@@ -76,6 +81,22 @@
         <i class="ti ti-palette"></i>
         <span>{{ __('Customization', 'iistools') }}</span>
     </div>
+
+
+    {{ fields.dropdownYesNo(
+        'display_dates',
+        item.fields.display_dates,
+        __('Show dates', 'news'),
+        base_option_small
+    ) }}
+
+    {{ fields.dropdownField(
+        'PhonePowerSupply',
+        'phonepowersupplies_id',
+        item.fields['primary_driver'],
+        'PhonePowerSupply'|itemtype_name,
+        field_options
+    ) }}
 
     <div class="alert-preview">
     </div>

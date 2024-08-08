@@ -78,6 +78,9 @@ Beszerzés ideje
 Beszerzés helye 
 Elsődleges sofőr - (Cég saját Felhasználóiból) 
 */
+//// Grants full access to profiles that can update the Config (super-admins)
+//   $migration->addRight(Example::$rightname, ALLSTANDARDRIGHT, [Config::$rightname => UPDATE]);
+
     if (!$right_exist) {
         $reminder_rights = $DB->request([
             'SELECT' => ['profiles_id', 'rights'],
