@@ -17,13 +17,17 @@ use User;
 class iisCars extends CommonDBTM {
 
     public static $rightname = 'plugin_iistools';
-
+    
+    public function test() {
+        return "pali iis test";
+    }
+    
     public function showForm($ID, array $options = []) {
-      //echo "showformasdf";
-      $twig = TemplateRenderer::getInstance();
+        //echo "showformasdf";
+        $twig = TemplateRenderer::getInstance();
+
         $twig->display('@iistools/iiscars_form.html.twig', [
             'item'             => $this,
-            
         ]);
         return true;
     }
@@ -51,10 +55,18 @@ class iisCars extends CommonDBTM {
       return parent::getSpecificValueToSelect($field, $name, $values, $options);
    }
 
+   public function defineTabs($options = []) {
+      $ong = [];
+      $this->addDefaultFormTab($ong);
+      $this->addStandardTab(self::class, $ong, $options);
+
+      return $ong;
+   }
 
     static function showIisUsers($myname, $options = [])
     {
         error_log("pali showIisUserx");
+        
         $values = [];
         if (isset($options['display_emptychoice']) && ($options['display_emptychoice'])) {
             if (isset($options['emptylabel'])) {
