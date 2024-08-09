@@ -28,7 +28,7 @@
 
 {% extends "generic_show_form.html.twig" %}
 {% import 'components/form/fields_macros.html.twig' as fields %}
-
+{% import '@iistools/components/iiscars_macros.html.twig' as formcreatorFields %}
 
 {% set params  = params ?? [] %}
 
@@ -44,9 +44,6 @@
     {% set base_option_small = {
         'field_class' : 'col-xxl-4 col-xl-6',
     }|merge(base_option) %}
-
-
-
 
 
     {{ fields.textField(
@@ -83,21 +80,33 @@
     </div>
 
 
-    {{ fields.dropdownYesNo(
-        'display_dates',
-        item.fields.display_dates,
-        __('Show dates', 'news'),
-        base_option_small
+    {{ formcreatorFields.dropdownPrimaryDriverField(
+        'primary_driver',
+        item.fields['icon'],
+        __('Primary driver', 'iistools'),
+        {
+            'display_emptychoice': true,
+            'emptylabel':  '--- ' ~ __('No Primary driver', 'iistools') ~ ' ---',
+            'value': primary_driver,
+        }
+    ) }}
+    <div class="hr-text">
+        <i class="ti ti-palette"></i>
+        <span>{{ __('Customization2', 'iistools') }}</span>
+    </div>
+{#
+    {{ formcreatorFields.dropdownLanguageField(
+        'primary_driver',
+        item.fields['icon'],
+        __('Language', 'iistools'),
+        {
+            'display_emptychoice': true,
+            'emptylabel':  '--- ' ~ __('All languages', 'iistools') ~ ' ---',
+            'value': primary_driver,
+        }
     ) }}
 
-    {{ fields.dropdownField(
-        'PhonePowerSupply',
-        'phonepowersupplies_id',
-        item.fields['primary_driver'],
-        'PhonePowerSupply'|itemtype_name,
-        field_options
-    ) }}
-
+#}
     <div class="alert-preview">
     </div>
 

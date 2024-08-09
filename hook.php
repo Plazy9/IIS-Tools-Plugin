@@ -115,7 +115,8 @@ Elsődleges sofőr - (Cég saját Felhasználóiból)
                   VALUES
                      ('".addslashes('GlpiPlugin\Iistools\iisCars')."', 1, 1, 0),
                      ('".addslashes('GlpiPlugin\Iistools\iisCars')."', 2, 2, 0),
-                     ('".addslashes('GlpiPlugin\Iistools\iisCars')."', 5, 4, 0)";
+                     ('".addslashes('GlpiPlugin\Iistools\iisCars')."', 5, 3, 0),
+                     ('".addslashes('GlpiPlugin\Iistools\iisCars')."', 6, 4, 0)";
 
         $DB->query( new QueryExpression($query));
     }

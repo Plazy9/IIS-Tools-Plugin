@@ -20,7 +20,6 @@ class iisCars extends CommonDBTM {
 
     public function showForm($ID, array $options = []) {
       //echo "showformasdf";
-      
       $twig = TemplateRenderer::getInstance();
         $twig->display('@iistools/iiscars_form.html.twig', [
             'item'             => $this,
@@ -29,40 +28,61 @@ class iisCars extends CommonDBTM {
         return true;
     }
 
-    
+    static function getSpecificValueToSelect($field, $name = '', $values = '', array $options = []) {
+      error_log("pali xxx SpecificValueToSelect");
 
+      if (!is_array($values)) {
+         $values = [$field => $values];
+      }
+      $options['display'] = false;
 
-
-    function showFormx($ID, array $options = []) {
-        global $CFG_GLPI;
-       
-        $this->initForm($ID, $options);
-        $this->showFormHeader($options);
-
-       
-        $userOptions = [];
-        $users = User::getTypeName(1);
-
-        foreach ($users as $user) {
-            $userOptions[$user['id']] = $user['name'];
-        }
-    
-         $userOptions[1] = 'name';
-          $userOptions[2] = 'name2';
-
-        echo "<tr class='tab_bg_1'>";
-
-        echo "<td>" . __('ID') . "</td>";
-        echo "<td>";
-        echo $ID;
-        echo "</td>";
-
-      $this->showFormButtons($options);
- $form->show();
-      return true;
-
-
+      switch ($field) {
+         case 'primary_driver' :
+            return Dropdown::showFromArray($name, [
+               '0' => __('Inactive'),
+               '1' => __('Active'),
+            ], [
+               'value'               => $values[$field],
+               'display_emptychoice' => false,
+               'display'             => false
+            ]);
+            break;
+      }
+      return parent::getSpecificValueToSelect($field, $name, $values, $options);
    }
+
+
+    static function showIisUsers($myname, $options = [])
+    {
+        error_log("pali showIisUserx");
+        $values = [];
+        if (isset($options['display_emptychoice']) && ($options['display_emptychoice'])) {
+            if (isset($options['emptylabel'])) {
+                $values[''] = $options['emptylabel'];
+            } else {
+                $values[''] = self::EMPTY_VALUE;
+            }
+            unset($options['display_emptychoice']);
+        }
+
+        $values = array_merge($values, self::getLanguages());
+        return self::showFromArray($myname, $values, $options);
+    }
+
+    public static function getLanguages()
+    {
+        /** @var array $CFG_GLPI */
+        global $CFG_GLPI;
+
+        $languages = [];
+        foreach ($CFG_GLPI["languages"] as $key => $val) {
+            if (isset($val[1]) && is_file(GLPI_ROOT . "/locales/" . $val[1])) {
+                $languages[$key] = "asdf".$val[0];
+            }
+        }
+
+        return $languages;
+    }
 
     public function rawSearchOptions(){ 
        
@@ -103,22 +123,54 @@ class iisCars extends CommonDBTM {
             'datatype'         => 'number',
             'massiveaction'    => false,
         ];
-
-                
+/*
 
         $tab[] = [
             'id'                 => 5,
             'table'              => 'glpi_plugin_iistools_iiscars',
             'field'              => 'primary_driver',
             'name'               => __('primary_driver', 'iistools'),
-            'datatype'         => $this->getType(),
+            'searchtype'  => 'equals',
+            'datatype'    => 'specific',
             'massiveaction'    => false,
 
-        ];
+        ];*/
 
+         $tab[] = [
+        'id'                 => 5,
+        'table'              => 'glpi_plugin_iistools_iiscars', 
+        'field'              => 'primary_driver',
+        'name'               => __('Primary Driver ID'),
+        'datatype'           => 'dropdown',
+        
+        'massiveaction'      => false,
+    ];
+
+    // Kapcsolódó mezők a users táblából
+    $tab[] = [
+        'id'                 => 6,
+        'table'              => 'glpi_users', // Users tábla
+        'field'              => 'name', // Felhasználó neve
+        'name'               => __('Primary Driver Name'),
+        'datatype'           => 'itemlink',
+        'massiveaction'      => false,
+        'linkfield'         => 'primary_driver',
+        'joinparams'         => [
+            'beforejoin'         => [
+                'table'              => 'glpi_plugin_iistools_iiscars',
+                'joinparams'         => [
+                    'jointype'           => 'itemtype_item',
+                    'specific_itemtype'  => 'iisCars'
+                ]
+            ]
+        ]
+
+    ];
         
         return $tab;
     }
+
+    
 
    /*
 
