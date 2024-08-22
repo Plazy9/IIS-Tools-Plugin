@@ -53,7 +53,7 @@ class iisCars extends CommonDBTM {
             'id'                 => 1,
             'table'              => 'glpi_plugin_iistools_iiscars',
             'field'              => 'license_plate',
-            'name'               => __('Car license plate', 'iistools'),
+            'name'               => __('License plate', 'iistools'),
             'datatype'         =>  $this->getType(),
             'massiveaction'    => false,
         ];
@@ -99,7 +99,7 @@ class iisCars extends CommonDBTM {
         'id'                 => 5,
         'table'              => 'glpi_plugin_iistools_iiscars', 
         'field'              => 'primary_driver',
-        'name'               => __('Primary Driver ID'),
+        'name'               => __('Primary driver id', 'iistools'),
         'datatype'           => 'dropdown',
         
         'massiveaction'      => false,
@@ -110,7 +110,7 @@ class iisCars extends CommonDBTM {
         'id'                 => 6,
         'table'              => 'glpi_users', // Users tábla
         'field'              => 'name', // Felhasználó neve
-        'name'               => __('Primary Driver Name'),
+        'name'               => __('Primary driver name', 'iistools').'',
         'datatype'           => 'itemlink',
         'massiveaction'      => false,
         'linkfield'         => 'primary_driver',
@@ -158,7 +158,7 @@ class iisCars extends CommonDBTM {
 
 */
     static function getMenuName() {
-        return __('IIS plugin');
+        return __('IIS plugin', 'iistools');
      }
     public static function getTypeName($nb = 0)
     {
