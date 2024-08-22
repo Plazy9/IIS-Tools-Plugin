@@ -1,0 +1,38 @@
+msgid "License plate"
+msgstr "Rendszám"
+
+msgid "Car brand"
+msgstr "Márka"
+
+msgid "Car type"
+msgstr "Típus"
+
+msgid "Car key count"
+msgstr "Kulcsok száma"
+
+msgid "Primary driver"
+msgstr "Elsődreges sofőr"
+
+msgid "Primary driver id"
+msgstr "Elsődreges sofőr azon."
+
+msgid "Primary driver name"
+msgstr "Elsődreges sofőr neve"
+
+msgid "Cost center"
+msgstr "Költség csoport2"
+
+msgid "Car key registry number"
+msgstr "Kulcsok nyilvántartási száma"
+
+msgid "Fuel type"
+msgstr "Üzemanyag típusok"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "IIS plugin"
+msgstr "IIS bővítmény"
+
+msgid "IIS Tools Cars"
+msgstr "IIS bővítmény: Autók"
