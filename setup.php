@@ -14,9 +14,9 @@ function plugin_init_iistools() {
 /*
     $types = ['Central', 'Computer', 'ComputerDisk', 'Notification', 'Phone',
              'Preference', 'Profile', 'Supplier'];
-
-    Plugin::registerClass('PluginIistoolsProfile', ['addtabon' => 'Profile']);
 */
+    Plugin::registerClass('PluginIistoolsProfile', ['addtabon' => 'Profile']);
+
     if (iisCars::canView()) { // Right set in change_profile hook
         $PLUGIN_HOOKS['menu_toadd']['iistools'] = ['plugins' => iisCars::class,
                                                   'tools'   => iisCars::class];
