@@ -28,7 +28,6 @@
 
 {% extends "generic_show_form.html.twig" %}
 {% import 'components/form/fields_macros.html.twig' as fields %}
-{% import '@iistools/components/iiscars_macros.html.twig' as formcreatorFields %}
 
 {% set params  = params ?? [] %}
 
@@ -41,6 +40,7 @@
     {% set base_option = {
         'is_horizontal' : false,
     } %}
+
     {% set base_option_small = {
         'field_class' : 'col-xxl-4 col-xl-6',
     }|merge(base_option) %}
@@ -71,45 +71,56 @@
         'key_count',
         item.fields.key_count,
         __('Car key count', 'iistools'),
-        {'is_horizontal' : false, min:1}
+        base_option|merge({min:1})
     ) }}
 
-    <div class="hr-text">
-        <i class="ti ti-palette"></i>
-        <span>{{ __('Customization', 'iistools') }}</span>
-    </div>
+   
 
-
-    {{ formcreatorFields.dropdownPrimaryDriverField(
+    {{ fields.dropdownField(
+        'User',
         'primary_driver',
-        item.fields['icon'],
-        __('Primary driver', 'iistools'),
-        {
-            'display_emptychoice': true,
-            'emptylabel':  '--- ' ~ __('No Primary driver', 'iistools') ~ ' ---',
-            'value': primary_driver,
-        }
+        item.fields['primary_driver'],
+         __('Primary driver', 'iistools'),
+        field_options|merge({
+            'entity': -1,
+            'right': 'all',
+           }),
+         base_option
     ) }}
+
+    {{ fields.textField(
+        'cost_center',
+        item.fields.cost_center,
+        __('Car cost_center', 'iistools'),
+        base_option
+    ) }}
+
+     {{ fields.textField(
+        'key_registry_number',
+        item.fields.key_registry_number,
+        __('Car key registry number', 'iistools'),
+        base_option
+    ) }}
+
+    {{ fields.dropdownArrayField(
+        'fuel_type',
+        item.fields.fuel_type,
+        fueltype,
+        __('Fuel type', 'iistools'),
+        base_option
+    ) }}
+
+    {{ fields.emailField(
+        'email',
+        item.fields.email,
+        __('Email', 'iistools'),
+        base_option
+    ) }}
+
     <div class="hr-text">
         <i class="ti ti-palette"></i>
         <span>{{ __('Customization2', 'iistools') }}</span>
     </div>
-{#
-    {{ formcreatorFields.dropdownLanguageField(
-        'primary_driver',
-        item.fields['icon'],
-        __('Language', 'iistools'),
-        {
-            'display_emptychoice': true,
-            'emptylabel':  '--- ' ~ __('All languages', 'iistools') ~ ' ---',
-            'value': primary_driver,
-        }
-    ) }}
-
-#}
-    <div class="alert-preview">
-    </div>
-
     
 
 {% endblock %}

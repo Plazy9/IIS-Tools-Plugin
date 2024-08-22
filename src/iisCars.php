@@ -17,83 +17,30 @@ use User;
 class iisCars extends CommonDBTM {
 
     public static $rightname = 'plugin_iistools';
+
     
     public function test() {
+        //error_log("pali palitest");
         return "pali iis test";
+    }
+
+    public function getFuelType() {
+        //error_log("pali palitest");'Petrol', 'Diesel', 'Hybrid', 'Electric', 'LPG'
+        return ["Petrol"=> "Petrol",
+                "Diesel"=>"Diesel",
+                ];
     }
     
     public function showForm($ID, array $options = []) {
         //echo "showformasdf";
+        
         $twig = TemplateRenderer::getInstance();
 
         $twig->display('@iistools/iiscars_form.html.twig', [
             'item'             => $this,
+            'fueltype'          => self::getFuelType(),
         ]);
         return true;
-    }
-
-    static function getSpecificValueToSelect($field, $name = '', $values = '', array $options = []) {
-      error_log("pali xxx SpecificValueToSelect");
-
-      if (!is_array($values)) {
-         $values = [$field => $values];
-      }
-      $options['display'] = false;
-
-      switch ($field) {
-         case 'primary_driver' :
-            return Dropdown::showFromArray($name, [
-               '0' => __('Inactive'),
-               '1' => __('Active'),
-            ], [
-               'value'               => $values[$field],
-               'display_emptychoice' => false,
-               'display'             => false
-            ]);
-            break;
-      }
-      return parent::getSpecificValueToSelect($field, $name, $values, $options);
-   }
-
-   public function defineTabs($options = []) {
-      $ong = [];
-      $this->addDefaultFormTab($ong);
-      $this->addStandardTab(self::class, $ong, $options);
-
-      return $ong;
-   }
-
-    static function showIisUsers($myname, $options = [])
-    {
-        error_log("pali showIisUserx");
-        
-        $values = [];
-        if (isset($options['display_emptychoice']) && ($options['display_emptychoice'])) {
-            if (isset($options['emptylabel'])) {
-                $values[''] = $options['emptylabel'];
-            } else {
-                $values[''] = self::EMPTY_VALUE;
-            }
-            unset($options['display_emptychoice']);
-        }
-
-        $values = array_merge($values, self::getLanguages());
-        return self::showFromArray($myname, $values, $options);
-    }
-
-    public static function getLanguages()
-    {
-        /** @var array $CFG_GLPI */
-        global $CFG_GLPI;
-
-        $languages = [];
-        foreach ($CFG_GLPI["languages"] as $key => $val) {
-            if (isset($val[1]) && is_file(GLPI_ROOT . "/locales/" . $val[1])) {
-                $languages[$key] = "asdf".$val[0];
-            }
-        }
-
-        return $languages;
     }
 
     public function rawSearchOptions(){ 
