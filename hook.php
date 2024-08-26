@@ -1,13 +1,14 @@
 <?php
 use GlpiPlugin\Iistools\iisCars;
+use GlpiPlugin\Iistools\iisMachineries;
 
 function plugin_iistools_install() {
     global $DB;
 
-    //$migration = new Migration(PLUGIN_IISTOOLS_VERSION);
     $migration = new Migration(Plugin::getInfo('iistools', 'version'));
     
     $table_name_car= "glpi_plugin_iistools_iiscars";
+    $table_name_machine= "glpi_plugin_iistools_iismachineries";
 
     $default_charset = DBConnection::getDefaultCharset();
     $default_collation = DBConnection::getDefaultCollation();
@@ -48,6 +49,29 @@ function plugin_iistools_install() {
         $DB->query($query) or die("Error creating $table_name_car table: " . $DB->error());
     }
 
+
+    if (!$DB->tableExists($table_name_machine)) {
+        $query = "CREATE TABLE `$table_name_machine` (
+                            `id` int {$default_key_sign} NOT NULL auto_increment,
+                            `name` VARCHAR(64) NOT NULL,
+                            `type` VARCHAR(255) ,
+                            `manufacturer` VARCHAR(64) ,
+                            `commissioning_date` DATE,
+                            `commissioning_location` VARCHAR (255),
+                            `serial_number` VARCHAR(255) ,
+                            `custom_id` VARCHAR(255) ,
+                            `location` VARCHAR(255) ,
+                            `maintenance_user` INT UNSIGNED,
+                            `cost_center` VARCHAR(255),
+                            `responsible_user` INT UNSIGNED,
+                            `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                            `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                PRIMARY KEY (`id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
+
+        $DB->query($query) or die("Error creating $table_name_machine table: " . $DB->error());
+    }
+
     // $migration->addRight() does not allow to copy an existing right, we must write some custom code
     $right_exist = countElementsInTable(
         "glpi_profilerights",
@@ -56,28 +80,6 @@ function plugin_iistools_install() {
 
    // Add the same standard rights on alerts as the rights already granted on
    // public reminders
-/*
-Rendszám 
-Márka 
-Típus 
-Kulcsok db száma 
-Kulcsok nyilvántartási száma 
-Költséghely 
-Kezelő 
-Forgalmi engedély nyilvántartási száma 
-Műszaki érvényessége 
-E-mail cím 
-Szerviz neve - Címe, Tel, E-mail, Kapcsolattartó 
-Garancia ideje 
-Finanszírozás típusa – Lízing, Saját, Bérelt, Egyéb 
-Üzemanyag típusa – Benzin, Dízel, Hibrid, Elektromos, EPG, 
-Évjárat 
-Üzembe helyezés ideje 
-Üzembe helyezés helye 
-Beszerzés ideje 
-Beszerzés helye 
-Elsődleges sofőr - (Cég saját Felhasználóiból) 
-*/
 //// Grants full access to profiles that can update the Config (super-admins)
 //   $migration->addRight(Example::$rightname, ALLSTANDARDRIGHT, [Config::$rightname => UPDATE]);
 
@@ -130,18 +132,16 @@ Elsődleges sofőr - (Cég saját Felhasználóiból)
 function plugin_iistools_uninstall() {  
     global $DB;
     $table_name_car='glpi_plugin_iistools_iiscars';
+    $table_name_machine= "glpi_plugin_iistools_iismachineries";
     if ($DB->tableExists("$table_name_car")) {
-        $query = "DROP TABLE `$table_name_car`";
-        $DB->query($query) or die("Error dropping $table_name_car table: " . $DB->error());
+        //$query = "DROP TABLE `$table_name_car`";
+        //$DB->query($query) or die("Error dropping $table_name_car table: " . $DB->error());
     }
 
-    $DB->query("DELETE FROM `glpi_profilerights` WHERE `name` LIKE '%plugin_iistools%';");
-    $DB->query("DELETE FROM `glpi_displaypreferences` WHERE `itemtype` LIKE '%Iistools%';");
+    //$DB->query("DELETE FROM `glpi_profilerights` WHERE `name` LIKE '%plugin_iistools%';");
+    //$DB->query("DELETE FROM `glpi_displaypreferences` WHERE `itemtype` LIKE '%Iistools%';");
 
     return true;
-
-
-
 }
 
 function plugin_iistools_giveItem($type, $ID, $data, $num) {
@@ -149,18 +149,26 @@ function plugin_iistools_giveItem($type, $ID, $data, $num) {
    $table = $searchopt[$ID]["table"];
    $field = $searchopt[$ID]["field"];
 
-
    $table_name_car= "glpi_plugin_iistools_iiscars";
+   $table_name_machine= "glpi_plugin_iistools_iismachineries";
 
    switch ($table.'.'.$field) {
-      case $table_name_car.".license_plate" :
-         $out = "<a href='".Toolbox::getItemTypeFormURL(iisCars::class)."?id=".$data['id']."'>";
-         $out .= $data[$num][0]['name'];
-         if ($_SESSION["glpiis_ids_visible"] || empty($data[$num][0]['name'])) {
+        case $table_name_car.".license_plate" :
+            $out = "<a href='".Toolbox::getItemTypeFormURL(iisCars::class)."?id=".$data['id']."'>";
+            $out .= $data[$num][0]['name'];
+            if ($_SESSION["glpiis_ids_visible"] || empty($data[$num][0]['name'])) {
             $out .= " (".$data["id"].")";
-         }
-         $out .= "</a>";
-         return $out;
+            }
+            $out .= "</a>";
+            return $out;
+        case $table_name_machine.".name" :
+            $out = "<a href='".Toolbox::getItemTypeFormURL(iisMachineries::class)."?id=".$data['id']."'>";
+            $out .= $data[$num][0]['name'];
+            if ($_SESSION["glpiis_ids_visible"] || empty($data[$num][0]['name'])) {
+               $out .= " (".$data["id"].")";
+            }
+            $out .= "</a>";
+            return $out;
    }
    return "";
 }

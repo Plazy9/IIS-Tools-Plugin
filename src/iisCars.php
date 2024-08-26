@@ -26,14 +26,15 @@ class iisCars extends CommonDBTM {
 
     public function getFuelType() {
         //error_log("pali palitest");'Petrol', 'Diesel', 'Hybrid', 'Electric', 'LPG'
-        return ["Petrol"=> "Petrol",
-                "Diesel"=>"Diesel",
+        return ["Petrol"=>__('Petrol', 'iistools'),
+                "Diesel"=>__('Diesel', 'iistools'),
+                "Hybrid"=>__('Hybrid', 'iistools'),
+                "Electric"=>__('Electric', 'iistools'),
+                "LPG"=>__('LPG', 'iistools'),
                 ];
     }
     
     public function showForm($ID, array $options = []) {
-        //echo "showformasdf";
-        
         $twig = TemplateRenderer::getInstance();
 
         $twig->display('@iistools/iiscars_form.html.twig', [
@@ -130,35 +131,8 @@ class iisCars extends CommonDBTM {
     }
 
     
-
-   /*
-
-    function getSearchOptionsNew() {
-        global $DB;
-       $tab = [];
-
-       $tab[] = [
-          'id'                 => 'common',
-          'name'               => __('Characteristics')
-       ];
-
-       $tab[] = [
-          'id'                 => '1',
-          'table'              => self::getTable(),
-          'field'              => 'type',
-          'name'               => __('Car type'),
-          'datatype'           => 'itemlink',
-          'massiveaction'      => false
-       ];
-
-
-
-       return $tab;
-    }
-
-*/
     static function getMenuName() {
-        return __('IIS plugin', 'iistools');
+        return __('IIS plugin Cars', 'iistools');
      }
     public static function getTypeName($nb = 0)
     {

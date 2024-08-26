@@ -1,7 +1,9 @@
 <?php
 
 use Glpi\Plugin\Hooks;
+use GlpiPlugin\Iistools\iisMachineries;
 use GlpiPlugin\Iistools\iisCars;
+
 
 define('PLUGIN_IISTOOLS_VERSION', '0.0.1');
 define('PLUGIN_IISTOOLS_MIN_GLPI', '10.0.0');
@@ -11,15 +13,15 @@ define('PLUGIN_IISTOOLS_MAX_GLPI', '10.0.99');
 function plugin_init_iistools() {
     global $PLUGIN_HOOKS;
     $PLUGIN_HOOKS['csrf_compliant']['iistools'] = true;
-/*
-    $types = ['Central', 'Computer', 'ComputerDisk', 'Notification', 'Phone',
-             'Preference', 'Profile', 'Supplier'];
-*/
+
     Plugin::registerClass('PluginIistoolsProfile', ['addtabon' => 'Profile']);
 
+
     if (iisCars::canView()) { // Right set in change_profile hook
-        $PLUGIN_HOOKS['menu_toadd']['iistools'] = ['plugins' => iisCars::class,
-                                                  'tools'   => iisCars::class];
+        $PLUGIN_HOOKS['menu_toadd']['iistools'] = ['plugins' => [iisCars::class, 
+                                                                 iisMachineries::class],
+                                                                /*'tools'   => iisCars::class*/
+                                                            ];
 
     }
     $PLUGIN_HOOKS['config_page']['iistools'] = 'front/iiscars.php';
