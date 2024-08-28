@@ -5,15 +5,7 @@ use Glpi\Application\View\TemplateRenderer;
 
 use Glpi\Socket;
 use CommonDBTM;
-/*
-use CommonGLPI;
-use Computer;
-use Html;
-use Log;
-use MassiveAction;
-use Session;
-use User;
-*/
+
 use Document;
 use Document_Item;
 
@@ -22,7 +14,6 @@ use Document_Item;
 class iisMachineries extends CommonDBTM {
 
     public static $rightname = 'plugin_iistools';
-    public static $table_name= "glpi_plugin_iistools_iismachineries";
 
     public function showForm($ID, array $options = []) {
 //        echo "képek:<br>";
@@ -73,7 +64,7 @@ class iisMachineries extends CommonDBTM {
     
         $tab[] = [
             'id'                 => 2,
-            'table'              => self::$table_name,
+            'table'              => $this->getTable(),
             'field'              => 'name',
             'name'               => __('Machinery name', 'iistools'),
             'datatype'         =>  $this->getType(),
@@ -82,33 +73,12 @@ class iisMachineries extends CommonDBTM {
         
         $tab[] = [
             'id'                 => 3,
-            'table'              => self::$table_name,
+            'table'              => $this->getTable(),
             'field'              => 'type',
             'name'               => __('Machinery type', 'iistools'),
             'datatype'         => $this->getType(),
         ];
-   /*     
-        // Kapcsolódó mezők a users táblából
-        $tab[] = [
-            'id'                 => 6,
-            'table'              => 'glpi_users', // Users tábla
-            'field'              => 'name', // Felhasználó neve
-            'name'               => __('Machinery maintenance user', 'iistools').'',
-            'datatype'           => 'itemlink',
-            'massiveaction'      => false,
-            'linkfield'         => 'maintenance_user',
-            'joinparams'         => [
-                'beforejoin'         => [
-                    'table'              => self::$table_name,
-                    'joinparams'         => [
-                        'jointype'           => 'itemtype_item',
-                        'specific_itemtype'  => 'iisMachineries'
-                    ]
-                ]
-            ]
 
-        ];
-*/
         return $tab;
     }
 

@@ -3,16 +3,7 @@ namespace GlpiPlugin\Iistools;
 
 use Glpi\Application\View\TemplateRenderer;
 
-use Glpi\Socket;
 use CommonDBTM;
-use CommonGLPI;
-use Computer;
-use Html;
-use Log;
-use MassiveAction;
-use Session;
-use User;
-
 
 class iisCars extends CommonDBTM {
 
@@ -52,7 +43,7 @@ class iisCars extends CommonDBTM {
     
         $tab[] = [
             'id'                 => 1,
-            'table'              => 'glpi_plugin_iistools_iiscars',
+            'table'              => $this->getTable(),
             'field'              => 'license_plate',
             'name'               => __('License plate', 'iistools'),
             'datatype'         =>  $this->getType(),
@@ -61,7 +52,7 @@ class iisCars extends CommonDBTM {
         
         $tab[] = [
             'id'                 => 2,
-            'table'              => 'glpi_plugin_iistools_iiscars',
+            'table'              => $this->getTable(),
             'field'              => 'brand',
             'name'               => __('Car brand', 'iistools'),
             'datatype'         => $this->getType(),
@@ -69,7 +60,7 @@ class iisCars extends CommonDBTM {
 
         $tab[] = [
             'id'                 => 3,
-            'table'              => 'glpi_plugin_iistools_iiscars',
+            'table'              => $this->getTable(),
             'field'              => 'type',
             'name'               => __('Car type', 'iistools'),
             'datatype'         => $this->getType(),
@@ -77,7 +68,7 @@ class iisCars extends CommonDBTM {
         ];
         $tab[] = [
             'id'                 => 4,
-            'table'              => 'glpi_plugin_iistools_iiscars',
+            'table'              => $this->getTable(),
             'field'              => 'key_count',
             'name'               => __('Car key count', 'iistools'),
             'datatype'         => 'number',
@@ -87,7 +78,7 @@ class iisCars extends CommonDBTM {
 
         $tab[] = [
             'id'                 => 5,
-            'table'              => 'glpi_plugin_iistools_iiscars',
+            'table'              => $this->getTable(),
             'field'              => 'primary_driver',
             'name'               => __('primary_driver', 'iistools'),
             'searchtype'  => 'equals',
@@ -98,7 +89,7 @@ class iisCars extends CommonDBTM {
 
          $tab[] = [
         'id'                 => 5,
-        'table'              => 'glpi_plugin_iistools_iiscars', 
+        'table'              => $this->getTable(), 
         'field'              => 'primary_driver',
         'name'               => __('Primary driver id', 'iistools'),
         'datatype'           => 'dropdown',
@@ -117,7 +108,7 @@ class iisCars extends CommonDBTM {
         'linkfield'         => 'primary_driver',
         'joinparams'         => [
             'beforejoin'         => [
-                'table'              => 'glpi_plugin_iistools_iiscars',
+                'table'              => $this->getTable(),
                 'joinparams'         => [
                     'jointype'           => 'itemtype_item',
                     'specific_itemtype'  => 'iisCars'
