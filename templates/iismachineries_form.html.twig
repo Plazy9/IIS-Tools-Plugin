@@ -67,12 +67,19 @@
         <i class="ti ti-palette"></i>
         <span>{{ __('Customization2', 'iistools') }}</span>
     </div>
-    
-        {{ fields.fileField('pictures', null, _n('Picture', 'Pictures', get_plural_number()), {
-            'onlyimages': true,
-            'multiple': true,
-        }) }}
-    
+
+    {% for document in documents %}
+        <div class="col-12 col-xxl-3 flex-column">
+            <div class="flex-row asset-pictures">
+                <a href="{{ document.download_url }}" target="_blank_">
+                    <img src="{{ document.download_url }}" alt="Attached Image" style="max-width: 100%; height: auto;">
+                </a>
+            </div>
+         </div>
+    {% endfor %}
+
+
+        
 
     {% if item_has_pictures %}
          <div class="col-12 col-xxl-3 flex-column">

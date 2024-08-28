@@ -5,6 +5,7 @@ use Glpi\Application\View\TemplateRenderer;
 
 use Glpi\Socket;
 use CommonDBTM;
+/*
 use CommonGLPI;
 use Computer;
 use Html;
@@ -12,6 +13,10 @@ use Log;
 use MassiveAction;
 use Session;
 use User;
+*/
+use Document;
+use Document_Item;
+
 
 
 class iisMachineries extends CommonDBTM {
@@ -19,11 +24,34 @@ class iisMachineries extends CommonDBTM {
     public static $rightname = 'plugin_iistools';
     public static $table_name= "glpi_plugin_iistools_iismachineries";
 
-    
     public function showForm($ID, array $options = []) {
+//        echo "képek:<br>";
+        global $CFG_GLPI, $DB;
+        $document_list = [];
+        $document = new Document_Item();
+        
+        $documents = $document->find([
+            'itemtype' => $this->getType(),
+            'items_id' => $this->getID()
+        ]);
+        
+        foreach ($documents as $document_id => $document_data) {
+            $doc = new Document();
+            $doc->getFromDB($document_data['documents_id']);
+
+            if (strpos($doc->fields['mime'], 'image') === 0) {
+                
+                $document_list[] = [
+                    'download_url' => $CFG_GLPI["root_doc"] . "/front/document.send.php?docid=".$document_data['documents_id'],
+                    'mime'         => $doc->fields['mime']
+                ];
+            }
+        }
+
         $twig = TemplateRenderer::getInstance();
         $twig->display('@iistools/iismachineries_form.html.twig', [
             'item'             => $this,
+            'documents'            =>$document_list,
         
         ]);
         return true;
@@ -31,9 +59,17 @@ class iisMachineries extends CommonDBTM {
 
     public function rawSearchOptions(){ 
        
-        //$tab = parent::rawSearchOptions();
-        $tab = [];
-       // $tab = array_merge($tab, Location::rawSearchOptionsToAdd());
+        $tab = parent::rawSearchOptions();
+        $tab[] = [
+            'id'                 => '1',
+            'table'              => $this->getTable(),
+            'field'              => 'id',
+            'name'               => __('ID'),
+            'massiveaction'      => false,
+            'datatype'           => 'number'
+        ];
+
+        //$tab = array_merge($tab, Location::rawSearchOptionsToAdd());
     
         $tab[] = [
             'id'                 => 2,
@@ -83,4 +119,14 @@ class iisMachineries extends CommonDBTM {
     {
         return "fa-fw ti ti-stack";
     }
+
+    public static function canCreate() {
+        return true;
+    }
+
+    public function canCreateItem()
+    {
+        return true;
+    }
+
 }
