@@ -1,5 +1,13 @@
 # msgfmt ./hu_HU.po -o ./hu_HU.mo
 
+msgid "IIS plugin Cars"
+msgstr "IIS Autók"
+
+msgid "IIS Tools Cars"
+msgstr "IIS eszk. Autók"
+
+msgid "IIS plugin"
+msgstr "IIS bővítmény"
 
 msgid "ID"
 msgstr "Azon."
@@ -63,12 +71,6 @@ msgstr "Kulcsok nyilvántartási száma"
 
 msgid "Fuel type"
 msgstr "Üzemanyag típusok"
-
-msgid "IIS plugin"
-msgstr "IIS bővítmény"
-
-msgid "IIS Tools Cars"
-msgstr "IIS bővítmény: Autók"
 
 msgid  "Petrol"
 msgstr "Benzin"
