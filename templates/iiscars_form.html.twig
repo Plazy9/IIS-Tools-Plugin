@@ -74,18 +74,11 @@
         base_option|merge({min:1})
     ) }}
 
-   
-
-    {{ fields.dropdownField(
-        'User',
-        'primary_driver',
-        item.fields['primary_driver'],
-         __('Primary driver', 'iistools'),
-        field_options|merge({
-            'entity': -1,
-            'right': 'all',
-           }),
-         base_option
+    {{ fields.textField(
+        'key_registry_number',
+        item.fields.key_registry_number,
+        __('Car key registry number', 'iistools'),
+        base_option
     ) }}
 
     {{ fields.textField(
@@ -95,12 +88,102 @@
         base_option
     ) }}
 
-     {{ fields.textField(
-        'key_registry_number',
-        item.fields.key_registry_number,
-        __('Car key registry number', 'iistools'),
+    {{ fields.textField(
+        'handler',
+        item.fields.handler,
+        __('Car handler', 'iistools'),
         base_option
     ) }}
+    
+    {{ fields.textField(
+        'registration_license_number',
+        item.fields.registration_license_number,
+        __('Car registration license number', 'iistools'),
+        base_option
+    ) }}
+
+    {{ fields.dateField(
+        'technical_validity', 
+        item.fields['technical_validity'], 
+        __('Technical validity', 'iistools'),
+        {
+            'helper': __('Empty for infinite'),
+            'checkIsExpired': false,
+            'expiration_class' : params.expiration_class
+        }|merge(base_option)) }}
+
+    {{ fields.emailField(
+        'email',
+        item.fields.email,
+        __('Email', 'iistools'),
+        base_option
+    ) }}
+
+    {{ fields.textField(
+        'service_name',
+        item.fields.service_name,
+        __('Car service name', 'iistools'),
+        base_option
+    ) }}
+
+    {{ fields.dateField(
+        'year', 
+        item.fields['year'], 
+        __('Car year', 'iistools'),
+        {
+            'helper': __('Empty for infinite'),
+            'checkIsExpired': false,
+            'dateFormat': 'Y',
+            'weekNumbers': false,
+            'expiration_class' : params.expiration_class
+        }|merge(base_option)) }}
+    
+    {{ fields.dateField(
+        'commissioning_date', 
+        item.fields['commissioning_date'], 
+        __('Commissioning date', 'iistools'),
+        {
+            'helper': __('Empty for infinite'),
+            'checkIsExpired': false,
+            'expiration_class' : params.expiration_class
+        }|merge(base_option)) }}
+
+    {{ fields.textField(
+        'commissioning_place',
+        item.fields.commissioning_place,
+        __('Commissioning place', 'iistools'),
+        base_option
+    ) }}
+
+    {{ fields.dateField(
+        'acquisition_date', 
+        item.fields['acquisition_date'], 
+        __('Acquisition date', 'iistools'),
+        {
+            'helper': __('Empty for infinite'),
+            'checkIsExpired': false,
+            'expiration_class' : params.expiration_class
+        }|merge(base_option)) }}
+
+    {{ fields.textField(
+        'acquisition_place',
+        item.fields.acquisition_place,
+        __('Acquisition place', 'iistools'),
+        base_option
+    ) }}
+
+    {{ fields.dropdownField(
+        'User',
+        'primary_driver',
+        item.fields['primary_driver'],
+         __('Primary driver', 'iistools'),
+        {
+            'entity': -1,
+            'right': 'all',
+           }|merge(base_option),
+         
+    ) }}
+    
 
     {{ fields.dropdownArrayField(
         'fuel_type',
@@ -110,18 +193,6 @@
         base_option
     ) }}
 
-    {{ fields.emailField(
-        'email',
-        item.fields.email,
-        __('Email', 'iistools'),
-        base_option
-    ) }}
-
-    <div class="hr-text">
-        <i class="ti ti-palette"></i>
-        <span>{{ __('Customization2', 'iistools') }}</span>
-    </div>
-    
 
 {% endblock %}
 

@@ -64,7 +64,7 @@ class iisMachineries extends CommonDBTM {
             'id'                 => '1',
             'table'              => $this->getTable(),
             'field'              => 'id',
-            'name'               => __('ID'),
+            'name'               => __('ID', 'iistools'),
             'massiveaction'      => false,
             'datatype'           => 'number'
         ];
@@ -87,7 +87,28 @@ class iisMachineries extends CommonDBTM {
             'name'               => __('Machinery type', 'iistools'),
             'datatype'         => $this->getType(),
         ];
-        
+   /*     
+        // Kapcsolódó mezők a users táblából
+        $tab[] = [
+            'id'                 => 6,
+            'table'              => 'glpi_users', // Users tábla
+            'field'              => 'name', // Felhasználó neve
+            'name'               => __('Machinery maintenance user', 'iistools').'',
+            'datatype'           => 'itemlink',
+            'massiveaction'      => false,
+            'linkfield'         => 'maintenance_user',
+            'joinparams'         => [
+                'beforejoin'         => [
+                    'table'              => self::$table_name,
+                    'joinparams'         => [
+                        'jointype'           => 'itemtype_item',
+                        'specific_itemtype'  => 'iisMachineries'
+                    ]
+                ]
+            ]
+
+        ];
+*/
         return $tab;
     }
 

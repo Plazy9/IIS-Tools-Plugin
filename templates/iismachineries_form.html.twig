@@ -61,11 +61,88 @@
         base_option
     ) }}
 
+    {{ fields.textField(
+        'manufacturer',
+        item.fields.manufacturer,
+        __('Machinery manufacturer', 'iistools'),
+        base_option
+    ) }}
+
+    {{ fields.dateField(
+        'commissioning_date', 
+        item.fields['commissioning_date'], 
+        __('Start date', 'iistools'),
+        {
+            'helper': __('Empty for infinite'),
+            'checkIsExpired': false,
+            'expiration_class' : params.expiration_class
+        }|merge(base_option)) }}
+
+    {{ fields.textField(
+        'commissioning_location',
+        item.fields.commissioning_location,
+        __('Start location', 'iistools'),
+        base_option
+    ) }}
+
+    {{ fields.textField(
+        'serial_number',
+        item.fields.serial_number,
+        __('Machinery serial number', 'iistools'),
+        base_option
+    ) }}
+
+    {{ fields.textField(
+        'custom_id',
+        item.fields.custom_id,
+        __('Machinery custom id', 'iistools'),
+        base_option
+    ) }}
+
+    {{ fields.textField(
+        'location',
+        item.fields.location,
+        __('Machinery location', 'iistools'),
+        base_option
+    ) }}
+
+    {{ fields.dropdownField(
+        'User',
+        'maintenance_user',
+        item.fields['maintenance_user'],
+         __('Machinery maintenance user', 'iistools'),
+        {
+            'entity': -1,
+            'right': 'all',
+        }|merge(base_option)
+    ) }}
+
+
+    {{ fields.textField(
+        'cost_center',
+        item.fields.cost_center,
+        __('Machinery cost center', 'iistools'),
+        base_option
+    ) }}
+
+    {{ fields.dropdownField(
+        'User',
+        'responsible_user',
+        item.fields['responsible_user'],
+         __('Machinery responsible user', 'iistools'),
+        {
+            'entity': -1,
+            'right': 'all',
+        }|merge(base_option)
+    ) }}
+
+
+
     
 
     <div class="hr-text">
         <i class="ti ti-palette"></i>
-        <span>{{ __('Customization2', 'iistools') }}</span>
+        <span>{{ __('Photos', 'iistools') }}</span>
     </div>
 
     {% for document in documents %}

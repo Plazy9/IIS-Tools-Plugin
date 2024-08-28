@@ -1,3 +1,9 @@
+# msgfmt ./hu_HU.po -o ./hu_HU.mo
+
+
+msgid "ID"
+msgstr "Azon."
+
 msgid "License plate"
 msgstr "Rendszám"
 
@@ -20,7 +26,37 @@ msgid "Primary driver name"
 msgstr "Elsődreges sofőr neve"
 
 msgid "Cost center"
-msgstr "Költség csoport2"
+msgstr "Költség hely"
+
+msgid "Car registration license number"
+msgstr "Forgalmi engedély nyilv. száma"
+
+msgid "Car handler"
+msgstr "Kezelő"
+
+msgid "Technical validity"
+msgstr "Műszaki érv."
+
+msgid "Email"
+msgstr "E-mail"
+
+msgid "Car service name"
+msgstr "Szerviz neve"
+
+msgid "Car year"
+msgstr "Évjárat"
+
+msgid "Commissioning date"
+msgstr "Üzembehelyezés dátuma"
+
+msgid "Commissioning place"
+msgstr "Üzembe helyezés helye"
+
+msgid "Acquisition date"
+msgstr "Beszerzés ideje"
+
+msgid "Acquisition place"
+msgstr "Beszerzés helye"
 
 msgid "Car key registry number"
 msgstr "Kulcsok nyilvántartási száma"
@@ -28,11 +64,67 @@ msgstr "Kulcsok nyilvántartási száma"
 msgid "Fuel type"
 msgstr "Üzemanyag típusok"
 
-msgid "Email"
-msgstr "Email"
-
 msgid "IIS plugin"
 msgstr "IIS bővítmény"
 
 msgid "IIS Tools Cars"
 msgstr "IIS bővítmény: Autók"
+
+msgid  "Petrol"
+msgstr "Benzin"
+
+msgid  "Diesel"
+msgstr "Diesel"
+
+msgid  "Hybrid"
+msgstr "Hybrid"
+
+msgid  "Electric"
+msgstr "Elektromos"
+
+msgid  "LPG"
+msgstr "LPG"
+
+# machinery lang const
+msgid  "IIS plugin Machineries"
+msgstr "IIS plugin Machineries"
+
+msgid  "IIS Tools Machineries"
+msgstr "IIS Tools Machineries"
+
+msgid  "Machinery name"
+msgstr "Gép név"
+
+msgid  "Machinery type"
+msgstr "Típus"
+
+msgid  "Machinery manufacturer"
+msgstr "Gyártó"
+
+msgid  "Start date"
+msgstr "üzembe helyezés ideje"
+
+msgid  "Start location"
+msgstr "Üzembe helyezés helye"
+
+msgid  "Machinery serial number"
+msgstr "Gyáriszám"
+
+msgid  "Machinery custom id"
+msgstr "Egyedi azon."
+
+msgid  "Machinery location"
+msgstr "Helye"
+
+msgid  "Machinery cost center"
+msgstr "Költséghely"
+
+msgid  "Machinery maintenance user"
+msgstr "Karbantartó"
+
+msgid  "Machinery responsible user"
+msgstr "Felelős"
+
+msgid  "Photos"
+msgstr "Képek"
+
