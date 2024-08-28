@@ -1,8 +1,9 @@
 <?php
 
 use Glpi\Plugin\Hooks;
-use GlpiPlugin\Iistools\iisMachineries;
 use GlpiPlugin\Iistools\iisCars;
+use GlpiPlugin\Iistools\iisCameras;
+use GlpiPlugin\Iistools\iisMachineries;
 
 
 define('PLUGIN_IISTOOLS_VERSION', '0.0.1');
@@ -19,12 +20,13 @@ function plugin_init_iistools() {
 
     if (iisCars::canView()) { // Right set in change_profile hook
         $PLUGIN_HOOKS['menu_toadd']['iistools'] = ['plugins' => [iisCars::class, 
-                                                                 iisMachineries::class],
+                                                                 iisMachineries::class,
+                                                                 iisCameras::class],
                                                                 /*'tools'   => iisCars::class*/
                                                             ];
 
     }
-    $PLUGIN_HOOKS['config_page']['iistools'] = 'front/iiscars.php';
+    //$PLUGIN_HOOKS['config_page']['iistools'] = 'front/iiscars.php';
 }
 
 function plugin_version_iistools() {

@@ -1,5 +1,6 @@
 <?php
 use GlpiPlugin\Iistools\iisCars;
+use GlpiPlugin\Iistools\iisCameras;
 use GlpiPlugin\Iistools\iisMachineries;
 
 function plugin_iistools_install() {
@@ -9,6 +10,7 @@ function plugin_iistools_install() {
     
     $table_name_car= "glpi_plugin_iistools_iiscars";
     $table_name_machine= "glpi_plugin_iistools_iismachineries";
+    $table_name_camera= "glpi_plugin_iistools_iiscameras";
 
     $default_charset = DBConnection::getDefaultCharset();
     $default_collation = DBConnection::getDefaultCollation();
@@ -72,6 +74,34 @@ function plugin_iistools_install() {
         $DB->query($query) or die("Error creating $table_name_machine table: " . $DB->error());
     }
 
+    if (!$DB->tableExists($table_name_camera)) {
+        $query = "CREATE TABLE `$table_name_camera` (
+                            `id` int {$default_key_sign} NOT NULL auto_increment,
+                            `manufacturer` VARCHAR(64) ,
+                            `type` VARCHAR(255) ,
+                            `serial_number` VARCHAR(255) ,
+                            `commissioning_date` DATE,
+                            `commissioning_location` VARCHAR (255),
+                            `ip` VARCHAR(16) ,
+                            `gateway` VARCHAR(16) ,
+                            `subnetmask` VARCHAR(16) ,
+                            `dns1` VARCHAR(16),
+                            `dns2` VARCHAR(16),
+                            `port` int(5),
+                            `http` VARCHAR(255),
+                            `installation_person` VARCHAR(255),
+                            `installation_company` VARCHAR(255),
+                            `name` VARCHAR(255),
+                            `status` boolean,
+                            `cloud_status` boolean,
+                            `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                            `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                PRIMARY KEY (`id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
+
+        $DB->query($query) or die("Error creating $table_name_camera table: " . $DB->error());
+    }
+
     // $migration->addRight() does not allow to copy an existing right, we must write some custom code
     $right_exist = countElementsInTable(
         "glpi_profilerights",
@@ -133,9 +163,21 @@ function plugin_iistools_uninstall() {
     global $DB;
     $table_name_car='glpi_plugin_iistools_iiscars';
     $table_name_machine= "glpi_plugin_iistools_iismachineries";
+    $table_name_camera= "glpi_plugin_iistools_iiscameras";
+    
     if ($DB->tableExists("$table_name_car")) {
         //$query = "DROP TABLE `$table_name_car`";
         //$DB->query($query) or die("Error dropping $table_name_car table: " . $DB->error());
+    }
+
+    if ($DB->tableExists("$table_name_machine")) {
+        //$query = "DROP TABLE `$table_name_machine`";
+        //$DB->query($query) or die("Error dropping $table_name_machine table: " . $DB->error());
+    }
+
+    if ($DB->tableExists("$table_name_camera")) {
+        //$query = "DROP TABLE `$table_name_camera`";
+        //$DB->query($query) or die("Error dropping $table_name_camera table: " . $DB->error());
     }
 
     //$DB->query("DELETE FROM `glpi_profilerights` WHERE `name` LIKE '%plugin_iistools%';");
@@ -151,6 +193,7 @@ function plugin_iistools_giveItem($type, $ID, $data, $num) {
 
    $table_name_car= "glpi_plugin_iistools_iiscars";
    $table_name_machine= "glpi_plugin_iistools_iismachineries";
+   $table_name_camera= "glpi_plugin_iistools_iiscameras";
 
    switch ($table.'.'.$field) {
         case $table_name_car.".license_plate" :
@@ -166,6 +209,15 @@ function plugin_iistools_giveItem($type, $ID, $data, $num) {
             $out .= $data[$num][0]['name'];
             if ($_SESSION["glpiis_ids_visible"] || empty($data[$num][0]['name'])) {
                $out .= " (".$data["id"].")";
+            }
+            $out .= "</a>";
+            return $out;
+        case $table_name_camera.".name" :
+        case $table_name_camera.".ip" :
+            $out = "<a href='".Toolbox::getItemTypeFormURL(iisCameras::class)."?id=".$data['id']."'>";
+            $out .= $data[$num][0]['name'];
+            if ($_SESSION["glpiis_ids_visible"] || empty($data[$num][0]['name'])) {
+                $out .= " (".$data["id"].")";
             }
             $out .= "</a>";
             return $out;
