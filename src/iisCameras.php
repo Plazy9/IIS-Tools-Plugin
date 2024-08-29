@@ -14,6 +14,9 @@ class iisCameras extends CommonDBTM {
     public function showForm($ID, array $options = []) {
         //error_log("pali palitest");
         echo "asdf";
+        echo $this->getType();
+        $_SESSION["glpiactiveprofile"]["helpdesk_item_type"][]=$this->getType();
+        print_r($_SESSION["glpiactiveprofile"]["helpdesk_item_type"]);
         global $CFG_GLPI, $DB;
         $document_list = [];
         $document = new Document_Item();

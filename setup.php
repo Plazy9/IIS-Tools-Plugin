@@ -18,7 +18,7 @@ function plugin_init_iistools() {
 
     $PLUGIN_HOOKS['item_add']['iistools'] = ['Ticket'];
     $PLUGIN_HOOKS['post_init']['iistools'] = 'plugin_iistools_postinit';
-
+    
     Plugin::registerClass('PluginIistoolsProfile', ['addtabon' => 'Profile']);
     Plugin::registerClass('PluginIisToolsIisCars', ['addtabon' => 'Ticket']);
 
