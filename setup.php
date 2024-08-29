@@ -12,23 +12,33 @@ define('PLUGIN_IISTOOLS_MAX_GLPI', '10.0.99');
 
 
 function plugin_init_iistools() {
-    global $PLUGIN_HOOKS;
+    global $PLUGIN_HOOKS, $CFG_GLPI;
+    //print_r($PLUGIN_HOOKS);
     $PLUGIN_HOOKS['csrf_compliant']['iistools'] = true;
 
-    Plugin::registerClass('PluginIistoolsProfile', ['addtabon' => 'Profile']);
+    $PLUGIN_HOOKS['item_add']['iistools'] = ['Ticket'];
+    $PLUGIN_HOOKS['post_init']['iistools'] = 'plugin_iistools_postinit';
 
+    Plugin::registerClass('PluginIistoolsProfile', ['addtabon' => 'Profile']);
+    Plugin::registerClass('PluginIisToolsIisCars', ['addtabon' => 'Ticket']);
+
+    $CFG_GLPI["ticket_types"][] = iisCameras::class;
+    $PLUGIN_HOOKS['assign_to_ticket']['iistools'] = 1;
 
     if (iisCars::canView()) { // Right set in change_profile hook
-        $PLUGIN_HOOKS['menu_toadd']['iistools'] = ['plugins' => [iisCars::class, 
+        $PLUGIN_HOOKS['menu_toadd']['iistools'] = ['iisPlugins' => [iisCars::class, 
                                                                  iisMachineries::class,
                                                                  iisCameras::class],
-                                                                /*'tools'   => iisCars::class*/
+                                                    'assets'   => iisCars::class,
                                                             ];
 
     }
     //$PLUGIN_HOOKS['config_page']['iistools'] = 'front/iiscars.php';
 }
-
+function plugin_iistools_postinit() {
+    // Regisztráljuk az iisCars osztályt az eszközök közé
+    Plugin::registerClass('PluginIistoolsIisCars', ['addtabon' => 'Ticket']);
+}
 function plugin_version_iistools() {
     return [
         'name'           => 'IIS Tools',

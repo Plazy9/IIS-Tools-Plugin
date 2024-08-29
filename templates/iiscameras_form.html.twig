@@ -1,0 +1,199 @@
+{#
+ # -------------------------------------------------------------------------
+ # News plugin for GLPI
+ # -------------------------------------------------------------------------
+ #
+ # LICENSE
+ #
+ # This file is part of News.
+ #
+ # News is free software; you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation; either version 2 of the License, or
+ # (at your option) any later version.
+ #
+ # News is distributed in the hope that it will be useful,
+ # but WITHOUT ANY WARRANTY; without even the implied warranty of
+ # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ # GNU General Public License for more details.
+ #
+ # You should have received a copy of the GNU General Public License
+ # along with News. If not, see <http://www.gnu.org/licenses/>.
+ # -------------------------------------------------------------------------
+ # @copyright Copyright (C) 2015-2023 by News plugin team.
+ # @license   GPLv2 https://www.gnu.org/licenses/gpl-2.0.html
+ # @link      https://github.com/pluginsGLPI/news
+ # -------------------------------------------------------------------------
+ #}
+
+{% extends "generic_show_form.html.twig" %}
+{% import 'components/form/fields_macros.html.twig' as fields %}
+{% set item_has_pictures = item.hasItemtypeOrModelPictures() %}
+
+{% set params  = params ?? [] %}
+
+{% block form_fields %}
+
+    {# Horizontal mode solve a few layout problems for this page, such as displaying
+       properly a field on an entire row or splitting the layout into 3 columns
+       without losing too much space #}
+
+    {% set base_option = {
+        'is_horizontal' : false,
+    } %}
+
+    {% set base_option_small = {
+        'field_class' : 'col-xxl-4 col-xl-6',
+    }|merge(base_option) %}
+
+
+    {{ fields.textField(
+        'name',
+        item.fields.name,
+        __('Camera name', 'iistools'),
+        base_option
+    ) }}
+
+    {{ fields.textField(
+        'type',
+        item.fields.type,
+        __('Camera type', 'iistools'),
+        base_option
+    ) }}
+
+    {{ fields.textField(
+        'manufacturer',
+        item.fields.manufacturer,
+        __('Camera manufacturer', 'iistools'),
+        base_option
+    ) }}
+
+    {{ fields.textField(
+        'serial_number',
+        item.fields.serial_number,
+        __('Machinery serial number', 'iistools'),
+        base_option
+    ) }}
+
+    {{ fields.dateField(
+        'commissioning_date', 
+        item.fields['commissioning_date'], 
+        __('Start date', 'iistools'),
+        {
+            'helper': __('Empty for infinite'),
+            'checkIsExpired': false,
+            'expiration_class' : params.expiration_class
+        }|merge(base_option)) }}
+
+    {{ fields.textField(
+        'commissioning_location',
+        item.fields.commissioning_location,
+        __('Start location', 'iistools'),
+        base_option
+    ) }}
+
+    {{ fields.textField(
+        'ip',
+        item.fields.ip,
+        __('IP address', 'iistools'),
+        base_option
+    ) }}
+
+    {{ fields.textField(
+        'gateway',
+        item.fields.commissioning_location,
+        __('Gateway address', 'iistools'),
+        base_option
+    ) }}
+
+    {{ fields.textField(
+        'subnetmask',
+        item.fields.subnetmask,
+        __('Subnetmask', 'iistools'),
+        base_option
+    ) }}
+
+    {{ fields.textField(
+        'dns1',
+        item.fields.dns1,
+        __('DNS1', 'iistools'),
+        base_option
+    ) }}
+
+    {{ fields.textField(
+        'dns2',
+        item.fields.dns1,
+        __('DNS2', 'iistools'),
+        base_option
+    ) }}
+    
+    {{ fields.numberField(
+        'port',
+        item.fields.port,
+        __('DNS2', 'iistools'),
+        base_option
+    ) }}
+
+    {{ fields.textField(
+        'http',
+        item.fields.http,
+        __('Http', 'iistools'),
+        base_option
+    ) }}
+
+    {{ fields.textField(
+        'installation_person',
+        item.fields.installation_person,
+        __('Installation person', 'iistools'),
+        base_option
+    ) }}
+
+    {{ fields.textField(
+        'installation_company',
+        item.fields.installation_company,
+        __('Installation company', 'iistools'),
+        base_option
+    ) }}
+
+    {{ fields.dropdownYesNo(
+        'status',
+        item.fields['status'],
+        __('Status', 'iistools'),
+        base_option
+    ) }}
+
+    {{ fields.dropdownYesNo(
+        'cloud_status',
+        item.fields['cloud_status'],
+        __('Cloud status', 'iistools'),
+        base_option
+    ) }}
+
+    <div class="hr-text">
+        <i class="ti ti-palette"></i>
+        <span>{{ __('Photos', 'iistools') }}</span>
+    </div>
+
+    {% for document in documents %}
+        <div class="col-12 col-xxl-3 flex-column">
+            <div class="flex-row asset-pictures">
+                <a href="{{ document.download_url }}" target="_blank_">
+                    <img src="{{ document.download_url }}" alt="Attached Image" style="max-width: 100%; height: auto;">
+                </a>
+            </div>
+         </div>
+    {% endfor %}
+
+
+        
+
+    {% if item_has_pictures %}
+         <div class="col-12 col-xxl-3 flex-column">
+            <div class="flex-row asset-pictures">
+               {{ include('components/form/pictures.html.twig', {'gallery_type': ''}) }}
+            </div>
+         </div>
+      {% endif %}
+
+{% endblock %}
+

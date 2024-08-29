@@ -1,9 +1,10 @@
 <?php
 namespace GlpiPlugin\Iistools;
 
-use Glpi\Application\View\TemplateRenderer;
-
+use Session;
 use CommonDBTM;
+
+use Glpi\Application\View\TemplateRenderer;
 
 class iisCars extends CommonDBTM {
 
@@ -133,5 +134,5 @@ class iisCars extends CommonDBTM {
     public static function getIcon()
     {
         return "ti ti-device-laptop";
-    }
+    }   
 }

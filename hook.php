@@ -1,4 +1,5 @@
 <?php
+use Migration;
 use GlpiPlugin\Iistools\iisCars;
 use GlpiPlugin\Iistools\iisCameras;
 use GlpiPlugin\Iistools\iisMachineries;
@@ -224,3 +225,9 @@ function plugin_iistools_giveItem($type, $ID, $data, $num) {
    }
    return "";
 }
+
+
+ function plugin_iistools_AssignToTicket($types) {
+    $types[iisCameras::class] = iisCameras::getTypeName();
+    return $types;
+ }

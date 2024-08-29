@@ -85,7 +85,6 @@ class iisMachineries extends CommonDBTM {
     public function getCloneRelations(): array
     {
         return [
-
             Document_Item::class,
         ];
     }
