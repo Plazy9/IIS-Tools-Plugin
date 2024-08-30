@@ -17,7 +17,7 @@ class iisCars extends CommonDBTM {
     }
 
     public function getFuelType() {
-        //error_log("pali palitest");'Petrol', 'Diesel', 'Hybrid', 'Electric', 'LPG'
+        //error_log("pali fueltype XXX");//'Petrol', 'Diesel', 'Hybrid', 'Electric', 'LPG'
         return ["Petrol"=>__('Petrol', 'iistools'),
                 "Diesel"=>__('Diesel', 'iistools'),
                 "Hybrid"=>__('Hybrid', 'iistools'),
@@ -74,6 +74,32 @@ class iisCars extends CommonDBTM {
             'datatype'         => 'number',
             'massiveaction'    => false,
         ];
+        $tab[] = [
+            'id'                 => 41,
+            'table'              => $this->getTable(),
+            'field'              => 'technical_validity',
+            'name'               => __('Technical validity', 'iistools'),
+            'datatype'         => 'date',
+            'massiveaction'    => false,
+        ];
+
+        $tab[] = [
+            'id'                 => 42,
+            'table'              => $this->getTable(),
+            'field'              => 'commissioning_date',
+            'name'               => __('Commissioning date', 'iistools'),
+            'datatype'         => 'date',
+            'massiveaction'    => false,
+        ];
+
+        $tab[] = [
+            'id'                 => 43,
+            'table'              => $this->getTable(),
+            'field'              => 'acquisition_date',
+            'name'               => __('Acquisition date', 'iistools'),
+            'datatype'         => 'date',
+            'massiveaction'    => false,
+        ];
 /*
 
         $tab[] = [
@@ -122,6 +148,7 @@ class iisCars extends CommonDBTM {
     }
 
     public function defineTabs($options = []){
+
         $ong = [];
         $this->addDefaultFormTab($ong);
         $this->addImpactTab($ong, $options);

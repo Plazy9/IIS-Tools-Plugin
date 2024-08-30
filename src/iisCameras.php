@@ -65,7 +65,14 @@ class iisCameras extends CommonDBTM {
             'name'               => __('Camera ip', 'iistools'),
             'datatype'         => $this->getType(),
         ];
-        
+        $tab[] = [
+            'id'                 => 42,
+            'table'              => $this->getTable(),
+            'field'              => 'commissioning_date',
+            'name'               => __('Commissioning date', 'iistools'),
+            'datatype'         => 'date',
+            'massiveaction'    => false,
+        ];
         return $tab;
     }
 

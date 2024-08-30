@@ -1,4 +1,6 @@
 <?php
+
+use Glpi\Event;
 use GlpiPlugin\Iistools\iisCameras;
 
 include ('../../../inc/includes.php');

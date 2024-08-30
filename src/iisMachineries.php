@@ -51,7 +51,7 @@ class iisMachineries extends CommonDBTM {
        
         $tab = parent::rawSearchOptions();
         $tab[] = [
-            'id'                 => '1',
+            'id'                 => 1,
             'table'              => $this->getTable(),
             'field'              => 'id',
             'name'               => __('ID', 'iistools'),
@@ -74,6 +74,15 @@ class iisMachineries extends CommonDBTM {
             'field'              => 'type',
             'name'               => __('Machinery type', 'iistools'),
             'datatype'         => $this->getType(),
+        ];
+
+        $tab[] = [
+            'id'                 => 42,
+            'table'              => $this->getTable(),
+            'field'              => 'commissioning_date',
+            'name'               => __('Commissioning date', 'iistools'),
+            'datatype'         => 'date',
+            'massiveaction'    => false,
         ];
 
         return $tab;

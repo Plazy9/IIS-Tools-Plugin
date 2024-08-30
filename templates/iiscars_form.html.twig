@@ -126,18 +126,13 @@
         base_option
     ) }}
 
-    {{ fields.dateField(
-        'year', 
-        item.fields['year'], 
+
+    {{ fields.numberField(
+        'year',
+        item.fields.key_cyearount,
         __('Car year', 'iistools'),
-        {
-            'helper': __('Empty for infinite'),
-            'checkIsExpired': false,
-            'dateFormat': 'Y',
-            'weekNumbers': false,
-            'expiration_class' : params.expiration_class
-        }|merge(base_option)) }}
-    
+        base_option|merge({min:2010})
+    ) }}
     {{ fields.dateField(
         'commissioning_date', 
         item.fields['commissioning_date'], 

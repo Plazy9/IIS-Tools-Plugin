@@ -1,4 +1,5 @@
 <?php
+use Glpi\Event;
 use GlpiPlugin\Iistools\iisCars;
 
 include ('../../../inc/includes.php');

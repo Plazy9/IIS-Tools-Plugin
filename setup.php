@@ -19,6 +19,15 @@ function plugin_init_iistools() {
     $PLUGIN_HOOKS['item_add']['iistools'] = ['Ticket'];
     $PLUGIN_HOOKS['post_init']['iistools'] = 'plugin_iistools_postinit';
     
+
+    $PLUGIN_HOOKS[Hooks::PRE_ITEM_ADD]['iistools'] = [
+        iisCars::class  => 'plugin_iistools_iisCars_validate',
+     ];
+
+    $PLUGIN_HOOKS[Hooks::PRE_ITEM_UPDATE]['iistools'] = [
+        iisCars::class  => 'plugin_iistools_iisCars_validate',
+     ];
+
     Plugin::registerClass('PluginIistoolsProfile', ['addtabon' => 'Profile']);
     Plugin::registerClass('PluginIisToolsIisCars', ['addtabon' => 'Ticket']);
 
@@ -60,4 +69,18 @@ function plugin_version_iistools() {
          ]
       ]
     ];
+}
+
+function plugin_iistools_iisCars_validate(CommonDBTM $item){
+    //error_log("pali palitest validate XXXXX");
+    var_dump($item->fields['technical_validity']);
+    if ($item->fields['technical_validity']==''){
+        $item->fields['technical_validity']= null;
+    }
+    if ($item->fields['commissioning_date']==''){
+        $item->fields['commissioning_date']= NULL;
+    }
+    var_dump($item->fields['technical_validity']);
+    //exit();
+    return true;
 }
