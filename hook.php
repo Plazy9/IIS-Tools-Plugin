@@ -171,18 +171,18 @@ function plugin_iistools_uninstall() {
     $table_name_camera= "glpi_plugin_iistools_iiscameras";
     
     if ($DB->tableExists("$table_name_car")) {
-        //$query = "DROP TABLE `$table_name_car`";
-        //$DB->query($query) or die("Error dropping $table_name_car table: " . $DB->error());
+        $query = "DROP TABLE `$table_name_car`";
+        $DB->query($query) or die("Error dropping $table_name_car table: " . $DB->error());
     }
 
     if ($DB->tableExists("$table_name_machine")) {
-        //$query = "DROP TABLE `$table_name_machine`";
-        //$DB->query($query) or die("Error dropping $table_name_machine table: " . $DB->error());
+        $query = "DROP TABLE `$table_name_machine`";
+        $DB->query($query) or die("Error dropping $table_name_machine table: " . $DB->error());
     }
 
     if ($DB->tableExists("$table_name_camera")) {
-        //$query = "DROP TABLE `$table_name_camera`";
-        //$DB->query($query) or die("Error dropping $table_name_camera table: " . $DB->error());
+        $query = "DROP TABLE `$table_name_camera`";
+        $DB->query($query) or die("Error dropping $table_name_camera table: " . $DB->error());
     }
 
     $DB->query("DELETE FROM `glpi_profilerights` WHERE `name` LIKE '%plugin_iistools%';");
