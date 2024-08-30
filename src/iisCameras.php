@@ -48,8 +48,7 @@ class iisCameras extends CommonDBTM {
        
         //$tab = parent::rawSearchOptions();
         $tab = [];
-       // $tab = array_merge($tab, Location::rawSearchOptionsToAdd());
-    
+
         $tab[] = [
             'id'                 => 1,
             'table'              => $this->getTable(),

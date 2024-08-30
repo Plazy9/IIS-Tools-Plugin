@@ -146,10 +146,14 @@ function plugin_iistools_install() {
         $query ="INSERT INTO `glpi_displaypreferences`
                      (`itemtype`, `num`, `rank`, `users_id`)
                   VALUES
-                     ('".addslashes('GlpiPlugin\Iistools\iisCars')."', 1, 1, 0),
-                     ('".addslashes('GlpiPlugin\Iistools\iisCars')."', 2, 2, 0),
-                     ('".addslashes('GlpiPlugin\Iistools\iisCars')."', 5, 3, 0),
-                     ('".addslashes('GlpiPlugin\Iistools\iisCars')."', 6, 4, 0)";
+                     ('".addslashes(iisCars::getType())."', 1, 1, 0),
+                     ('".addslashes(iisCars::getType())."', 2, 2, 0),
+                     ('".addslashes(iisCars::getType())."', 5, 3, 0),
+                     ('".addslashes(iisCars::getType())."', 6, 4, 0),
+                     ('".addslashes(iisMachineries::getType())."', 2, 1, 0),
+                     ('".addslashes(iisCameras::getType())."', 1, 1, 0),
+                     ('".addslashes(iisCameras::getType())."', 2, 2, 0)
+                     ";
 
         $DB->query( new QueryExpression($query));
     }
@@ -181,8 +185,8 @@ function plugin_iistools_uninstall() {
         //$DB->query($query) or die("Error dropping $table_name_camera table: " . $DB->error());
     }
 
-    //$DB->query("DELETE FROM `glpi_profilerights` WHERE `name` LIKE '%plugin_iistools%';");
-    //$DB->query("DELETE FROM `glpi_displaypreferences` WHERE `itemtype` LIKE '%Iistools%';");
+    $DB->query("DELETE FROM `glpi_profilerights` WHERE `name` LIKE '%plugin_iistools%';");
+    $DB->query("DELETE FROM `glpi_displaypreferences` WHERE `itemtype` LIKE '%Iistools%';");
 
     return true;
 }

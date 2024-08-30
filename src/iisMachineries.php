@@ -59,8 +59,6 @@ class iisMachineries extends CommonDBTM {
             'datatype'           => 'number'
         ];
 
-        //$tab = array_merge($tab, Location::rawSearchOptionsToAdd());
-    
         $tab[] = [
             'id'                 => 2,
             'table'              => $this->getTable(),
