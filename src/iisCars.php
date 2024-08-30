@@ -28,7 +28,6 @@ class iisCars extends CommonDBTM {
     
     public function showForm($ID, array $options = []) {
         $twig = TemplateRenderer::getInstance();
-
         $twig->display('@iistools/iiscars_form.html.twig', [
             'item'             => $this,
             'fueltype'          => self::getFuelType(),
@@ -122,6 +121,13 @@ class iisCars extends CommonDBTM {
         return $tab;
     }
 
+    public function defineTabs($options = []){
+        $ong = [];
+        $this->addDefaultFormTab($ong);
+        $this->addImpactTab($ong, $options);
+        $this->addStandardTab('Ticket', $ong, $options);
+        return $ong;
+    }
     
     static function getMenuName() {
         return __('IIS plugin Cars', 'iistools');

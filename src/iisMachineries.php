@@ -10,14 +10,13 @@ use Document;
 use Document_Item;
 
 
-
 class iisMachineries extends CommonDBTM {
 
     public static $rightname = 'plugin_iistools';
 
     public function showForm($ID, array $options = []) {
-//        echo "képek:<br>";
         global $CFG_GLPI, $DB;
+
         $document_list = [];
         $document = new Document_Item();
         
@@ -93,6 +92,7 @@ class iisMachineries extends CommonDBTM {
         $ong = [];
         $this->addDefaultFormTab($ong);
         $this->addImpactTab($ong, $options);
+        $this->addStandardTab('Ticket', $ong, $options);
         $this->addStandardTab('Document_Item', $ong, $options);
         return $ong;
     }

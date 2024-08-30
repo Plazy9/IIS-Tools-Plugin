@@ -228,6 +228,8 @@ function plugin_iistools_giveItem($type, $ID, $data, $num) {
 
 
  function plugin_iistools_AssignToTicket($types) {
+    $types[iisCars::class] = iisCars::getTypeName();
+    $types[iisMachineries::class] = iisMachineries::getTypeName();
     $types[iisCameras::class] = iisCameras::getTypeName();
     return $types;
  }

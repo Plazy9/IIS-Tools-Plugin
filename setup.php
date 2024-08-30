@@ -22,14 +22,21 @@ function plugin_init_iistools() {
     Plugin::registerClass('PluginIistoolsProfile', ['addtabon' => 'Profile']);
     Plugin::registerClass('PluginIisToolsIisCars', ['addtabon' => 'Ticket']);
 
+    $CFG_GLPI["ticket_types"][] = iisCars::class;
+    $CFG_GLPI["ticket_types"][] = iisMachineries::class;
     $CFG_GLPI["ticket_types"][] = iisCameras::class;
     $PLUGIN_HOOKS['assign_to_ticket']['iistools'] = 1;
+    
+    $_SESSION["glpiactiveprofile"]["helpdesk_item_type"][]=iisCars::getType();
+    $_SESSION["glpiactiveprofile"]["helpdesk_item_type"][]=iisMachineries::getType();
+    $_SESSION["glpiactiveprofile"]["helpdesk_item_type"][]=iisCameras::getType();
+
 
     if (iisCars::canView()) { // Right set in change_profile hook
         $PLUGIN_HOOKS['menu_toadd']['iistools'] = ['iisPlugins' => [iisCars::class, 
                                                                  iisMachineries::class,
                                                                  iisCameras::class],
-                                                    'assets'   => iisCars::class,
+                                                    //'assets'   => iisCars::class,
                                                             ];
 
     }
