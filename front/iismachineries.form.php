@@ -13,7 +13,7 @@ if (!$plugin->isInstalled('iistools') || !$plugin->isActivated('iistools')) {
 }
 
 
-Html::header(iisMachineries::getTypeName(Session::getPluralNumber()), $_SERVER['PHP_SELF'], "plugins", iisMachineries::class, '');
+Html::header(iisMachineries::getTypeName(Session::getPluralNumber()), $_SERVER['PHP_SELF'], "assets", iisMachineries::class, '');
 
 
 if (isset($_POST['add'])) {
@@ -32,8 +32,8 @@ if (isset($_POST['add'])) {
      );
    }
    //Redirect to newly created object form
-   //Html::redirect("{$CFG_GLPI['root_doc']}/plugins/iistools/front/iismachineries.form.php?id=$newid");
-   Html::back();
+   Html::redirect("{$CFG_GLPI['root_doc']}/plugins/iistools/front/iismachineries.form.php?id=$newid");
+   //Html::back();
 } else if (isset($_POST['update'])) {
    //Check UPDATE ACL
    $iismachineries->check($_POST['id'], UPDATE);

@@ -53,10 +53,12 @@ function plugin_init_iistools() {
     }
     //$PLUGIN_HOOKS['config_page']['iistools'] = 'front/iiscars.php';
 }
+/*
 function plugin_iistools_postinit() {
     // Regisztráljuk az iisCars osztályt az eszközök közé
     Plugin::registerClass('PluginIistoolsIisCars', ['addtabon' => 'Ticket']);
 }
+*/
 function plugin_version_iistools() {
     return [
         'name'           => 'IIS Tools',
@@ -72,7 +74,7 @@ function plugin_version_iistools() {
       ]
     ];
 }
-
+/*
 function plugin_iistools_iisCars_validate(CommonDBTM $item){
     //error_log("pali palitest validate XXXXX");
     var_dump($item->fields['technical_validity']);
@@ -86,7 +88,7 @@ function plugin_iistools_iisCars_validate(CommonDBTM $item){
     //exit();
     return true;
 }
-
+*/
 function plugin_iistools_getImageList($item){
     global $CFG_GLPI;
 

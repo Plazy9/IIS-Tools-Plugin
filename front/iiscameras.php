@@ -18,7 +18,7 @@ if (iisCameras::canView()) {
    //View is granted: display the list.
 
    //Add page header
-   Html::header(iisCameras::getTypeName(Session::getPluralNumber()), $_SERVER['PHP_SELF'], "plugins", iisCameras::class, 'iiscameras');
+   Html::header(iisCameras::getTypeName(Session::getPluralNumber()), $_SERVER['PHP_SELF'], "assets", iisCameras::class, 'iiscameras');
 
    Search::show(iisCameras::class);
 

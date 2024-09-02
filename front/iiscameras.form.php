@@ -14,7 +14,7 @@ if (!$plugin->isInstalled('iistools') || !$plugin->isActivated('iistools')) {
 }
 
 
-Html::header(iisCameras::getTypeName(Session::getPluralNumber()), $_SERVER['PHP_SELF'], "plugins", iisCameras::class, '');
+Html::header(iisCameras::getTypeName(Session::getPluralNumber()), $_SERVER['PHP_SELF'], "assets", iisCameras::class, '');
 
 
 if (isset($_POST['add'])) {

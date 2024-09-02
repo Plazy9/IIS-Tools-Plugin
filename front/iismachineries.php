@@ -18,7 +18,7 @@ if (iisMachineries::canView()) {
    //View is granted: display the list.
 
    //Add page header
-   Html::header(iisMachineries::getTypeName(Session::getPluralNumber()), $_SERVER['PHP_SELF'], "plugins", iisMachineries::class, 'iismachineries');
+   Html::header(iisMachineries::getTypeName(Session::getPluralNumber()), $_SERVER['PHP_SELF'], "assets", iisMachineries::class, 'iismachineries');
 
    Search::show(iisMachineries::class);
 

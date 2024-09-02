@@ -18,7 +18,7 @@ if (iisCars::canView()) {
    //View is granted: display the list.
 
    //Add page header
-   Html::header(iisCars::getTypeName(Session::getPluralNumber()), $_SERVER['PHP_SELF'], "plugins", iisCars::class, 'iiscars');
+   Html::header(iisCars::getTypeName(Session::getPluralNumber()), $_SERVER['PHP_SELF'], "assets", iisCars::class, 'iiscars');
 
    Search::show(iisCars::class);
 
