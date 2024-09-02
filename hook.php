@@ -89,7 +89,7 @@ function plugin_iistools_install() {
                             `dns1` VARCHAR(16),
                             `dns2` VARCHAR(16),
                             `port` int(5),
-                            `http` VARCHAR(255),
+                            /*`http` VARCHAR(255),*/
                             `installation_person` VARCHAR(255),
                             `installation_company` VARCHAR(255),
                             `name` VARCHAR(255),
@@ -103,6 +103,13 @@ function plugin_iistools_install() {
         $DB->query($query) or die("Error creating $table_name_camera table: " . $DB->error());
     }
 
+    if ($DB->fieldExists($table_name_camera, 'http')) {
+        $migration->dropField(
+            $table_name_camera,
+            'http',
+        );
+    }
+    
     // $migration->addRight() does not allow to copy an existing right, we must write some custom code
     $right_exist = countElementsInTable(
         "glpi_profilerights",

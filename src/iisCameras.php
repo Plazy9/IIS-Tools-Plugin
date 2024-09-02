@@ -63,6 +63,8 @@ class iisCameras extends CommonDBTM {
         $this->addImpactTab($ong, $options);
         $this->addStandardTab('Ticket', $ong, $options);
         $this->addStandardTab('Document_Item', $ong, $options);
+        $this->addStandardTab('ManualLink', $ong, $options);
+        //$this->addStandardTab('Log', $ong, $options);
         return $ong;
     }
 
