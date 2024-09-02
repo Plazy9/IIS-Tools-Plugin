@@ -50,56 +50,56 @@
         'license_plate',
         item.fields.license_plate,
         __('License plate', 'iistools'),
-        base_option
+        base_option_small
     ) }}
 
     {{ fields.textField(
         'brand',
         item.fields.brand,
         __('Car brand', 'iistools'),
-        base_option
+        base_option_small
     ) }}
 
     {{ fields.textField(
         'type',
         item.fields.type,
         __('Car type', 'iistools'),
-        base_option
+        base_option_small
     ) }}
 
     {{ fields.numberField(
         'key_count',
         item.fields.key_count,
         __('Car key count', 'iistools'),
-        base_option|merge({min:1})
+        base_option_small|merge({min:1})
     ) }}
 
     {{ fields.textField(
         'key_registry_number',
         item.fields.key_registry_number,
         __('Car key registry number', 'iistools'),
-        base_option
+        base_option_small
     ) }}
 
     {{ fields.textField(
         'cost_center',
         item.fields.cost_center,
         __('Cost center', 'iistools'),
-        base_option
+        base_option_small
     ) }}
 
     {{ fields.textField(
         'handler',
         item.fields.handler,
         __('Car handler', 'iistools'),
-        base_option
+        base_option_small
     ) }}
     
     {{ fields.textField(
         'registration_license_number',
         item.fields.registration_license_number,
         __('Car registration license number', 'iistools'),
-        base_option
+        base_option_small
     ) }}
 
     {{ fields.dateField(
@@ -110,20 +110,20 @@
             'helper': __('Empty for infinite'),
             'checkIsExpired': false,
             'expiration_class' : params.expiration_class
-        }|merge(base_option)) }}
+        }|merge(base_option_small)) }}
 
     {{ fields.emailField(
         'email',
         item.fields.email,
         __('Email', 'iistools'),
-        base_option
+        base_option_small
     ) }}
 
     {{ fields.textField(
         'service_name',
         item.fields.service_name,
         __('Car service name', 'iistools'),
-        base_option
+        base_option_small
     ) }}
 
 
@@ -131,7 +131,7 @@
         'year',
         item.fields.key_cyearount,
         __('Car year', 'iistools'),
-        base_option|merge({min:2010})
+        base_option_small|merge({min:2010})
     ) }}
     {{ fields.dateField(
         'commissioning_date', 
@@ -141,13 +141,13 @@
             'helper': __('Empty for infinite'),
             'checkIsExpired': false,
             'expiration_class' : params.expiration_class
-        }|merge(base_option)) }}
+        }|merge(base_option_small)) }}
 
     {{ fields.textField(
         'commissioning_place',
         item.fields.commissioning_place,
         __('Commissioning place', 'iistools'),
-        base_option
+        base_option_small
     ) }}
 
     {{ fields.dateField(
@@ -158,13 +158,13 @@
             'helper': __('Empty for infinite'),
             'checkIsExpired': false,
             'expiration_class' : params.expiration_class
-        }|merge(base_option)) }}
+        }|merge(base_option_small)) }}
 
     {{ fields.textField(
         'acquisition_place',
         item.fields.acquisition_place,
         __('Acquisition place', 'iistools'),
-        base_option
+        base_option_small
     ) }}
 
     {{ fields.dropdownField(
@@ -175,7 +175,7 @@
         {
             'entity': -1,
             'right': 'all',
-           }|merge(base_option),
+           }|merge(base_option_small),
          
     ) }}
     
@@ -185,9 +185,23 @@
         item.fields.fuel_type,
         fueltype,
         __('Fuel type', 'iistools'),
-        base_option
+        base_option_small
     ) }}
 
+     <div class="hr-text">
+        <i class="ti ti-palette"></i>
+        <span>{{ __('Camera photos', 'iistools') }}</span>
+    </div>
+
+    {% for document in documents %}
+        <div class="col-12 col-xxl-3 flex-column">
+            <div class="flex-row asset-pictures">
+                <a href="{{ document.download_url }}" target="_blank_">
+                    <img src="{{ document.download_url }}" alt="Attached Image" style="max-width: 100%; height: auto;">
+                </a>
+            </div>
+         </div>
+    {% endfor %}
 
 {% endblock %}
 

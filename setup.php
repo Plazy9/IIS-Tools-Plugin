@@ -45,8 +45,10 @@ function plugin_init_iistools() {
         $PLUGIN_HOOKS['menu_toadd']['iistools'] = ['plugins' => [iisCars::class, 
                                                                  iisMachineries::class,
                                                                  iisCameras::class],
-                                                    //'assets'   => iisCars::class,
-                                                            ];
+                                                    'assets' => [iisCars::class, 
+                                                                 iisMachineries::class,
+                                                                 iisCameras::class],
+                                                    ];
 
     }
     //$PLUGIN_HOOKS['config_page']['iistools'] = 'front/iiscars.php';
@@ -84,3 +86,31 @@ function plugin_iistools_iisCars_validate(CommonDBTM $item){
     //exit();
     return true;
 }
+
+function plugin_iistools_getImageList($item){
+    global $CFG_GLPI;
+
+    $document_list = [];
+    $document = new Document_Item();
+    
+    $documents = $document->find([
+        'itemtype' => $item->getType(),
+        'items_id' => $item->getID()
+    ]);
+    
+    foreach ($documents as $document_id => $document_data) {
+        $doc = new Document();
+        $doc->getFromDB($document_data['documents_id']);
+
+        if (strpos($doc->fields['mime'], 'image') === 0) {
+            
+            $document_list[] = [
+                'download_url' => $CFG_GLPI["root_doc"] . "/front/document.send.php?docid=".$document_data['documents_id'],
+                'mime'         => $doc->fields['mime']
+            ];
+        }
+    }
+
+    return $document_list;
+}
+

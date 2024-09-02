@@ -27,10 +27,14 @@ class iisCars extends CommonDBTM {
     }
     
     public function showForm($ID, array $options = []) {
+
+        $document_list = plugin_iistools_getImageList($this);
+
         $twig = TemplateRenderer::getInstance();
         $twig->display('@iistools/iiscars_form.html.twig', [
             'item'             => $this,
             'fueltype'          => self::getFuelType(),
+            'documents'            =>$document_list,
         ]);
         return true;
     }
@@ -153,6 +157,7 @@ class iisCars extends CommonDBTM {
         $this->addDefaultFormTab($ong);
         $this->addImpactTab($ong, $options);
         $this->addStandardTab('Ticket', $ong, $options);
+        $this->addStandardTab('Document_Item', $ong, $options);
         return $ong;
     }
     

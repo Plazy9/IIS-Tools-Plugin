@@ -51,21 +51,21 @@
         'name',
         item.fields.name,
         __('Machinery name', 'iistools'),
-        base_option
+        base_option_small
     ) }}
 
     {{ fields.textField(
         'type',
         item.fields.type,
         __('Machinery type', 'iistools'),
-        base_option
+        base_option_small
     ) }}
 
     {{ fields.textField(
         'manufacturer',
         item.fields.manufacturer,
         __('Machinery manufacturer', 'iistools'),
-        base_option
+        base_option_small
     ) }}
 
     {{ fields.dateField(
@@ -89,21 +89,21 @@
         'serial_number',
         item.fields.serial_number,
         __('Machinery serial number', 'iistools'),
-        base_option
+        base_option_small
     ) }}
 
     {{ fields.textField(
         'custom_id',
         item.fields.custom_id,
         __('Machinery custom id', 'iistools'),
-        base_option
+        base_option_small
     ) }}
 
     {{ fields.textField(
         'location',
         item.fields.location,
         __('Machinery location', 'iistools'),
-        base_option
+        base_option_small
     ) }}
 
     {{ fields.dropdownField(
@@ -114,7 +114,7 @@
         {
             'entity': -1,
             'right': 'all',
-        }|merge(base_option)
+        }|merge(base_option_small)
     ) }}
 
 
@@ -122,7 +122,7 @@
         'cost_center',
         item.fields.cost_center,
         __('Machinery cost center', 'iistools'),
-        base_option
+        base_option_small
     ) }}
 
     {{ fields.dropdownField(
@@ -133,7 +133,7 @@
         {
             'entity': -1,
             'right': 'all',
-        }|merge(base_option)
+        }|merge(base_option_small)
     ) }}
 
 

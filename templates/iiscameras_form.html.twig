@@ -54,31 +54,33 @@
         base_option
     ) }}
 
+    <div class=""></div>
+
     {{ fields.textField(
         'type',
         item.fields.type,
         __('Camera type', 'iistools'),
-        base_option
+        base_option_small
     ) }}
 
     {{ fields.textField(
         'manufacturer',
         item.fields.manufacturer,
         __('Camera manufacturer', 'iistools'),
-        base_option
+        base_option_small
     ) }}
 
     {{ fields.textField(
         'serial_number',
         item.fields.serial_number,
-        __('Machinery serial number', 'iistools'),
-        base_option
+        __('Camera serial number', 'iistools'),
+        base_option_small
     ) }}
 
     {{ fields.dateField(
         'commissioning_date', 
         item.fields['commissioning_date'], 
-        __('Start date', 'iistools'),
+        __('Camera Start date', 'iistools'),
         {
             'helper': __('Empty for infinite'),
             'checkIsExpired': false,
@@ -88,7 +90,7 @@
     {{ fields.textField(
         'commissioning_location',
         item.fields.commissioning_location,
-        __('Start location', 'iistools'),
+        __('Camera Start location', 'iistools'),
         base_option
     ) }}
 
@@ -96,42 +98,44 @@
         'ip',
         item.fields.ip,
         __('IP address', 'iistools'),
-        base_option
+        base_option_small
     ) }}
 
     {{ fields.textField(
         'gateway',
         item.fields.commissioning_location,
         __('Gateway address', 'iistools'),
-        base_option
+        base_option_small
     ) }}
 
     {{ fields.textField(
         'subnetmask',
         item.fields.subnetmask,
         __('Subnetmask', 'iistools'),
-        base_option
+        base_option_small
     ) }}
+
+    <div class=""></div>
 
     {{ fields.textField(
         'dns1',
         item.fields.dns1,
         __('DNS1', 'iistools'),
-        base_option
+        base_option_small
     ) }}
 
     {{ fields.textField(
         'dns2',
         item.fields.dns1,
         __('DNS2', 'iistools'),
-        base_option
+        base_option_small
     ) }}
     
     {{ fields.numberField(
         'port',
         item.fields.port,
         __('Port', 'iistools'),
-        base_option
+        base_option_small
     ) }}
 
     {{ fields.textField(
@@ -152,26 +156,26 @@
         'installation_company',
         item.fields.installation_company,
         __('Installation company', 'iistools'),
-        base_option
+        base_option_small
     ) }}
 
     {{ fields.dropdownYesNo(
         'status',
         item.fields['status'],
-        __('Status', 'iistools'),
-        base_option
+        __('Camera status', 'iistools'),
+        base_option_small
     ) }}
 
     {{ fields.dropdownYesNo(
         'cloud_status',
         item.fields['cloud_status'],
         __('Cloud status', 'iistools'),
-        base_option
+        base_option_small
     ) }}
 
     <div class="hr-text">
         <i class="ti ti-palette"></i>
-        <span>{{ __('Photos', 'iistools') }}</span>
+        <span>{{ __('Camera photos', 'iistools') }}</span>
     </div>
 
     {% for document in documents %}

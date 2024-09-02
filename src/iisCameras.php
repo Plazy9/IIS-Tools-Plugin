@@ -15,27 +15,8 @@ class iisCameras extends CommonDBTM {
         global $CFG_GLPI, $DB;
         //error_log("pali palitest");
         
-        $document_list = [];
-        $document = new Document_Item();
+        $document_list = plugin_iistools_getImageList($this);
         
-        $documents = $document->find([
-            'itemtype' => $this->getType(),
-            'items_id' => $this->getID()
-        ]);
-        
-        foreach ($documents as $document_id => $document_data) {
-            $doc = new Document();
-            $doc->getFromDB($document_data['documents_id']);
-
-            if (strpos($doc->fields['mime'], 'image') === 0) {
-                
-                $document_list[] = [
-                    'download_url' => $CFG_GLPI["root_doc"] . "/front/document.send.php?docid=".$document_data['documents_id'],
-                    'mime'         => $doc->fields['mime']
-                ];
-            }
-        }
-
         $twig = TemplateRenderer::getInstance();
         $twig->display('@iistools/iiscameras_form.html.twig', [
             'item'             => $this,
@@ -53,7 +34,7 @@ class iisCameras extends CommonDBTM {
             'id'                 => 1,
             'table'              => $this->getTable(),
             'field'              => 'name',
-            'name'               => __('Camera Name', 'iistools'),
+            'name'               => __('Camera name', 'iistools'),
             'datatype'         =>  $this->getType(),
             'massiveaction'    => false,
         ];
@@ -62,14 +43,14 @@ class iisCameras extends CommonDBTM {
             'id'                 => 2,
             'table'              => $this->getTable(),
             'field'              => 'ip',
-            'name'               => __('Camera ip', 'iistools'),
+            'name'               => __('IP address', 'iistools'),
             'datatype'         => $this->getType(),
         ];
         $tab[] = [
             'id'                 => 42,
             'table'              => $this->getTable(),
             'field'              => 'commissioning_date',
-            'name'               => __('Commissioning date', 'iistools'),
+            'name'               => __('Camera Start date', 'iistools'),
             'datatype'         => 'date',
             'massiveaction'    => false,
         ];
