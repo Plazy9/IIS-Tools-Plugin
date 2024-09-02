@@ -1,7 +1,7 @@
 # msgfmt ./hu_HU.po -o ./hu_HU.mo
 
 msgid "IIS plugin Cars"
-msgstr "IIS Autók"
+msgstr "Járművek"
 
 msgid "IIS Tools Cars"
 msgstr "IIS eszk. Autók"
@@ -55,7 +55,7 @@ msgid "Car year"
 msgstr "Évjárat"
 
 msgid "Commissioning date"
-msgstr "Üzembehelyezés dátuma"
+msgstr "Üzembe helyezés dátuma"
 
 msgid "Commissioning place"
 msgstr "Üzembe helyezés helye"
@@ -89,10 +89,10 @@ msgstr "LPG"
 
 # machinery lang const
 msgid  "IIS plugin Machineries"
-msgstr "IIS plugin Machineries"
+msgstr "Ipari Gépek"
 
 msgid  "IIS Tools Machineries"
-msgstr "IIS Tools Machineries"
+msgstr "IIS eszk. üzemi berendezések"
 
 msgid  "Machinery name"
 msgstr "Gép név"
@@ -104,7 +104,7 @@ msgid  "Machinery manufacturer"
 msgstr "Gyártó"
 
 msgid  "Start date"
-msgstr "üzembe helyezés ideje"
+msgstr "Üzembe helyezés ideje"
 
 msgid  "Start location"
 msgstr "Üzembe helyezés helye"
@@ -129,4 +129,66 @@ msgstr "Felelős"
 
 msgid  "Photos"
 msgstr "Képek"
+
+
+# camera lang const
+msgid  "IIS plugin Cameras"
+msgstr "Biztonságtechnika"
+
+msgid  "IIS Tools Cameras"
+msgstr "IIS eszk. kamerák"
+
+msgid  "Camera name"
+msgstr "Név"
+
+msgid  "Camera type"
+msgstr "Típus"
+
+msgid  "Camera manufacturer"
+msgstr "Gyártó"
+
+msgid  "Camera serial number"
+msgstr "Gyáriszám"
+
+msgid  "Camera Start date"
+msgstr "Üzembe helyezés ideje"
+
+msgid  "Camera Start location"
+msgstr "Üzembe helyezés helye"
+
+msgid  "IP address"
+msgstr "IP cím"
+
+msgid  "Gateway address"
+msgstr "Átjáró cím"
+
+msgid  "Subnetmask"
+msgstr "Subnetmask"
+
+msgid  "DNS1"
+msgstr "DNS1"
+
+msgid  "DNS2"
+msgstr "DNS2"
+
+msgid  "Port"
+msgstr "Port"
+
+msgid  "Http"
+msgstr "Http"
+
+msgid  "Installation person"
+msgstr "Üzembe helyező technikus"
+
+msgid  "Installation company"
+msgstr "Üzembe helyező cég"
+
+msgid  "Camera status"
+msgstr "Státusz"
+
+msgid  "Cloud status"
+msgstr "Felhó státusz"
+
+msgid  "Camera photos"
+msgstr "Kamera képek"
 
