@@ -9,7 +9,7 @@ use Document_Item;
 
 class iisCameras extends CommonDBTM {
 
-    public static $rightname = 'plugin_iistools';
+    public static $rightname = 'plugin_iistoolsCameras';
 
     public function showForm($ID, array $options = []) {
         global $CFG_GLPI, $DB;

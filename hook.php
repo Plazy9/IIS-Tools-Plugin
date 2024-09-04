@@ -146,6 +146,71 @@ function plugin_iistools_install() {
         }
     }
 
+    // set cameras rights
+    $right_exist = countElementsInTable(
+        "glpi_profilerights",
+        ["name" => iisCameras::$rightname]
+    ) > 0;
+
+    if (!$right_exist) {
+        $reminder_rights = $DB->request([
+            'SELECT' => ['profiles_id', 'rights'],
+            'FROM'   => 'glpi_profilerights',
+            'WHERE'  => ['name' => 'reminder_public']
+        ]);
+
+        foreach ($reminder_rights as $row) {
+            $profile_id  = $row['profiles_id'];
+            $right_value = $row['rights'] & ALLSTANDARDRIGHT;
+
+            $migration->addPostQuery($DB->buildInsert('glpi_profilerights', [
+                'profiles_id' => $profile_id,
+                'rights'      => $right_value,
+                'name'        => iisCameras::$rightname,
+            ]));
+
+            if (($_SESSION['glpiactiveprofile']['id'] ?? null) === $profile_id) {
+                 // Ensure menu will be displayed as soon as right is added.
+                 $_SESSION['glpiactiveprofile'][iisCameras::$rightname] = $right_value;
+                 unset($_SESSION['glpimenu']);
+            }
+        }
+    }
+
+    // set machineries rights
+    $right_exist = countElementsInTable(
+        "glpi_profilerights",
+        ["name" => iisMachineries::$rightname]
+    ) > 0;
+
+    if (!$right_exist) {
+        $reminder_rights = $DB->request([
+            'SELECT' => ['profiles_id', 'rights'],
+            'FROM'   => 'glpi_profilerights',
+            'WHERE'  => ['name' => 'reminder_public']
+        ]);
+
+        foreach ($reminder_rights as $row) {
+            $profile_id  = $row['profiles_id'];
+            $right_value = $row['rights'] & ALLSTANDARDRIGHT;
+
+            $migration->addPostQuery($DB->buildInsert('glpi_profilerights', [
+                'profiles_id' => $profile_id,
+                'rights'      => $right_value,
+                'name'        => iisMachineries::$rightname,
+            ]));
+
+            if (($_SESSION['glpiactiveprofile']['id'] ?? null) === $profile_id) {
+                 // Ensure menu will be displayed as soon as right is added.
+                 $_SESSION['glpiactiveprofile'][iisMachineries::$rightname] = $right_value;
+                 unset($_SESSION['glpimenu']);
+            }
+        }
+    }
+
+
+
+
     // install default display preferences
     $dpreferences = new DisplayPreference();
     $found_dpref = $dpreferences->find(['itemtype' => ['LIKE', 'Iistools']]);

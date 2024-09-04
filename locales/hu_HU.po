@@ -1,5 +1,11 @@
 # msgfmt ./hu_HU.po -o ./hu_HU.mo
 
+msgid "IIS Tools Profiles"
+msgstr "IIS Eszközök"
+
+msgid "IIS Profles rights"
+msgstr "IIS Eszköz hozzáférés"
+
 msgid "IIS plugin Cars"
 msgstr "Járművek"
 

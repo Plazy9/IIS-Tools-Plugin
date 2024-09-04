@@ -41,7 +41,7 @@ function plugin_init_iistools() {
     $_SESSION["glpiactiveprofile"]["helpdesk_item_type"][]=iisCameras::getType();
 
 
-    if (iisCars::canView()) { // Right set in change_profile hook
+    //if (iisCars::canView()) { // Right set in change_profile hook
         $PLUGIN_HOOKS['menu_toadd']['iistools'] = ['plugins' => [iisCars::class, 
                                                                  iisMachineries::class,
                                                                  iisCameras::class],
@@ -50,15 +50,10 @@ function plugin_init_iistools() {
                                                                  iisCameras::class],
                                                     ];
 
-    }
+    //}
     //$PLUGIN_HOOKS['config_page']['iistools'] = 'front/iiscars.php';
 }
-/*
-function plugin_iistools_postinit() {
-    // Regisztráljuk az iisCars osztályt az eszközök közé
-    Plugin::registerClass('PluginIistoolsIisCars', ['addtabon' => 'Ticket']);
-}
-*/
+
 function plugin_version_iistools() {
     return [
         'name'           => 'IIS Tools',

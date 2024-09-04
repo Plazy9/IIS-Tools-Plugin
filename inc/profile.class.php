@@ -2,15 +2,16 @@
 
 
 use Glpi\Application\View\TemplateRenderer;
+use GlpiPlugin\Iistools\iisCameras;
 use GlpiPlugin\Iistools\iisCars;
-
+use GlpiPlugin\Iistools\iisMachineries;
 
 class PluginIistoolsProfile extends Profile
 {
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
         return self::createTabEntry(
-            iisCars::getTypeName(Session::getPluralNumber())
+            __("IIS Tools Profiles", "iistools")
         );
     }
 
@@ -30,12 +31,23 @@ class PluginIistoolsProfile extends Profile
         $twig->display("@iistools/profile.html.twig", [
             'id'      => $item->getID(),
             'profile' => $profile,
-            'title'   => iisCars::getTypeName(Session::getPluralNumber()),
+            'title'   => __("IIS Profles rights", 'iistools'),
             'rights'  => [
                 [
                     'itemtype' => iisCars::getType(),
                     'label'    => iisCars::getTypeName(Session::getPluralNumber()),
                     'field'    => iisCars::$rightname,
+                ],
+                [
+                    'itemtype' => iisCameras::getType(),
+                    'label'    => iisCameras::getTypeName(Session::getPluralNumber()),
+                    'field'    => iisCameras::$rightname,
+                ]
+                ,
+                [
+                    'itemtype' => iisMachineries::getType(),
+                    'label'    => iisMachineries::getTypeName(Session::getPluralNumber()),
+                    'field'    => iisMachineries::$rightname,
                 ]
             ]
         ]);

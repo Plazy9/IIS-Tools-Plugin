@@ -8,7 +8,7 @@ use Glpi\Application\View\TemplateRenderer;
 
 class iisCars extends CommonDBTM {
 
-    public static $rightname = 'plugin_iistools';
+    public static $rightname = 'plugin_iistoolsCars';
 
     
     public function test() {
