@@ -1,5 +1,5 @@
 <?php
-use Migration;
+//use Migration;
 use GlpiPlugin\Iistools\iisCars;
 use GlpiPlugin\Iistools\iisCameras;
 use GlpiPlugin\Iistools\iisMachineries;
