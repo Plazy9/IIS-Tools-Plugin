@@ -52,6 +52,13 @@ function plugin_iistools_install() {
         $DB->query($query) or die("Error creating $table_name_car table: " . $DB->error());
     }
 
+    if (!$DB->fieldExists($table_name_car, 'entities_id')) {
+        $migration->addField(
+            $table_name_car,
+            'entities_id',
+            'int'
+        );
+    }
 
     if (!$DB->tableExists($table_name_machine)) {
         $query = "CREATE TABLE `$table_name_machine` (
@@ -73,6 +80,14 @@ function plugin_iistools_install() {
         ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
 
         $DB->query($query) or die("Error creating $table_name_machine table: " . $DB->error());
+    }
+
+    if (!$DB->fieldExists($table_name_machine, 'entities_id')) {
+        $migration->addField(
+            $table_name_machine,
+            'entities_id',
+            'int'
+        );
     }
 
     if (!$DB->tableExists($table_name_camera)) {
@@ -110,6 +125,14 @@ function plugin_iistools_install() {
         );
     }
     
+    if (!$DB->fieldExists($table_name_camera, 'entities_id')) {
+        $migration->addField(
+            $table_name_camera,
+            'entities_id',
+            'int'
+        );
+    }
+
     // $migration->addRight() does not allow to copy an existing right, we must write some custom code
     $right_exist = countElementsInTable(
         "glpi_profilerights",
@@ -218,13 +241,19 @@ function plugin_iistools_install() {
         $query ="INSERT INTO `glpi_displaypreferences`
                      (`itemtype`, `num`, `rank`, `users_id`)
                   VALUES
-                     ('".addslashes(iisCars::getType())."', 1, 1, 0),
-                     ('".addslashes(iisCars::getType())."', 2, 2, 0),
-                     ('".addslashes(iisCars::getType())."', 5, 3, 0),
-                     ('".addslashes(iisCars::getType())."', 6, 4, 0),
-                     ('".addslashes(iisMachineries::getType())."', 2, 1, 0),
-                     ('".addslashes(iisCameras::getType())."', 1, 1, 0),
-                     ('".addslashes(iisCameras::getType())."', 2, 2, 0)
+                     ('".addslashes(iisCars::getType())."', 80, 1, 0),
+                     ('".addslashes(iisCars::getType())."', 1, 2, 0),
+                     ('".addslashes(iisCars::getType())."', 2, 3, 0),
+                     ('".addslashes(iisCars::getType())."', 3, 4, 0),
+                     ('".addslashes(iisCars::getType())."', 7, 5, 0),
+                     ('".addslashes(iisMachineries::getType())."', 80, 1, 0),
+                     ('".addslashes(iisMachineries::getType())."', 1, 2, 0),
+                     ('".addslashes(iisMachineries::getType())."', 2, 3, 0),
+                     ('".addslashes(iisMachineries::getType())."', 3, 4, 0),
+                     ('".addslashes(iisCameras::getType())."', 80, 1, 0),
+                     ('".addslashes(iisCameras::getType())."', 1, 2, 0),
+                     ('".addslashes(iisCameras::getType())."', 2, 3, 0),
+                     ('".addslashes(iisCameras::getType())."', 3, 42, 0)
                      ";
 
         $DB->query( new QueryExpression($query));

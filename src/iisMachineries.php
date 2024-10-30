@@ -5,6 +5,7 @@ use Glpi\Application\View\TemplateRenderer;
 
 use Glpi\Socket;
 use CommonDBTM;
+use Entity;
 
 use Document;
 use Document_Item;
@@ -83,6 +84,14 @@ class iisMachineries extends CommonDBTM {
             'name'               => __('Commissioning date', 'iistools'),
             'datatype'         => 'date',
             'massiveaction'    => false,
+        ];
+
+        $tab[] = [
+            'id'                 => 80,
+            'table'              => 'glpi_entities',
+            'field'              => 'completename',
+            'name'               => Entity::getTypeName(1),
+            'datatype'           => 'dropdown'
         ];
 
         return $tab;

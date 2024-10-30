@@ -2,6 +2,7 @@
 namespace GlpiPlugin\Iistools;
 
 use Session;
+use Entity;
 use CommonDBTM;
 
 use Glpi\Application\View\TemplateRenderer;
@@ -48,6 +49,15 @@ class iisCars extends CommonDBTM {
         $tab[] = [
             'id'                 => 1,
             'table'              => $this->getTable(),
+            'field'              => 'id',
+            'name'               => __('ID', 'iistools'),
+            'massiveaction'      => false,
+            'datatype'           => 'number'
+        ];
+
+        $tab[] = [
+            'id'                 => 2,
+            'table'              => $this->getTable(),
             'field'              => 'license_plate',
             'name'               => __('License plate', 'iistools'),
             'datatype'         =>  $this->getType(),
@@ -55,7 +65,7 @@ class iisCars extends CommonDBTM {
         ];
         
         $tab[] = [
-            'id'                 => 2,
+            'id'                 => 3,
             'table'              => $this->getTable(),
             'field'              => 'brand',
             'name'               => __('Car brand', 'iistools'),
@@ -63,7 +73,7 @@ class iisCars extends CommonDBTM {
         ];
 
         $tab[] = [
-            'id'                 => 3,
+            'id'                 => 4,
             'table'              => $this->getTable(),
             'field'              => 'type',
             'name'               => __('Car type', 'iistools'),
@@ -71,7 +81,7 @@ class iisCars extends CommonDBTM {
             'massiveaction'    => false,
         ];
         $tab[] = [
-            'id'                 => 4,
+            'id'                 => 5,
             'table'              => $this->getTable(),
             'field'              => 'key_count',
             'name'               => __('Car key count', 'iistools'),
@@ -118,35 +128,43 @@ class iisCars extends CommonDBTM {
         ];*/
 
          $tab[] = [
-        'id'                 => 5,
-        'table'              => $this->getTable(), 
-        'field'              => 'primary_driver',
-        'name'               => __('Primary driver id', 'iistools'),
-        'datatype'           => 'dropdown',
-        
-        'massiveaction'      => false,
-    ];
+            'id'                 => 6,
+            'table'              => $this->getTable(), 
+            'field'              => 'primary_driver',
+            'name'               => __('Primary driver id', 'iistools'),
+            'datatype'           => 'dropdown',
+            
+            'massiveaction'      => false,
+        ];
 
-    // Kapcsolódó mezők a users táblából
-    $tab[] = [
-        'id'                 => 6,
-        'table'              => 'glpi_users', // Users tábla
-        'field'              => 'name', // Felhasználó neve
-        'name'               => __('Primary driver name', 'iistools').'',
-        'datatype'           => 'itemlink',
-        'massiveaction'      => false,
-        'linkfield'         => 'primary_driver',
-        'joinparams'         => [
-            'beforejoin'         => [
-                'table'              => $this->getTable(),
-                'joinparams'         => [
-                    'jointype'           => 'itemtype_item',
-                    'specific_itemtype'  => 'iisCars'
+        // Kapcsolódó mezők a users táblából
+        $tab[] = [
+            'id'                 => 7,
+            'table'              => 'glpi_users', // Users tábla
+            'field'              => 'name', // Felhasználó neve
+            'name'               => __('Primary driver name', 'iistools').'',
+            'datatype'           => 'itemlink',
+            'massiveaction'      => false,
+            'linkfield'         => 'primary_driver',
+            'joinparams'         => [
+                'beforejoin'         => [
+                    'table'              => $this->getTable(),
+                    'joinparams'         => [
+                        'jointype'           => 'itemtype_item',
+                        'specific_itemtype'  => 'iisCars'
+                    ]
                 ]
             ]
-        ]
 
-    ];
+        ];
+
+        $tab[] = [
+            'id'                 => 80,
+            'table'              => 'glpi_entities',
+            'field'              => 'completename',
+            'name'               => Entity::getTypeName(1),
+            'datatype'           => 'dropdown'
+        ];
         
         return $tab;
     }

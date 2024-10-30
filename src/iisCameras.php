@@ -4,6 +4,7 @@ namespace GlpiPlugin\Iistools;
 use Glpi\Application\View\TemplateRenderer;
 
 use CommonDBTM;
+use Entity;
 use Document;
 use Document_Item;
 
@@ -33,6 +34,15 @@ class iisCameras extends CommonDBTM {
         $tab[] = [
             'id'                 => 1,
             'table'              => $this->getTable(),
+            'field'              => 'id',
+            'name'               => __('ID', 'iistools'),
+            'massiveaction'      => false,
+            'datatype'           => 'number'
+        ];
+
+        $tab[] = [
+            'id'                 => 2,
+            'table'              => $this->getTable(),
             'field'              => 'name',
             'name'               => __('Camera name', 'iistools'),
             'datatype'         =>  $this->getType(),
@@ -40,7 +50,7 @@ class iisCameras extends CommonDBTM {
         ];
         
         $tab[] = [
-            'id'                 => 2,
+            'id'                 => 3,
             'table'              => $this->getTable(),
             'field'              => 'ip',
             'name'               => __('IP address', 'iistools'),
@@ -54,6 +64,15 @@ class iisCameras extends CommonDBTM {
             'datatype'         => 'date',
             'massiveaction'    => false,
         ];
+
+        $tab[] = [
+            'id'                 => 80,
+            'table'              => 'glpi_entities',
+            'field'              => 'completename',
+            'name'               => Entity::getTypeName(1),
+            'datatype'           => 'dropdown'
+        ];
+        
         return $tab;
     }
 
