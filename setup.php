@@ -6,7 +6,7 @@ use GlpiPlugin\Iistools\iisCameras;
 use GlpiPlugin\Iistools\iisMachineries;
 
 
-define('PLUGIN_IISTOOLS_VERSION', '0.0.2');
+define('PLUGIN_IISTOOLS_VERSION', '0.0.3');
 define('PLUGIN_IISTOOLS_MIN_GLPI', '10.0.0');
 define('PLUGIN_IISTOOLS_MAX_GLPI', '10.0.99');
 
