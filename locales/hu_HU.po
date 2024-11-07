@@ -198,3 +198,38 @@ msgstr "Felhó státusz"
 msgid  "Camera photos"
 msgstr "Kamera képek"
 
+msgid "iisreport_report_title"
+msgstr "Bejelentések "
+
+msgid "Requester user"
+msgstr "Igénylő"
+
+msgid "Assign user"
+msgstr "Hozzárendelt"
+
+msgid "Observer user"
+msgstr "Megfigyelő"
+
+msgid "No"
+msgstr "Nem"
+
+msgid "Yes"
+msgstr "Igen"
+
+msgid "With closed ticket"
+msgstr "Lezártakkal együtt"
+
+msgid "Ticket"
+msgstr "Bejelentés"
+
+msgid "Ticket status"
+msgstr "Státusz"
+
+msgid "Ticket create date"
+msgstr "Létrehozva"
+
+msgid "Ticket solve date"
+msgstr "Megoldva"
+
+msgid "Ticket close date"
+msgstr "Lezárva"
