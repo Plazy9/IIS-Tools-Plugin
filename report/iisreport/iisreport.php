@@ -52,6 +52,7 @@ if ($report->criteriasValidated()) {
 
         // new PluginReportsColumn('name', __('Login'), ['sorton' => 'name']),
         //new PluginReportsColumn('ticket_name', __('Ticket name', 'iistools')),
+        new PluginReportsColumnDate('belsmunkaszmfield', __('Belső munkaszám', 'iistools'), ['sorton' => 'belsmunkaszmfield']),
         new PluginReportsColumnDate('ticket_date', __('Ticket create date', 'iistools'), ['sorton' => 'ticket_date']),
         new PluginReportsColumnDate('ticket_solvedate', __('Ticket solve date', 'iistools'), ['sorton' => 'ticket_solvedate']),
         new PluginReportsColumnDate('ticket_closedate', __('Ticket close date', 'iistools'), ['sorton' => 'ticket_closedate']),
@@ -80,13 +81,15 @@ if ($report->criteriasValidated()) {
                 glpi_tickets.closedate as 'ticket_closedate',
                 assign_user.users_id as 'assign_user_users_id',
                 requester_user.users_id as 'requester_user_users_id',
-                observer_user.users_id as 'observer_user_users_id'
+                observer_user.users_id as 'observer_user_users_id',
+                addedfields.belsmunkaszmfield as 'belsmunkaszmfield'
     
             FROM `glpi_tickets` 
                 LEFT OUTER JOIN `glpi_users`  ON glpi_users.id = glpi_tickets.users_id_recipient
                 LEFT OUTER JOIN `glpi_tickets_users` assign_user ON assign_user.tickets_id = glpi_tickets.id and assign_user.type= " . CommonITILActor::ASSIGN . " 
                 LEFT OUTER JOIN `glpi_tickets_users` requester_user ON requester_user.tickets_id = glpi_tickets.id and requester_user.type= " . CommonITILActor::REQUESTER . " 
                 LEFT OUTER JOIN `glpi_tickets_users` observer_user ON observer_user.tickets_id = glpi_tickets.id and observer_user.type= " . CommonITILActor::OBSERVER . " 
+                LEFT OUTER JOIN `glpi_plugin_fields_ticketiisticketaddons` addedfields ON addedfields.items_id = glpi_tickets.id and addedfields.itemtype= 'Ticket' 
             Where 1=1 
             " .
         $report->addSqlCriteriasRestriction('AND');
