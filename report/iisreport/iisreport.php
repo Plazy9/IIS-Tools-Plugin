@@ -28,7 +28,7 @@ if ($report->criteriasValidated()) {
     $report->delCriteria('glpi_tickets.status');
 
     $cols = [
-        new PluginReportsColumnItemCheckbox('id', 'Ticket'),
+        //new PluginReportsColumnItemCheckbox('id', 'Ticket'),
         new PluginReportsColumnLink('id2', __('Ticket', 'iistools'), 'Ticket', [
             'with_comment' => true,
             'with_navigate' => true
