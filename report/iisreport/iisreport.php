@@ -52,10 +52,14 @@ if ($report->criteriasValidated()) {
 
         // new PluginReportsColumn('name', __('Login'), ['sorton' => 'name']),
         //new PluginReportsColumn('ticket_name', __('Ticket name', 'iistools')),
-        new PluginReportsColumnDate('belsmunkaszmfield', __('Belső munkaszám', 'iistools'), ['sorton' => 'belsmunkaszmfield']),
+        new PluginReportsColumn('belsmunkaszmfield', __('Belső munkaszám', 'iistools'), ['sorton' => 'belsmunkaszmfield']),
         new PluginReportsColumnDate('ticket_date', __('Ticket create date', 'iistools'), ['sorton' => 'ticket_date']),
         new PluginReportsColumnDate('ticket_solvedate', __('Ticket solve date', 'iistools'), ['sorton' => 'ticket_solvedate']),
         new PluginReportsColumnDate('ticket_closedate', __('Ticket close date', 'iistools'), ['sorton' => 'ticket_closedate']),
+        new PluginReportsColumnFloat('ticket_sum_time_cost', __('Ticket sum cost of time costs', 'iistools'), ['sorton' => 'ticket_sum_time_cost']),
+        new PluginReportsColumnFloat('ticket_sum_fix_cost', __('Ticket sum cost of fixed costs', 'iistools'), ['sorton' => 'ticket_sum_fix_cost']),
+        new PluginReportsColumnFloat('ticket_sum_material_cost', __('Ticket sum cost of material cost', 'iistools'), ['sorton' => 'ticket_sum_material_cost']),
+        new PluginReportsColumnFloat('ticket_sum_cost', __('Ticket sum cost', 'iistools'), ['sorton' => 'ticket_sum_cost']),
 
     ];
 
@@ -82,7 +86,11 @@ if ($report->criteriasValidated()) {
                 assign_user.users_id as 'assign_user_users_id',
                 requester_user.users_id as 'requester_user_users_id',
                 observer_user.users_id as 'observer_user_users_id',
-                addedfields.belsmunkaszmfield as 'belsmunkaszmfield'
+                addedfields.belsmunkaszmfield as 'belsmunkaszmfield',
+                (SELECT sum(actiontime/3600*cost_time) FROM glpi_ticketcosts WHERE tickets_id=glpi_tickets.id) as 'ticket_sum_time_cost',
+                (SELECT sum(cost_fixed) FROM glpi_ticketcosts WHERE tickets_id=glpi_tickets.id) as 'ticket_sum_fix_cost',
+                (SELECT sum(cost_material) FROM glpi_ticketcosts WHERE tickets_id=glpi_tickets.id) as 'ticket_sum_material_cost',
+                (SELECT sum((actiontime/3600*cost_time)+cost_fixed+cost_material) FROM glpi_ticketcosts WHERE tickets_id=glpi_tickets.id) as 'ticket_sum_cost'
     
             FROM `glpi_tickets` 
                 LEFT OUTER JOIN `glpi_users`  ON glpi_users.id = glpi_tickets.users_id_recipient

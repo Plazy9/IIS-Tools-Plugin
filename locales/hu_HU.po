@@ -233,3 +233,15 @@ msgstr "Megoldva"
 
 msgid "Ticket close date"
 msgstr "Lezárva"
+
+msgid "Ticket sum cost of time costs"
+msgstr "Össz. idő kts."
+
+msgid "Ticket sum cost of fixed costs"
+msgstr "Össz. javítási kts."
+
+msgid "Ticket sum cost of material cost"
+msgstr "Össz. anyag kts."
+
+msgid "Ticket sum cost"
+msgstr "Össz. kts."
