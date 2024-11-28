@@ -100,6 +100,7 @@ if ($report->criteriasValidated()) {
                 LEFT OUTER JOIN `glpi_plugin_fields_ticketiisticketaddons` addedfields ON addedfields.items_id = glpi_tickets.id and addedfields.itemtype= 'Ticket' 
             Where 1=1 
             " .
+        getEntitiesRestrictRequest(' AND ', 'glpi_tickets') .
         $report->addSqlCriteriasRestriction('AND');
 
     if ($filterWithClosed->getParameterValue() == 0) {
