@@ -245,3 +245,9 @@ msgstr "Össz. anyag kts."
 
 msgid "Ticket sum cost"
 msgstr "Össz. kts."
+
+msgid "Created between"
+msgstr "Létrehozva az alábbi dátumok között"
+
+msgid "between"
+msgstr "között"

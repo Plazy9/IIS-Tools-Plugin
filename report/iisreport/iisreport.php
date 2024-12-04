@@ -19,6 +19,13 @@ $tab = [
 ];
 $filterWithClosed = new PluginReportsArrayCriteria($report, 'glpi_tickets.status', __('With closed ticket', 'iistools'), $tab);
 
+include("../../inc/IisDateIntervalCriteria.php");
+
+$dateCriteria = new IisDateIntervalCriteria($report, 'glpi_tickets.date');
+
+$dateCriteria->addCriteriaLabel($dateCriteria->getName() . "_1", __('Created between', 'iistools'));
+$dateCriteria->addCriteriaLabel($dateCriteria->getName() . "_2", '');
+
 //Display criterias form is needed
 $report->displayCriteriasForm();
 
