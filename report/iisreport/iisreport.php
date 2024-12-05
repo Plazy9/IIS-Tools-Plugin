@@ -8,10 +8,15 @@ include("../../../../inc/includes.php");
 //TRANS: The name of the report = Users with no right
 $report = new PluginReportsAutoReport(__('iisreport_report_title', 'iistools'));
 
+include("../../inc/IisEntityCriteria.php");
+
+new IisReportsEntityCriteria($report, 'glpi_tickets.entities_id', __('Entity'));
+
+
 //new PluginReportsTextCriteria($report, 'requester_user.users_id', __('Igénylő'));
 new PluginReportsUserCriteria($report, 'requester_user.users_id', __('Requester user', 'iistools'));
 new PluginReportsUserCriteria($report, 'assign_user.users_id', __('Assign user', 'iistools'));
-new PluginReportsUserCriteria($report, 'observer_user.users_id', __('Observer user', 'iistools'));
+//new PluginReportsUserCriteria($report, 'observer_user.users_id', __('Observer user', 'iistools'));
 
 $tab = [
     0 => __('No'),
@@ -51,6 +56,10 @@ if ($report->criteriasValidated()) {
         new PluginReportsColumnLink('recipient_userid', __('User'), 'User'),
         */
 
+        new PluginReportsColumnLink('entities_id', __('Entity'), 'Entity'),
+        //new PluginReportsColumnLink('entities_completename', __('Entities'), 'Entity'),
+
+
         new PluginReportsColumnLink('assign_user_users_id', __('Assign user', 'iistools'), 'User'),
         new PluginReportsColumnLink('requester_user_users_id', __('Requester user', 'iistools'), 'User'),
         new PluginReportsColumnLink('observer_user_users_id', __('Observer user', 'iistools'), 'User'),
@@ -62,7 +71,11 @@ if ($report->criteriasValidated()) {
         new PluginReportsColumn('belsmunkaszmfield', __('Belső munkaszám', 'iistools'), ['sorton' => 'belsmunkaszmfield']),
         new PluginReportsColumnDate('ticket_date', __('Ticket create date', 'iistools'), ['sorton' => 'ticket_date']),
         new PluginReportsColumnDate('ticket_solvedate', __('Ticket solve date', 'iistools'), ['sorton' => 'ticket_solvedate']),
+
         new PluginReportsColumnDate('ticket_closedate', __('Ticket close date', 'iistools'), ['sorton' => 'ticket_closedate']),
+
+        new PluginReportsColumnInteger('ticket_sum_tasknum', __('Num of ticket Tasks', 'iistools'), ['sorton' => 'ticket_sum_tasknum']),
+
         new PluginReportsColumnFloat('ticket_sum_time_cost', __('Ticket sum cost of time costs', 'iistools'), ['sorton' => 'ticket_sum_time_cost']),
         new PluginReportsColumnFloat('ticket_sum_fix_cost', __('Ticket sum cost of fixed costs', 'iistools'), ['sorton' => 'ticket_sum_fix_cost']),
         new PluginReportsColumnFloat('ticket_sum_material_cost', __('Ticket sum cost of material cost', 'iistools'), ['sorton' => 'ticket_sum_material_cost']),
@@ -74,7 +87,10 @@ if ($report->criteriasValidated()) {
 
     $query = "Select glpi_tickets.id as 'id',
                 glpi_tickets.id as 'id2',
+                glpi_tickets.entities_id as 'entities_id',
+                ticketentities.completename as 'entities_completename',
                 glpi_tickets.status as 'ticket_status',
+                (SELECT count(*) FROM glpi_tickettasks WHERE tickets_id=glpi_tickets.id) as 'ticket_sum_tasknum',
                 CASE
                     WHEN glpi_tickets.status = 1 THEN '" . Ticket::getStatus(1) . "'
                     WHEN glpi_tickets.status = 2 THEN '" . Ticket::getStatus(2) . "'
@@ -105,6 +121,7 @@ if ($report->criteriasValidated()) {
                 LEFT OUTER JOIN `glpi_tickets_users` requester_user ON requester_user.tickets_id = glpi_tickets.id and requester_user.type= " . CommonITILActor::REQUESTER . " 
                 LEFT OUTER JOIN `glpi_tickets_users` observer_user ON observer_user.tickets_id = glpi_tickets.id and observer_user.type= " . CommonITILActor::OBSERVER . " 
                 LEFT OUTER JOIN `glpi_plugin_fields_ticketiisticketaddons` addedfields ON addedfields.items_id = glpi_tickets.id and addedfields.itemtype= 'Ticket' 
+                LEFT OUTER JOIN `glpi_entities` ticketentities ON ticketentities.id = glpi_tickets.entities_id 
             Where 1=1 
             " .
         getEntitiesRestrictRequest(' AND ', 'glpi_tickets') .

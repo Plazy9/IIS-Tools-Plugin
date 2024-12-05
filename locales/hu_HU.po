@@ -198,6 +198,8 @@ msgstr "Felhó státusz"
 msgid  "Camera photos"
 msgstr "Kamera képek"
 
+#--------------------------------
+
 msgid "iisreport_report_title"
 msgstr "Bejelentések "
 
@@ -251,3 +253,10 @@ msgstr "Létrehozva az alábbi dátumok között"
 
 msgid "between"
 msgstr "között"
+
+msgid "Num of ticket Tasks"
+msgstr "Feladatok (db)"
+
+#---------------------------
+msgid "iisreport_entities_title"
+msgstr "Bejelentések Szervezeti egységenként"
