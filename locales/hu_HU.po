@@ -255,8 +255,30 @@ msgid "between"
 msgstr "között"
 
 msgid "Num of ticket Tasks"
-msgstr "Feladatok (db)"
+msgstr "Bejelentés feladatok (db)"
 
 #---------------------------
 msgid "iisreport_entities_title"
 msgstr "Bejelentések Szervezeti egységenként"
+
+msgid "Task create date"
+msgstr "Feladat létrehozása"
+
+msgid "Ticket actiontime"
+msgstr "Feladat tartam"
+
+msgid "Ticket cost"
+msgstr "Feladat kts"
+
+msgid "Ticket fixed cost"
+msgstr "Feladat jav. kts."
+
+msgid "Ticket material cost"
+msgstr "Feladat anyag kts."
+
+msgid "Task creator user"
+msgstr "Feladatot jelnetette"
+
+msgid "Task content"
+msgstr "Feladat"
+
