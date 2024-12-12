@@ -258,7 +258,7 @@ msgid "Num of ticket Tasks"
 msgstr "Bejelentés feladatok (db)"
 
 #---------------------------
-msgid "iisreport_entities_title"
+msgid "iisreportentities_report_title"
 msgstr "Bejelentések Szervezeti egységenként"
 
 msgid "Task create date"
@@ -276,9 +276,37 @@ msgstr "Feladat jav. kts."
 msgid "Ticket material cost"
 msgstr "Feladat anyag kts."
 
+msgid "Task creator id"
+msgstr "Feladatot jelentette azon."
+
+msgid "Task creator name"
+msgstr "Feladatot jelentette"
+
 msgid "Task creator user"
 msgstr "Feladatot jelnetette"
 
 msgid "Task content"
 msgstr "Feladat"
+
+#---------------------------
+msgid "iisreporttaskcost_report_title"
+msgstr "Feladatok teljes kts jelentés"
+
+msgid "Task id"
+msgstr "Feladat azon."
+
+msgid "Ticket id"
+msgstr "Bejelentés azon."
+
+msgid "Problem id"
+msgstr "Probléma azon."
+
+msgid "Problemid"
+msgstr "Probléma"
+
+msgid "Entity id"
+msgstr "Szervezet azon."
+
+msgid "Entity"
+msgstr "Szervezet"
 
