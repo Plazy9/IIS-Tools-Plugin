@@ -71,6 +71,7 @@ class iisCostReport extends CommonDBTM
             'massiveaction'      => false,
             
             
+            
         ];
 
         $tab[] = [
@@ -80,7 +81,7 @@ class iisCostReport extends CommonDBTM
             'name'               => __('Ticket', 'iistools').'',
             'datatype'           => 'string',
             'massiveaction'      => false,
-            
+            'additionalfields'   => ['id', 'name']
         ];
 
         $tab[] = [
@@ -126,6 +127,7 @@ class iisCostReport extends CommonDBTM
             'name'               => __('Entity', 'iistools').'',
             'datatype'           => 'string',
             'massiveaction'      => false,
+            'additionalfields'   => ['id', 'name']
         ];
 
         $tab[] = [

@@ -312,7 +312,6 @@ function plugin_iistools_giveItem($type, $ID, $data, $num) {
    $table_name_car= "glpi_plugin_iistools_iiscars";
    $table_name_machine= "glpi_plugin_iistools_iismachineries";
    $table_name_camera= "glpi_plugin_iistools_iiscameras";
-   
    switch ($table.'.'.$field) {
         case $table_name_car.".license_plate" :
             $out = "<a href='".Toolbox::getItemTypeFormURL(iisCars::class)."?id=".$data['id']."'>";
@@ -346,6 +345,23 @@ function plugin_iistools_giveItem($type, $ID, $data, $num) {
             return HTML::entity_decode_deep($data[$num][0]['name'], false);
         case "iis_ticketcost_table.cost_time":
             return $data['GlpiPlugin\Iistools\iisCostReport_10'][0]['name']/3600*$data[$num][0]['name'];
+        case "iis_tickets_table.name":
+            $out = "<a href='".Toolbox::getItemTypeFormURL(Ticket::class)."?id=".$data[$num][0]['id']."'>";
+            $out .= $data[$num][0]['name'];
+            if ($_SESSION["glpiis_ids_visible"] || empty($data[$num][0]['name'])) {
+                $out .= " (".$data["id"].")";
+            }
+            $out .= "</a>";
+            return $out;
+        case "iis_entities_table.name":
+            $out = "<a href='".Toolbox::getItemTypeFormURL(Entity::class)."?id=".$data[$num][0]['id']."'>";
+            $out .= $data[$num][0]['name'];
+            if ($_SESSION["glpiis_ids_visible"] || empty($data[$num][0]['name'])) {
+                $out .= " (".$data["id"].")";
+            }
+            $out .= "</a>";
+            return $out;
+        
    }
    return "";
 }
