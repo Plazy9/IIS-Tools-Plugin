@@ -4,6 +4,7 @@ use Glpi\Plugin\Hooks;
 use GlpiPlugin\Iistools\iisCars;
 use GlpiPlugin\Iistools\iisCameras;
 use GlpiPlugin\Iistools\iisMachineries;
+use GlpiPlugin\Iistools\iisCostReport;
 
 
 define('PLUGIN_IISTOOLS_VERSION', '0.0.3');
@@ -44,7 +45,8 @@ function plugin_init_iistools() {
     //if (iisCars::canView()) { // Right set in change_profile hook
         $PLUGIN_HOOKS['menu_toadd']['iistools'] = ['plugins' => [iisCars::class, 
                                                                  iisMachineries::class,
-                                                                 iisCameras::class],
+                                                                 iisCameras::class,
+                                                                 iisCostReport::class],
                                                     'assets' => [iisCars::class, 
                                                                  iisMachineries::class,
                                                                  iisCameras::class],

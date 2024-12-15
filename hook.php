@@ -3,6 +3,7 @@
 use GlpiPlugin\Iistools\iisCars;
 use GlpiPlugin\Iistools\iisCameras;
 use GlpiPlugin\Iistools\iisMachineries;
+use GlpiPlugin\Iistools\iisCostReport;
 
 function plugin_iistools_install() {
     global $DB;
@@ -293,6 +294,7 @@ function plugin_iistools_uninstall() {
 }
 
 function plugin_iistools_giveItem($type, $ID, $data, $num) {
+    
    $searchopt = &Search::getOptions($type);
    $table = $searchopt[$ID]["table"];
    $field = $searchopt[$ID]["field"];
@@ -300,7 +302,7 @@ function plugin_iistools_giveItem($type, $ID, $data, $num) {
    $table_name_car= "glpi_plugin_iistools_iiscars";
    $table_name_machine= "glpi_plugin_iistools_iismachineries";
    $table_name_camera= "glpi_plugin_iistools_iiscameras";
-
+   
    switch ($table.'.'.$field) {
         case $table_name_car.".license_plate" :
             $out = "<a href='".Toolbox::getItemTypeFormURL(iisCars::class)."?id=".$data['id']."'>";
@@ -327,11 +329,37 @@ function plugin_iistools_giveItem($type, $ID, $data, $num) {
             }
             $out .= "</a>";
             return $out;
+        //report
+        case "glpi_tickettasks.actiontime":
+            return HTML::timestampToString($data[$num][0]['name'], false);
+        case "glpi_tickettasks.content":
+            return HTML::entity_decode_deep($data[$num][0]['name'], false);
+        case "iis_ticketcost_table.cost_time":
+            return $data['GlpiPlugin\Iistools\iisCostReport_10'][0]['name']/3600*$data[$num][0]['name'];
    }
    return "";
 }
 
+function plugin_iistools_addDefaultWhere($itemtype) {
+    switch ($itemtype) {
+       case iisCostReport::class:
+          return  getEntitiesRestrictRequest('  ', 'iis_tickets_table');
+    }
+    return '';
+ }
 
+function plugin_iistools_addDefaultJoin($type, $ref_table, &$already_link_tables) {
+    
+    switch ($type) {
+        case iisCostReport::class :
+            return "LEFT JOIN glpi_tickets as iis_tickets_table ON (glpi_tickettasks.tickets_id = iis_tickets_table.id) ".
+                   "LEFT JOIN glpi_entities AS iis_entities_table ON (iis_tickets_table.entities_id = iis_entities_table.id ) ".
+                   "LEFT JOIN glpi_problems_tickets as iis_problems_table ON (iis_problems_table.tickets_id = glpi_tickettasks.tickets_id) ".
+                   "LEFT JOIN glpi_ticketcosts as iis_ticketcost_table ON (SUBSTRING_INDEX(iis_ticketcost_table.name , '_', 1)=glpi_tickettasks.id)";
+    }
+    return "";
+    }
+    
  function plugin_iistools_AssignToTicket($types) {
     $types[iisCars::class] = iisCars::getTypeName();
     $types[iisMachineries::class] = iisMachineries::getTypeName();
