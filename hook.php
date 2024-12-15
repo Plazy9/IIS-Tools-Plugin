@@ -254,16 +254,16 @@ function plugin_iistools_install() {
                      ('".addslashes(iisCameras::getType())."', 80, 1, 0),
                      ('".addslashes(iisCameras::getType())."', 1, 2, 0),
                      ('".addslashes(iisCameras::getType())."', 2, 3, 0),
-                     ('".addslashes(iisCameras::getType())."', 3, 42, 0)
-                     ('".addslashes(iisCostReport::getType())."', 2, 1, 0)
-                     ('".addslashes(iisCostReport::getType())."', 3, 2, 0)
-                     ('".addslashes(iisCostReport::getType())."', 5, 6, 0)
-                     ('".addslashes(iisCostReport::getType())."', 7, 8, 0)
-                     ('".addslashes(iisCostReport::getType())."', 32, 4, 0)
-                     ('".addslashes(iisCostReport::getType())."', 9, 10, 0)
-                     ('".addslashes(iisCostReport::getType())."', 10, 11, 0)
-                     ('".addslashes(iisCostReport::getType())."', 11, 12, 0)
-                     ('".addslashes(iisCostReport::getType())."', 12, 13, 0)
+                     ('".addslashes(iisCameras::getType())."', 3, 42, 0),
+                     ('".addslashes(iisCostReport::getType())."', 2, 1, 0),
+                     ('".addslashes(iisCostReport::getType())."', 3, 2, 0),
+                     ('".addslashes(iisCostReport::getType())."', 5, 6, 0),
+                     ('".addslashes(iisCostReport::getType())."', 7, 8, 0),
+                     ('".addslashes(iisCostReport::getType())."', 32, 4, 0),
+                     ('".addslashes(iisCostReport::getType())."', 9, 10, 0),
+                     ('".addslashes(iisCostReport::getType())."', 10, 11, 0),
+                     ('".addslashes(iisCostReport::getType())."', 11, 12, 0),
+                     ('".addslashes(iisCostReport::getType())."', 12, 13, 0),
                      ('".addslashes(iisCostReport::getType())."', 13, 14, 0)
                      ";
 
