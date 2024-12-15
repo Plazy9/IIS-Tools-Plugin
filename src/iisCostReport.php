@@ -58,7 +58,7 @@ class iisCostReport extends CommonDBTM
             'id'                 => 32,
             'table'              => 'glpi_users',
             'field'              => 'name',
-            'name'               => __('Task creator', 'iistools'),
+            'name'               => __('Task creator name', 'iistools'),
             'massiveaction'      => false,
         ];
 
