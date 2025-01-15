@@ -54,6 +54,18 @@ function plugin_init_iistools() {
 
     //}
     //$PLUGIN_HOOKS['config_page']['iistools'] = 'front/iiscars.php';
+
+    // add new cards to dashboard grid
+    $PLUGIN_HOOKS['dashboard_types']['iistools'] = [iisCostReport::class, 'dashboardTypes'];
+    $PLUGIN_HOOKS['dashboard_cards']['iistools'] = [iisCostReport::class, 'dashboardCards'];
+
+    // Dashboard filter
+    /*
+    $PLUGIN_HOOKS[Hooks::DASHBOARD_FILTERS]['iistools'] = [
+        ComputerModelFilter::class
+    ];
+    */
+
 }
 
 function plugin_version_iistools() {

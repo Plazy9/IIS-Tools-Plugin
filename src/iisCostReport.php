@@ -4,6 +4,8 @@ namespace GlpiPlugin\Iistools;
 
 use CommonDBTM;
 use Html;
+use Search;
+
 
 
 class iisCostReport extends CommonDBTM
@@ -28,7 +30,7 @@ class iisCostReport extends CommonDBTM
             'datatype'           => 'number'
         ];
 
-        $tab[] = [
+        $tab['taskcontent'] = [
             'id'                 => 2,
             'table'              => $this->getTable(),
             'field'              => 'content',
@@ -197,4 +199,198 @@ class iisCostReport extends CommonDBTM
     {
         return true;
     }
+
+    static function dashboardTypes() {
+        return [
+            /*
+           'example2' => [
+              'label'    => __("Plazy dashboard type1"),
+              'function' => iisCostReport::class . "::cardWidget",
+              'image'    => "",
+           ],
+           */
+           'example_static' => [
+              'label'    => __("Plazy dashboard type2"),
+              'function' => iisCostReport::class . "::cardWidgetWithoutProvider",
+              'image'    => "",
+           ],
+           
+        ];
+     }
+  
+  
+     static function dashboardCards($cards = []) {
+        if (is_null($cards)) {
+           $cards = [];
+        }
+        $new_cards =  [
+           'plugin_example_card' => [
+              'widgettype'   => ["stackedbars", 'stackedHBars'],
+              'label'        => __("IIS Widget time of TicketTask multi"),
+              'provider'     => iisCostReport::class . "::cardDataProvider",
+           ],
+            'plugin_example_card2' => [
+              'widgettype'   => ["bar", "pie"],
+              'label'        => __("IIS Widget time of TicketTask"),
+              'provider'     => iisCostReport::class . "::cardDataProvider2",
+           ],
+           
+           'plugin_example_card_without_provider' => [
+              'widgettype'   => ["example_static"],
+              'label'        => __("IIS Widget"),
+           ],
+        ];
+  
+        return array_merge($cards, $new_cards);
+     }
+     static function cardWidget(array $params = []) {
+        $default = [
+           'data'  => [],
+           'title' => '',
+           // this property is "pretty" mandatory,
+           // as it contains the colors selected when adding widget on the grid send
+           // without it, your card will be transparent
+           'color' => '',
+        ];
+  
+        $p = array_merge($default, $params);
+  
+        // you need to encapsulate your html in div.card to benefit core style
+        $html = "<div class='card' style='background-color: {$p["color"]};'>";
+        $html.= "<h2>XXX{$p['title']}</h2>";
+        $html.= "SSS<ul>";
+        foreach ($p['data'] as $line) {
+           $html.= "<li>CCC $line</li>";
+        }
+        $html.= "</ul>";
+        $html.= "</div>";
+  
+        return $html;
+     }
+
+     static function cardWidgetWithoutProvider(array $params = []) {
+        $debug=false;
+        $columnsList = "";
+        //print_r($params);
+        /*
+        $card_data[] = ['label' => 'asdf',                
+                        'number' => 123,
+                        'url' => '#'
+                        ];
+         */
+        $card_data=array();
+        $sum_value=array();
+        $forcedisplay=array(1, 2, 3, 31, 32, 4, 5, 6, 7, 8, 9, 10, 11, 12,13); //all fields
+        $data = Search::getDatas(iisCostReport::class, $params, $forcedisplay);
+        //var_dump($data['data']['rows']);
+        $row_num = 1;
+        foreach($data['data']['rows'] as $ResultKey => $ResultRow){
+            $sum_value[$ResultRow['GlpiPlugin\Iistools\iisCostReport_4']['displayname']]['value']+=$ResultRow['GlpiPlugin\Iistools\iisCostReport_10'][0]['name'];
+            $sum_value[$ResultRow['GlpiPlugin\Iistools\iisCostReport_4']['displayname']]['name']=$ResultRow['GlpiPlugin\Iistools\iisCostReport_5']['displayname'];
+            if($debug){
+                $item_num = 1;
+                $row_num++;
+                
+                foreach ($data['data']['cols'] as $col) {
+                    $colName = $col["name"];
+                    $colkey = "{$col['itemtype']}_{$col['id']}";
+                    echo $colName."->". $colkey . "->";
+                    //print_r($ResultRow);
+                    
+                    if($colkey=='GlpiPlugin\Iistools\iisCostReport_10'){
+                        $Value=Search::showItem(3,
+                                                $ResultRow[$colkey][0]['name'],
+                                                $item_num,
+                                                $row_num
+                                            );
+                    }else{
+                        $Value=Search::showItem(3,
+                                                $ResultRow[$colkey]['displayname'],
+                                                $item_num,
+                                                $row_num
+                                            );
+                    }
+                    
+                    echo $Value; 
+                    //echo "-------";print_r($ResultRow[$colkey]);
+                    echo "<br>";
+                
+                }
+                echo "<hr>";
+            }
+        
+        }
+
+        $default = [
+            // this property is "pretty" mandatory,
+            // as it contains the colors selected when adding widget on the grid send
+            // without it, your card will be transparent
+            'color' => '',
+        ];
+        $p = array_merge($default, $params);
+
+        // you need to encapsulate your html in div.card to benefit core style
+        //$html = $columnsList;
+        print_r($sum_value);
+        $html = "teszt";
+        return $html;
+     }
+
+     static function cardDataProvider(array $params = []) {
+        $default_params = [
+           'label' => null,
+           'icon'  => "fas ",
+        ];
+        $params = array_merge($default_params, $params);
+        $card_data['labels'][]="asdf1";
+        $card_data['labels'][]="asdf2";
+        $card_data['labels'][]="asdf3";
+        $card_data['series'][]=array('name'=> 'izé1', 'data' => [12,30,40]);
+        $card_data['series'][]=array('name'=> 'izé3', 'data' => [7,null,30]);
+        
+        return [
+           'label' => $params['label'],
+           'icon'  => $params['icon'],
+           'data'  => $card_data,
+           'legend'=> false,
+        ];
+     }
+
+    static function TaskCostValue(array $params = []) {
+        $card_data=array();
+        $sum_value=array();
+        $forcedisplay=array(1, 2, 3, 31, 32, 4, 5, 6, 7, 8, 9, 10, 11, 12,13); //all fields
+        $data = Search::getDatas(iisCostReport::class, $params, $forcedisplay);
+
+        foreach($data['data']['rows'] as $ResultKey => $ResultRow){
+            $sum_value[$ResultRow['GlpiPlugin\Iistools\iisCostReport_4'][0]['name']]['timevalue']+=$ResultRow['GlpiPlugin\Iistools\iisCostReport_10'][0]['name'];
+            $sum_value[$ResultRow['GlpiPlugin\Iistools\iisCostReport_4'][0]['name']]['name']=$ResultRow['GlpiPlugin\Iistools\iisCostReport_5'][0]['name'];
+        }
+
+        foreach($sum_value as $key => $value){
+            $card_data[] = ['label' => $key." - \"".($value['name'])."\" összesen: ".  Html::timestampToString($value['timevalue']),                
+                            'number' => $value['timevalue']/60,
+                            'url' => '#'
+                            ];
+        }
+        return $card_data;
+    }
+
+     static function cardDataProvider2(array $params = []) {
+        $default_params = [
+           'label' => null,
+           'icon'  => "fas ",
+        ];
+        $params = array_merge($default_params, $params);
+        $card_data = self::TaskCostValue($params);
+
+        return [
+           'label' => $params['label'],
+           'icon'  => $params['icon'],
+           'data'  => $card_data,
+           'donut' => true,
+           'legend'=> false,
+        ];
+     }
+  
 }
