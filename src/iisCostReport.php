@@ -7,7 +7,6 @@ use Html;
 use Search;
 
 
-
 class iisCostReport extends CommonDBTM
 {
 
@@ -224,15 +223,17 @@ class iisCostReport extends CommonDBTM
            $cards = [];
         }
         $new_cards =  [
+            /*
            'plugin_example_card' => [
               'widgettype'   => ["stackedbars", 'stackedHBars'],
               'label'        => __("IIS Widget time of TicketTask multi"),
               'provider'     => iisCostReport::class . "::cardDataProvider",
            ],
+           */
             'plugin_example_card2' => [
               'widgettype'   => ["bar", "pie"],
               'label'        => __("IIS Widget time of TicketTask"),
-              'provider'     => iisCostReport::class . "::cardDataProvider2",
+              'provider'     => iisCostReport::class . "::cardDataProvider_TaskCost",
            ],
            
            'plugin_example_card_without_provider' => [
@@ -243,6 +244,7 @@ class iisCostReport extends CommonDBTM
   
         return array_merge($cards, $new_cards);
      }
+     /*
      static function cardWidget(array $params = []) {
         $default = [
            'data'  => [],
@@ -267,21 +269,35 @@ class iisCostReport extends CommonDBTM
   
         return $html;
      }
+*/
+     static function addFilterToParams($params){
+        $defaultparams=array();
+        if(isset($params['apply_filters']['dates'])){
+            $defaultparams['criteria'] =[
+                                            [
+                                                'field'      => 3,        // taskcreated field index in search options
+                                                'searchtype' => 'morethan',  // type of search
+                                                'value'      => $params['apply_filters']['dates'][0],         // value to search
+                                            ],
+                                            [
+                                                'field'      => 3,        // taskcreated field index in search options
+                                                'searchtype' => 'lessthan',  // type of search
+                                                'value'      => $params['apply_filters']['dates'][1],         // value to search
+                                            ],
+                                        ];
+        }
+        return $defaultparams;
+     }
 
      static function cardWidgetWithoutProvider(array $params = []) {
         $debug=false;
-        $columnsList = "";
-        //print_r($params);
-        /*
-        $card_data[] = ['label' => 'asdf',                
-                        'number' => 123,
-                        'url' => '#'
-                        ];
-         */
-        $card_data=array();
+        
         $sum_value=array();
         $forcedisplay=array(1, 2, 3, 31, 32, 4, 5, 6, 7, 8, 9, 10, 11, 12,13); //all fields
-        $data = Search::getDatas(iisCostReport::class, $params, $forcedisplay);
+        
+        $p = array_merge(self::addFilterToParams($params), $params);
+
+        $data = Search::getDatas(iisCostReport::class, $p, $forcedisplay);
         //var_dump($data['data']['rows']);
         $row_num = 1;
         foreach($data['data']['rows'] as $ResultKey => $ResultRow){
@@ -295,7 +311,6 @@ class iisCostReport extends CommonDBTM
                     $colName = $col["name"];
                     $colkey = "{$col['itemtype']}_{$col['id']}";
                     echo $colName."->". $colkey . "->";
-                    //print_r($ResultRow);
                     
                     if($colkey=='GlpiPlugin\Iistools\iisCostReport_10'){
                         $Value=Search::showItem(3,
@@ -312,7 +327,6 @@ class iisCostReport extends CommonDBTM
                     }
                     
                     echo $Value; 
-                    //echo "-------";print_r($ResultRow[$colkey]);
                     echo "<br>";
                 
                 }
@@ -335,7 +349,7 @@ class iisCostReport extends CommonDBTM
         $html = "teszt";
         return $html;
      }
-
+/*
      static function cardDataProvider(array $params = []) {
         $default_params = [
            'label' => null,
@@ -355,12 +369,15 @@ class iisCostReport extends CommonDBTM
            'legend'=> false,
         ];
      }
-
+*/
     static function TaskCostValue(array $params = []) {
         $card_data=array();
         $sum_value=array();
         $forcedisplay=array(1, 2, 3, 31, 32, 4, 5, 6, 7, 8, 9, 10, 11, 12,13); //all fields
-        $data = Search::getDatas(iisCostReport::class, $params, $forcedisplay);
+
+        $p = array_merge(self::addFilterToParams($params), $params);
+
+        $data = Search::getDatas(iisCostReport::class, $p, $forcedisplay);
 
         foreach($data['data']['rows'] as $ResultKey => $ResultRow){
             $sum_value[$ResultRow['GlpiPlugin\Iistools\iisCostReport_4'][0]['name']]['timevalue']+=$ResultRow['GlpiPlugin\Iistools\iisCostReport_10'][0]['name'];
@@ -376,7 +393,7 @@ class iisCostReport extends CommonDBTM
         return $card_data;
     }
 
-     static function cardDataProvider2(array $params = []) {
+     static function cardDataProvider_TaskCost(array $params = []) {
         $default_params = [
            'label' => null,
            'icon'  => "fas ",
