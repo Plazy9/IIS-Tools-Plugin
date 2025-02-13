@@ -4,9 +4,14 @@ use GlpiPlugin\Iistools\iisCars;
 use GlpiPlugin\Iistools\iisCameras;
 use GlpiPlugin\Iistools\iisMachineries;
 use GlpiPlugin\Iistools\iisCostReport;
+use GlpiPlugin\Iistools\iisBarcode;
 
 function plugin_iistools_install() {
     global $DB;
+
+    if (!file_exists(GLPI_PLUGIN_DOC_DIR."/iistools")) {
+        mkdir(GLPI_PLUGIN_DOC_DIR."/iistools");
+     }
 
     $migration = new Migration(Plugin::getInfo('iistools', 'version'));
     
@@ -301,6 +306,21 @@ function plugin_iistools_uninstall() {
     $DB->query("DELETE FROM `glpi_displaypreferences` WHERE `itemtype` LIKE '%Iistools%';");
 
     return true;
+}
+
+function plugin_iistools_MassiveActions($itemtype){
+
+    $actions = [];
+    switch ($itemtype) {
+        case 'Computer' :
+            $myclass      = iisBarcode::class;
+            $action_key   = 'Generate';
+            $action_label = __("XXX Print barcode", 'Generate');
+            $actions[$myclass.MassiveAction::CLASS_ACTION_SEPARATOR.$action_key] = $action_label;
+
+            break;
+    }
+    return $actions;
 }
 
 function plugin_iistools_giveItem($type, $ID, $data, $num) {

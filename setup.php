@@ -7,6 +7,7 @@ use GlpiPlugin\Iistools\iisMachineries;
 use GlpiPlugin\Iistools\iisCostReport;
 
 
+
 define('PLUGIN_IISTOOLS_VERSION', '0.0.3');
 define('PLUGIN_IISTOOLS_MIN_GLPI', '10.0.0');
 define('PLUGIN_IISTOOLS_MAX_GLPI', '10.0.99');
@@ -19,18 +20,20 @@ function plugin_init_iistools() {
 
     $PLUGIN_HOOKS['item_add']['iistools'] = ['Ticket'];
     $PLUGIN_HOOKS['post_init']['iistools'] = 'plugin_iistools_postinit';
+    $PLUGIN_HOOKS['use_massive_action']['iistools'] = 1;
     
 
     $PLUGIN_HOOKS[Hooks::PRE_ITEM_ADD]['iistools'] = [
         iisCars::class  => 'plugin_iistools_iisCars_validate',
      ];
-
+ 
     $PLUGIN_HOOKS[Hooks::PRE_ITEM_UPDATE]['iistools'] = [
         iisCars::class  => 'plugin_iistools_iisCars_validate',
      ];
 
     Plugin::registerClass('PluginIistoolsProfile', ['addtabon' => 'Profile']);
     Plugin::registerClass('PluginIisToolsIisCars', ['addtabon' => 'Ticket']);
+    
 
     $CFG_GLPI["ticket_types"][] = iisCars::class;
     $CFG_GLPI["ticket_types"][] = iisMachineries::class;

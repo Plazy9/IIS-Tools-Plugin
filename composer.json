@@ -1,0 +1,17 @@
+{
+    "name": "plazy/iistools",
+    "autoload": {
+        "psr-4": {
+            "Plazy\\Iistools\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Plazy",
+            "email": "plazy9@gmail.com"
+        }
+    ],
+    "require": {
+        "endroid/qr-code": "^6.0"
+    }
+}
