@@ -10,7 +10,7 @@ use Session;
 use TCPDF;
 use Toolbox;
 
-require '/var/www/html/glpi/plugins/iistools/vendor/autoload.php';
+require GLPI_ROOT.'/plugins/iistools/vendor/autoload.php';
 
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
@@ -24,7 +24,7 @@ class iisBarcode extends CommonDBTM {
       
       switch ($ma->getAction()) {
         case 'Generate':
-        echo Html::submit(__('Create barcode plazy', 'iistools'), ['value' => 'create']);
+        echo Html::submit(__('Create PDF', 'iistools'), ['value' => 'create']);
         return true;
       }
       return parent::showMassiveActionsSubForm($ma);
@@ -144,6 +144,6 @@ class iisBarcode extends CommonDBTM {
 
     public static function getTypeName($nb = 0)
     {
-        return __('IIS Tools Barcode', 'iistools', $nb);
+        return __('IIS Tools QR', 'iistools', $nb);
     }
 }
