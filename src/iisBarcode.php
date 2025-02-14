@@ -98,10 +98,12 @@ class iisBarcode extends CommonDBTM {
 
                     
                     $html ="<div style=\"text-align:center;\">".$computer['name']."";
-                    $html.="<br><img src=\"".$QRCodeFile."\" alt=\"".$computer['name']."\" width=\"150\" /></div>";
+                    //$html.="<br>";
+                    //$html.="<img src=\"".$QRCodeFile."\" alt=\"".$computer['name']."\" width=\"150\" />";
+                    $html.="</div>";
                     // Print text using writeHTMLCell()
                     $pdf->writeHTMLCell(60, 60, $x+PDF_MARGIN_LEFT, $y+PDF_MARGIN_TOP, $html, 1, 1, 0, true, 'center', false);
-                    //$pdf->Image($QRCodeFile, 15, 15, 50, 50, 'PNG', $link, '', true, 150, '', false, false, 1, false, false, false);
+                    $pdf->Image($QRCodeFile, $x+PDF_MARGIN_LEFT+10, $y+PDF_MARGIN_TOP+15, 40, 40, 'PNG', $link, '', true, 150, '', false, false, 1, false, false, false);
 
                     if($ComputerIndex==2){
                       $ComputerIndex=0;
