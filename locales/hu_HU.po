@@ -318,7 +318,7 @@ msgstr "IIS bejelentés kts."
 
 #--------------------------------
 msgid "IIS QRcode Print"
-msgstr "QR kód nyomtatás"
+msgstr "IIS QR kód nyomtatás"
 
 msgid "Create PDF"
 msgstr "PDF generálás"
