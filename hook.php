@@ -315,7 +315,7 @@ function plugin_iistools_MassiveActions($itemtype){
         case 'Computer' :
             $myclass      = iisBarcode::class;
             $action_key   = 'Generate';
-            $action_label = __("XXX Print barcode", 'Generate');
+            $action_label = __("IIS QRcode Print", 'iistools');
             $actions[$myclass.MassiveAction::CLASS_ACTION_SEPARATOR.$action_key] = $action_label;
 
             break;

@@ -316,3 +316,21 @@ msgstr "IIS bejelentés kts. jelentés"
 msgid "IIS Cost report"
 msgstr "IIS bejelentés kts."
 
+#--------------------------------
+msgid "IIS QRcode Print"
+msgstr "QR kód nyomtatás"
+
+msgid "Create PDF"
+msgstr "PDF generálás"
+
+msgid "Computers QR code"
+msgstr "Számítógép QR lista"
+
+msgid "IIS Computers catalog"
+msgstr "Számítógép lista"
+
+msgid "PDF Download"
+msgstr "PDF megtekintés"
+
+msgid "IIS Tools QR"
+msgstr "IIS Tools QR"

@@ -48,7 +48,7 @@ class iisBarcode extends CommonDBTM {
                   $pdf->SetCreator(PDF_CREATOR);
                   $pdf->SetAuthor('IIS');
                   $pdf->SetTitle(__('Computers QR code', 'iistools'));
-                  $pdf->SetSubject('IIS Computers catalog');
+                  $pdf->SetSubject(__('IIS Computers catalog', 'iistools'));
                   $pdf->SetKeywords('IIS, Computers, QR');
 
                   // set default header data
