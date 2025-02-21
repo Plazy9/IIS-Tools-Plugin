@@ -201,13 +201,18 @@ class iisCostReport extends CommonDBTM
 
     static function dashboardTypes() {
         return [
-            /*
-           'example2' => [
-              'label'    => __("Plazy dashboard type1"),
+            
+           'example_static_grafana' => [
+              'label'    => __("IIS Grafana type", 'IIS grafana diagramok'),
               'function' => iisCostReport::class . "::cardWidget",
               'image'    => "",
            ],
-           */
+           'example_static_grafana2' => [
+              'label'    => __("IIS Grafana type PNG", 'IIS grafana PNG diagramok'),
+              'function' => iisCostReport::class . "::cardWidget",
+              'image'    => "",
+           ],
+           
            'example_static' => [
               'label'    => __("Plazy dashboard type2"),
               'function' => iisCostReport::class . "::cardWidgetWithoutProvider",
@@ -222,6 +227,7 @@ class iisCostReport extends CommonDBTM
         if (is_null($cards)) {
            $cards = [];
         }
+
         $new_cards =  [
             /*
            'plugin_example_card' => [
@@ -236,15 +242,23 @@ class iisCostReport extends CommonDBTM
               'provider'     => iisCostReport::class . "::cardDataProvider_TaskCost",
            ],
            
+           'plugin_example_card_without_provider2' => [
+              'widgettype'   => ["example_static_grafana"],
+              'label'        => __("IIS Grafana Widget", 'iistools'),
+           ],
+           'iistools_card_without_provider_garafana_png' => [
+              'widgettype'   => ["example_static_grafana2"],
+              'label'        => __("IIS Grafana Widget PNG", 'iistools'),
+           ],
            'plugin_example_card_without_provider' => [
               'widgettype'   => ["example_static"],
-              'label'        => __("IIS Widget"),
+              'label'        => __("IIS Widget", 'iistools'),
            ],
         ];
   
         return array_merge($cards, $new_cards);
      }
-     /*
+     
      static function cardWidget(array $params = []) {
         $default = [
            'data'  => [],
@@ -254,22 +268,50 @@ class iisCostReport extends CommonDBTM
            // without it, your card will be transparent
            'color' => '',
         ];
-  
+        if($_SERVER["SERVER_NAME"]=="192.168.1.6"){
+            //$iFrameURL="http://localhost:3000/public-dashboards/c1403a4c32fc47b09c0da012dbb14ef5";
+            if($params['card_id']!='iistools_card_without_provider_garafana_png'){
+                $iFrameURL="http://localhost:3000/goto/c9hj6P5HR?orgId=1";
+            }else{
+                $iFrameURL="http://192.168.1.6:3000/render/d-solo/de4qoyw807zlsa?orgId=1&panelId=1&theme=light";
+            }
+        }else{
+            if($params['card_id']!='iistools_card_without_provider_garafana_png'){
+                //$iFrameURL="https://172.16.27.31/grfn/d/bedq6j8dbt2bkd/iis-glpi-dev?orgId=1&from=now-6M&to=now&timezone=browser";
+                $iFrameURL="https://172.16.27.31/grfn/goto/LHZf6EcHg?orgId=1";
+            }else{
+                $iFrameURL="http://172.16.27.31/grfn/render/d-solo/bedq6j8dbt2bkd?orgId=1&panelId=1&theme=light";
+            }
+            
+        }
         $p = array_merge($default, $params);
-  
+  /*
+        https://172.16.27.31/grfn/d/bedq6j8dbt2bkd/iis-glpi-dev?orgId=1&from=now-6M&to=now&timezone=browser
+
+        $url='http://192.168.1.6:3000/render/d-solo/de4qoyw807zlsa?orgId=1&from=now-6M&to=now&timezone=browser&theme=light';
+        $url="http://192.168.1.6:3000/render/d-solo/render/d-solo/de4qoyw807zlsa?orgId=1&panelId=1";
+        //$url="http://localhost:3000/goto/pItOEfcHg?orgId=1";
+        echo '<iframe src="http://localhost:3000/render/d-solo/de4qoyw807zlsa?orgId=1&panelId=1&theme=light" width="100%" height="600"></iframe>';
+        echo '<iframe src="http://localhost:3000/public-dashboards/c1403a4c32fc47b09c0da012dbb14ef5" width="100%" height="600"></iframe>';
+
+    */
+    
         // you need to encapsulate your html in div.card to benefit core style
         $html = "<div class='card' style='background-color: {$p["color"]};'>";
+        $html .= '<iframe src="'.$iFrameURL.'" width="100%" height="600"></iframe>';
+        /*
         $html.= "<h2>XXX{$p['title']}</h2>";
         $html.= "SSS<ul>";
         foreach ($p['data'] as $line) {
            $html.= "<li>CCC $line</li>";
         }
         $html.= "</ul>";
+        */
         $html.= "</div>";
   
         return $html;
      }
-*/
+
      static function addFilterToParams($params){
         $defaultparams=array();
         if(isset($params['apply_filters']['dates'])){
