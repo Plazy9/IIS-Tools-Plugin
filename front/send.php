@@ -38,6 +38,9 @@ if (isset($_GET['file'])) {
          case "pdf":
             header("Content-type: application/pdf");
             break;
+         case "xlsx":
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            break;
       }
 
       $f=fopen($file, "r");

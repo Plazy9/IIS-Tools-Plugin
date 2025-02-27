@@ -15,6 +15,10 @@ require GLPI_ROOT.'/plugins/iistools/vendor/autoload.php';
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
+
 
 class iisBarcode extends CommonDBTM {
     public static $rightname = 'plugin_iistoolsCars';
@@ -26,12 +30,12 @@ class iisBarcode extends CommonDBTM {
         case 'Generate':
           echo Html::submit(__('Create PDF', 'iistools'), ['value' => 'create']);
           return true;
-          case 'GenerateCSV':
-            echo Html::submit(__('Create CSV', 'iistools'), ['value' => 'create']);
-            return true;
-            case 'GenerateXLS':
-              echo Html::submit(__('Create XLS', 'iistools'), ['value' => 'create']);
-              return true;
+        case 'GenerateCSV':
+          echo Html::submit(__('Create CSV', 'iistools'), ['value' => 'create']);
+          return true;
+        case 'GenerateXLS':
+          echo Html::submit(__('Create XLS', 'iistools'), ['value' => 'create']);
+          return true;
       }
       return parent::showMassiveActionsSubForm($ma);
     }
@@ -80,6 +84,47 @@ class iisBarcode extends CommonDBTM {
               $ma->itemDone($item->getType(), 0, MassiveAction::ACTION_OK);
               return;
             case 'GenerateXLS' :
+              $type=Computer::class;
+              $xlsxFile = $_SESSION['glpiID'].'_'.$type.'.xlsx';
+              $testFile=self::$docsPath.$xlsxFile;
+
+              $spreadsheet = new Spreadsheet();
+              $sheet = $spreadsheet->getActiveSheet();  
+
+              $sheet->setCellValue('A1', __('ID', 'iistools'));
+              $sheet->setCellValue('B1', __('Name', 'iistools'));
+              $sheet->setCellValue('C1', __('QR Code', 'iistools'));
+
+              $row = 2;
+              foreach($computers as $computer){
+                $sheet->setCellValue('A' . $row, $computer['id']); // ID
+                $sheet->setCellValue('B' . $row, $computer['name']); // Name
+
+                $QRCodeFile=self::create($computer['link']);
+                
+                $qrCode = new Drawing();
+                $qrCode->setName('QR Code');
+                $qrCode->setDescription('QR Code for ' . $computer['link']);
+                $qrCode->setPath($QRCodeFile); 
+                $qrCode->setHeight(100); 
+                $qrCode->setCoordinates('C' . $row); 
+
+                $qrCode->setWorksheet($sheet);
+                $row++;
+              }
+
+              $writer = new Xlsx($spreadsheet);
+              $writer->save($testFile);
+
+              if (file_exists($testFile)) {
+                $msg = "<a href='".Plugin::getWebDir('iistools').'/front/send.php?file='.urlencode($xlsxFile)
+                ."'>".__('XLSX Download', 'iistools')."</a>";
+                Session::addMessageAfterRedirect($msg);
+              }else{
+                die("A fájl nem létezik -> ".$testFile);
+              }
+
+              $ma->itemDone($item->getType(), 0, MassiveAction::ACTION_OK);
               return;    
             case 'Generate' :
               $pdf = new TCPDF('portrait', 'mm', 'A4', true, 'UTF-8', false);
