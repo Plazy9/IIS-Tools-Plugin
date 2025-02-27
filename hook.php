@@ -315,7 +315,15 @@ function plugin_iistools_MassiveActions($itemtype){
         case 'Computer' :
             $myclass      = iisBarcode::class;
             $action_key   = 'Generate';
-            $action_label = __("IIS QRcode Print", 'iistools');
+            $action_label = __("IIS QRcode Print PDF", 'iistools');
+            $actions[$myclass.MassiveAction::CLASS_ACTION_SEPARATOR.$action_key] = $action_label;
+
+            $action_key   = 'GenerateCSV';
+            $action_label = __("IIS QRcode Print CSV", 'iistools');
+            $actions[$myclass.MassiveAction::CLASS_ACTION_SEPARATOR.$action_key] = $action_label;
+
+            $action_key   = 'GenerateXLS';
+            $action_label = __("IIS QRcode Print XLS", 'iistools');
             $actions[$myclass.MassiveAction::CLASS_ACTION_SEPARATOR.$action_key] = $action_label;
 
             break;

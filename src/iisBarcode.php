@@ -24,25 +24,38 @@ class iisBarcode extends CommonDBTM {
       
       switch ($ma->getAction()) {
         case 'Generate':
-        echo Html::submit(__('Create PDF', 'iistools'), ['value' => 'create']);
-        return true;
+          echo Html::submit(__('Create PDF', 'iistools'), ['value' => 'create']);
+          return true;
+          case 'GenerateCSV':
+            echo Html::submit(__('Create CSV', 'iistools'), ['value' => 'create']);
+            return true;
+            case 'GenerateXLS':
+              echo Html::submit(__('Create XLS', 'iistools'), ['value' => 'create']);
+              return true;
       }
       return parent::showMassiveActionsSubForm($ma);
     }
 
     static function processMassiveActionsForOneItemtype(MassiveAction $ma, CommonDBTM $item, array $ids) {
       global $CFG_GLPI;
-          switch ($ma->getAction()) {
-            case 'Generate' :
-                $computers = [];
+      $computers = [];
 
-                foreach ($ids as $key) {
-                    $computer = [];
-                    $item->getFromDB($key);
-                    $computer['id'] = $item->getField('id');
-                    $computer['name'] = $item->getField('name');
-                    $computers[] = $computer;
-                }
+      foreach ($ids as $key) {
+          $computer = [];
+          $item->getFromDB($key);
+          $computer['id'] = $item->getField('id');
+          $computer['name'] = $item->getField('name');
+          $computers[] = $computer;
+      }
+      
+      
+      switch ($ma->getAction()) {
+            case 'GenerateCSV' :
+              return;
+            case 'GenerateXLS' :
+              return;    
+            case 'Generate' :
+                
                   $pdf = new TCPDF('portrait', 'mm', 'A4', true, 'UTF-8', false);
                 /*---------------pdf-------- */
                   $pdf->SetCreator(PDF_CREATOR);
@@ -84,7 +97,6 @@ class iisBarcode extends CommonDBTM {
                   $ComputerIndex=0;
                   foreach($computers as $computer){
                     $x=$ComputerIndex*60;
-                    
                     
                     $link = Toolbox::formatOutputWebLink($CFG_GLPI["url_base"].Toolbox::getItemTypeFormURL(Computer::class, false)."?id=".$computer['id']);
                     $QRCodeFile=self::create($link);
