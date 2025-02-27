@@ -100,7 +100,7 @@ class iisBarcode extends CommonDBTM {
                 $sheet->setCellValue('A' . $row, $computer['id']); // ID
                 $sheet->setCellValue('B' . $row, $computer['name']); // Name
 
-                $QRCodeFile=self::create($computer['link']);
+                $QRCodeFile=self::create($computer['id'], $computer['link']);
                 
                 $qrCode = new Drawing();
                 $qrCode->setName('QR Code');
@@ -115,7 +115,8 @@ class iisBarcode extends CommonDBTM {
 
               $writer = new Xlsx($spreadsheet);
               $writer->save($testFile);
-
+              self::deleteTemporaryPNGs();
+              
               if (file_exists($testFile)) {
                 $msg = "<a href='".Plugin::getWebDir('iistools').'/front/send.php?file='.urlencode($xlsxFile)
                 ."'>".__('XLSX Download', 'iistools')."</a>";
@@ -171,17 +172,9 @@ class iisBarcode extends CommonDBTM {
                 
                 //$link = Toolbox::formatOutputWebLink($CFG_GLPI["url_base"].Toolbox::getItemTypeFormURL(Computer::class, false)."?id=".$computer['id']);
                 $link = $computer['link'];
-                $QRCodeFile=self::create($link);
+                $QRCodeFile=self::create($computer['id'], $link);
                 
-                $linkHTML = "<a href='".$link."'>";
-                $linkHTML .= $computer['name'];
-                if ($_SESSION["glpiis_ids_visible"] || empty($computer['name'])) {
-                  $linkHTML .= " (".$computer["id"].")";
-                }
-                $linkHTML .= "</a>";
-
-                
-                $html ="<div style=\"text-align:center;\">".$computer['name']."";
+                $html ="<div style=\"text-align:center;\">".$computer['id']." - ". $computer['name']."";
                 //$html.="<br>";
                 //$html.="<img src=\"".$QRCodeFile."\" alt=\"".$computer['name']."\" width=\"150\" />";
                 $html.="</div>";
@@ -202,7 +195,7 @@ class iisBarcode extends CommonDBTM {
               $type=Computer::class;
               $pdfFile = $_SESSION['glpiID'].'_'.$type.'.pdf';
               $pdf->Output(self::$docsPath.$pdfFile, 'FI');
-              
+              self::deleteTemporaryPNGs();
               //file_put_contents(self::$docsPath.$pdfFile, $file);
               $testFile=self::$docsPath.$pdfFile;
 
@@ -220,8 +213,19 @@ class iisBarcode extends CommonDBTM {
         return;
     }
 
-    static function create($p_code, $p_type= 'QRcode', $p_ext = 'png') {
-        $file = self::$docsPath.$_SESSION['glpiID']."_qrcode.png";  
+    static function deleteTemporaryPNGs() {
+      $tempDir = self::$docsPath;
+      $tempFiles = glob($tempDir . $_SESSION['glpiID'].'_*.png'); 
+      foreach ($tempFiles as $file) {
+          if (file_exists($file)) {
+              unlink($file); // Fájl törlése
+          }
+      }
+      return $file;
+    }
+
+    static function create($item_id, $p_code, $p_type= 'QRcode', $p_ext = 'png') {
+        $file = self::$docsPath.$_SESSION['glpiID']."_".$item_id."_qrcode.png";  
         $qrCode = new QrCode($p_code); 
         $writer = new PngWriter();
         $writer->write($qrCode)->saveToFile($file);
