@@ -28,7 +28,17 @@ if (isset($_GET['file'])) {
       //header('Pragma: no-cache');
       header('Cache-control: private, must-revalidate'); /// IE BUG + SSL
       header("Content-disposition: filename=\"$filename\"");
-      header("Content-type: application/pdf");
+      
+      $lastDotPosition = strrpos($filename, '.');
+      $fileExtension = substr($filename, $lastDotPosition+1);
+      switch (strtolower($fileExtension)){
+         case "csv":
+            header('Content-Type: text/csv');
+            break;
+         case "pdf":
+            header("Content-type: application/pdf");
+            break;
+      }
 
       $f=fopen($file, "r");
 

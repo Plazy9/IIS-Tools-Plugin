@@ -45,102 +45,129 @@ class iisBarcode extends CommonDBTM {
           $item->getFromDB($key);
           $computer['id'] = $item->getField('id');
           $computer['name'] = $item->getField('name');
+          $link = Toolbox::formatOutputWebLink($CFG_GLPI["url_base"].Toolbox::getItemTypeFormURL(Computer::class, false)."?id=".$item->getField('id'));
+          $computer['link']=$link;
           $computers[] = $computer;
       }
       
       
       switch ($ma->getAction()) {
             case 'GenerateCSV' :
+              $type=Computer::class;
+              $csvFile = $_SESSION['glpiID'].'_'.$type.'.csv';
+              $testFile=self::$docsPath.$csvFile;
+
+              $file = fopen($testFile, 'w');
+              fwrite($file, "\xEF\xBB\xBF");
+              fputcsv($file, 
+                      array(__('ID', 'iistools'),
+                            __('Name', 'iistools'),
+                            __('Link', 'iistools')),
+                      ";");
+              foreach ($computers as $computer) {
+                fputcsv($file, array( $computer['id'],  $computer['name'], $computer['link']), ";");
+              }
+              fclose($file);
+
+              if (file_exists($testFile)) {
+                $msg = "<a href='".Plugin::getWebDir('iistools').'/front/send.php?file='.urlencode($csvFile)
+                ."'>".__('CSV Download', 'iistools')."</a>";
+                Session::addMessageAfterRedirect($msg);
+              }else{
+                die("A fájl nem létezik -> ".$testFile);
+              }
+
+              $ma->itemDone($item->getType(), 0, MassiveAction::ACTION_OK);
               return;
             case 'GenerateXLS' :
               return;    
             case 'Generate' :
+              $pdf = new TCPDF('portrait', 'mm', 'A4', true, 'UTF-8', false);
+              /*---------------pdf-------- */
+              $pdf->SetCreator(PDF_CREATOR);
+              $pdf->SetAuthor('IIS');
+              $pdf->SetTitle(__('Computers QR code', 'iistools'));
+              $pdf->SetSubject(__('IIS Computers catalog', 'iistools'));
+              $pdf->SetKeywords('IIS, Computers, QR');
+
+              // set default header data
+              //$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' 001', PDF_HEADER_STRING, array(0,64,255), array(0,64,128));
+              $pdf->setFooterData(array(0,64,0), array(0,64,128));
+
+              // set header and footer fonts
+              $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+              $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+              // set default monospaced font
+              $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+              // set margins
+              //$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+              $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+              $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+              $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+              // set auto page breaks
+              $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+              // set image scale factor
+              $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+              $pdf->setFontSubsetting(true);
+              $pdf->SetFont('dejavusans', '', 10, '', true);
+              $pdf->AddPage();
+              $pdf->setTextShadow(array('enabled'=>true, 'depth_w'=>0.2, 'depth_h'=>0.2, 'color'=>array(196,196,196), 'opacity'=>1, 'blend_mode'=>'Normal'));
+
+              $x=0;
+              $y=0;
+              $ComputerIndex=0;
+              foreach($computers as $computer){
+                $x=$ComputerIndex*60;
                 
-                  $pdf = new TCPDF('portrait', 'mm', 'A4', true, 'UTF-8', false);
-                /*---------------pdf-------- */
-                  $pdf->SetCreator(PDF_CREATOR);
-                  $pdf->SetAuthor('IIS');
-                  $pdf->SetTitle(__('Computers QR code', 'iistools'));
-                  $pdf->SetSubject(__('IIS Computers catalog', 'iistools'));
-                  $pdf->SetKeywords('IIS, Computers, QR');
-
-                  // set default header data
-                  //$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' 001', PDF_HEADER_STRING, array(0,64,255), array(0,64,128));
-                  $pdf->setFooterData(array(0,64,0), array(0,64,128));
-
-                  // set header and footer fonts
-                  $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
-                  $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
-
-                  // set default monospaced font
-                  $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
-
-                  // set margins
-                  //$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-                  $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-                  $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
-                  $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
-
-                  // set auto page breaks
-                  $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-
-                  // set image scale factor
-                  $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
-
-                  $pdf->setFontSubsetting(true);
-                  $pdf->SetFont('dejavusans', '', 10, '', true);
-                  $pdf->AddPage();
-                  $pdf->setTextShadow(array('enabled'=>true, 'depth_w'=>0.2, 'depth_h'=>0.2, 'color'=>array(196,196,196), 'opacity'=>1, 'blend_mode'=>'Normal'));
-
-                  $x=0;
-                  $y=0;
-                  $ComputerIndex=0;
-                  foreach($computers as $computer){
-                    $x=$ComputerIndex*60;
-                    
-                    $link = Toolbox::formatOutputWebLink($CFG_GLPI["url_base"].Toolbox::getItemTypeFormURL(Computer::class, false)."?id=".$computer['id']);
-                    $QRCodeFile=self::create($link);
-                    
-                    $linkHTML = "<a href='".$link."'>";
-                    $linkHTML .= $computer['name'];
-                    if ($_SESSION["glpiis_ids_visible"] || empty($computer['name'])) {
-                      $linkHTML .= " (".$computer["id"].")";
-                    }
-                    $linkHTML .= "</a>";
-
-                    
-                    $html ="<div style=\"text-align:center;\">".$computer['name']."";
-                    //$html.="<br>";
-                    //$html.="<img src=\"".$QRCodeFile."\" alt=\"".$computer['name']."\" width=\"150\" />";
-                    $html.="</div>";
-                    // Print text using writeHTMLCell()
-                    $pdf->writeHTMLCell(60, 60, $x+PDF_MARGIN_LEFT, $y+PDF_MARGIN_TOP, $html, 1, 1, 0, true, 'center', false);
-                    $pdf->Image($QRCodeFile, $x+PDF_MARGIN_LEFT+10, $y+PDF_MARGIN_TOP+15, 40, 40, 'PNG', $link, '', true, 150, '', false, false, 1, false, false, false);
-
-                    if($ComputerIndex==2){
-                      $ComputerIndex=0;
-                      $y+=60;
-                    }else{
-                      $ComputerIndex++;
-                    }
-                  }
-
-                /*---------------pdf end........... */
-
-                $type=Computer::class;
-                $pdfFile = $_SESSION['glpiID'].'_'.$type.'.pdf';
-                $pdf->Output(self::$docsPath.$pdfFile, 'FI');
+                //$link = Toolbox::formatOutputWebLink($CFG_GLPI["url_base"].Toolbox::getItemTypeFormURL(Computer::class, false)."?id=".$computer['id']);
+                $link = $computer['link'];
+                $QRCodeFile=self::create($link);
                 
-                //file_put_contents(self::$docsPath.$pdfFile, $file);
-                $testFile=self::$docsPath.$pdfFile;
-
-                if (file_exists($testFile)) {
-                  $msg = "<a href='".Plugin::getWebDir('iistools').'/front/send.php?file='.urlencode($pdfFile)
-                  ."'>".__('PDF Download', 'iistools')."</a>";
-                  Session::addMessageAfterRedirect($msg);
-                }else{
-                  die("A fájl nem létezik -> ".$testFile);
+                $linkHTML = "<a href='".$link."'>";
+                $linkHTML .= $computer['name'];
+                if ($_SESSION["glpiis_ids_visible"] || empty($computer['name'])) {
+                  $linkHTML .= " (".$computer["id"].")";
                 }
+                $linkHTML .= "</a>";
+
+                
+                $html ="<div style=\"text-align:center;\">".$computer['name']."";
+                //$html.="<br>";
+                //$html.="<img src=\"".$QRCodeFile."\" alt=\"".$computer['name']."\" width=\"150\" />";
+                $html.="</div>";
+                // Print text using writeHTMLCell()
+                $pdf->writeHTMLCell(60, 60, $x+PDF_MARGIN_LEFT, $y+PDF_MARGIN_TOP, $html, 1, 1, 0, true, 'center', false);
+                $pdf->Image($QRCodeFile, $x+PDF_MARGIN_LEFT+10, $y+PDF_MARGIN_TOP+15, 40, 40, 'PNG', $link, '', true, 150, '', false, false, 1, false, false, false);
+
+                if($ComputerIndex==2){
+                  $ComputerIndex=0;
+                  $y+=60;
+                }else{
+                  $ComputerIndex++;
+                }
+              }
+
+              /*---------------pdf end........... */
+
+              $type=Computer::class;
+              $pdfFile = $_SESSION['glpiID'].'_'.$type.'.pdf';
+              $pdf->Output(self::$docsPath.$pdfFile, 'FI');
+              
+              //file_put_contents(self::$docsPath.$pdfFile, $file);
+              $testFile=self::$docsPath.$pdfFile;
+
+              if (file_exists($testFile)) {
+                $msg = "<a href='".Plugin::getWebDir('iistools').'/front/send.php?file='.urlencode($pdfFile)
+                ."'>".__('PDF Download', 'iistools')."</a>";
+                Session::addMessageAfterRedirect($msg);
+              }else{
+                die("A fájl nem létezik -> ".$testFile);
+              }
 
               $ma->itemDone($item->getType(), 0, MassiveAction::ACTION_OK);
               return;
