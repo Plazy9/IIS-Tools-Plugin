@@ -6,6 +6,7 @@ use GlpiPlugin\Iistools\iisCameras;
 use GlpiPlugin\Iistools\iisMachineries;
 use GlpiPlugin\Iistools\iisCostReport;
 
+use TicketTask;
 
 
 define('PLUGIN_IISTOOLS_VERSION', '0.0.3');
@@ -18,10 +19,14 @@ function plugin_init_iistools() {
     //print_r($PLUGIN_HOOKS);
     $PLUGIN_HOOKS['csrf_compliant']['iistools'] = true;
 
-    $PLUGIN_HOOKS['item_add']['iistools'] = ['Ticket'];
+    //$PLUGIN_HOOKS['item_add']['iistools'] = ['Ticket'];
     $PLUGIN_HOOKS['post_init']['iistools'] = 'plugin_iistools_postinit';
     $PLUGIN_HOOKS['use_massive_action']['iistools'] = 1;
     
+
+    $PLUGIN_HOOKS[Hooks::POST_ITEM_FORM]['iistools'] =  'plugin_iistools_taskForm';
+    
+    $PLUGIN_HOOKS[Hooks::ITEM_ADD]['iistools']   = [TicketTask::class =>'plugin_iistools_itemAdd'];
 
     $PLUGIN_HOOKS[Hooks::PRE_ITEM_ADD]['iistools'] = [
         iisCars::class  => 'plugin_iistools_iisCars_validate',
@@ -29,6 +34,7 @@ function plugin_init_iistools() {
  
     $PLUGIN_HOOKS[Hooks::PRE_ITEM_UPDATE]['iistools'] = [
         iisCars::class  => 'plugin_iistools_iisCars_validate',
+        TicketTask::class =>'plugin_iistools_itemAdd'
      ];
 
     Plugin::registerClass('PluginIistoolsProfile', ['addtabon' => 'Profile']);

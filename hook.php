@@ -11,13 +11,14 @@ function plugin_iistools_install() {
 
     if (!file_exists(GLPI_PLUGIN_DOC_DIR."/iistools")) {
         mkdir(GLPI_PLUGIN_DOC_DIR."/iistools");
-     }
+    }
 
     $migration = new Migration(Plugin::getInfo('iistools', 'version'));
     
     $table_name_car= "glpi_plugin_iistools_iiscars";
     $table_name_machine= "glpi_plugin_iistools_iismachineries";
     $table_name_camera= "glpi_plugin_iistools_iiscameras";
+    $table_name_taskfield = "glpi_plugin_iistools_tasks";
 
     $default_charset = DBConnection::getDefaultCharset();
     $default_collation = DBConnection::getDefaultCollation();
@@ -144,6 +145,21 @@ function plugin_iistools_install() {
         "glpi_profilerights",
         ["name" => iisCars::$rightname]
     ) > 0;
+
+    //add table for extra fields (task)
+    
+    if (!$DB->tableExists($table_name_taskfield)) {
+        $query = "CREATE TABLE `$table_name_taskfield` (
+                    `id` INT(11) NOT NULL AUTO_INCREMENT,
+                    `ticket_task_id` INT(11) NOT NULL,
+                    `duedate` DATE DEFAULT NULL,
+                    PRIMARY KEY (`id`),
+                    UNIQUE KEY (`ticket_task_id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
+
+        $DB->query($query) or die("Error creating $table_name_taskfield table: " . $DB->error());
+    }
+
 
    // Add the same standard rights on alerts as the rights already granted on
    // public reminders
@@ -274,7 +290,7 @@ function plugin_iistools_install() {
 
         $DB->query( new QueryExpression($query));
     }
-
+    
 
     $migration->executeMigration();
 
@@ -412,11 +428,403 @@ function plugin_iistools_addDefaultJoin($type, $ref_table, &$already_link_tables
                    "LEFT JOIN glpi_ticketcosts as iis_ticketcost_table ON (SUBSTRING_INDEX(iis_ticketcost_table.name , '_', 1)=glpi_tickettasks.id)";
     }
     return "";
-    }
+}
     
- function plugin_iistools_AssignToTicket($types) {
-    $types[iisCars::class] = iisCars::getTypeName();
-    $types[iisMachineries::class] = iisMachineries::getTypeName();
-    $types[iisCameras::class] = iisCameras::getTypeName();
-    return $types;
- }
+    function plugin_iistools_AssignToTicket($types) {
+        $types[iisCars::class] = iisCars::getTypeName();
+        $types[iisMachineries::class] = iisMachineries::getTypeName();
+        $types[iisCameras::class] = iisCameras::getTypeName();
+        return $types;
+    }
+
+    function plugin_iistools_taskForm($item, $options = []) {
+        global $DB;
+
+        if (!$item['item'] instanceof TicketTask ) {
+            return;
+        }
+
+        $task = $item['item'];
+        //$ticket_id = $task->fields['tickets_id'];
+        $ticket_task_id = $task->fields['id'];
+        $query = "SELECT duedate FROM glpi_plugin_iistools_tasks WHERE ticket_task_id = $ticket_task_id";
+        $result = $DB->query($query);
+        $duedate = ($result && $DB->numrows($result) > 0) ? $DB->result($result, 0, 'duedate') : '';
+
+        echo '
+
+                        <div class="form-field row col-12  mb-2">
+                            <label for="plugin_iistools_duedate">'.__("We are done date:", 'iistools').'</label>
+                            <input type="date" name="plugin_iistools_duedate" id="plugin_iistools_duedate" class="form-control" value="'.$duedate.'">
+                        </div>
+        ';
+    }
+
+    function plugin_iistools_itemAdd($item) {
+        global $DB;
+        $ticket_task_id = $item->fields['id'];
+        if (isset($_POST['plugin_iistools_duedate'])) {
+            if($_POST['plugin_iistools_duedate']!=""){
+                $duedate = $DB->escape($_POST['plugin_iistools_duedate']);
+
+                $check = $DB->request([
+                    'FROM'  => 'glpi_plugin_iistools_tasks',
+                    'WHERE' => ['ticket_task_id' => $ticket_task_id]
+                ]);
+
+                if (count($check)) {
+                    $DB->update(
+                        'glpi_plugin_iistools_tasks',
+                        ['duedate' => $duedate],
+                        ['ticket_task_id' => $ticket_task_id]
+                    );
+                } else {
+                    $DB->insert(
+                        'glpi_plugin_iistools_tasks',
+                        ['ticket_task_id' => $ticket_task_id, 'duedate' => $duedate]
+                    );
+                }
+            }else{
+                $check = $DB->request([
+                    'FROM'  => 'glpi_plugin_iistools_tasks',
+                    'WHERE' => ['ticket_task_id' => $ticket_task_id]
+                ]);
+                if (count($check)) {
+                    $DB->delete(
+                        'glpi_plugin_iistools_tasks',
+                        ['ticket_task_id' => $ticket_task_id]
+                    );
+                }
+            }
+        }
+            
+    }
+
+    function plugin_iistools_save_task_duedate(TicketTask $task) {
+        global $DB;
+        var_dump($task);
+        echo "asdfsadf";
+        exit();
+        $task_id = $task->getID();
+        /*
+        
+        */
+    }
+
+    /*
+    
+
+            
+            Array
+( 
+    [item] => TicketTask Object
+        (
+            [type:protected] => -1
+            [displaylist:protected] => 1
+            [showdebug] => 
+            [taborientation] => vertical
+            [get_item_to_display_tab] => 1
+            [fields] => Array
+                (
+                    [id] => 
+                    [uuid] => 
+                    [tickets_id] => 1
+                    [taskcategories_id] => 
+                    [date] => 
+                    [users_id] => 
+                    [users_id_editor] => 
+                    [content] => 
+                    [is_private] => 
+                    [actiontime] => 
+                    [begin] => 
+                    [end] => 
+                    [state] => 1
+                    [users_id_tech] => 
+                    [groups_id_tech] => 
+                    [date_mod] => 
+                    [date_creation] => 
+                    [tasktemplates_id] => 
+                    [timeline_position] => 
+                    [sourceitems_id] => 
+                    [sourceof_items_id] => 
+                )
+
+            [input] => Array
+                (
+                    [tickets_id] => 1
+                    [entities_id] => 0
+                    [is_recursive] => 0
+                )
+
+            [updates] => Array
+                (
+                )
+
+            [oldvalues] => Array
+                (
+                )
+
+            [dohistory] => 
+            [history_blacklist] => Array
+                (
+                )
+
+            [auto_message_on_action] => 
+            [no_form_page] => 
+            [additional_fields_for_dictionnary] => Array
+                (
+                )
+
+            [fkfield:protected] => 
+            [searchopt:protected] => 
+            [usenotepad:protected] => 
+            [deduplicate_queued_notifications] => 1
+            [right] => 
+        )
+
+    [options] => Array
+        (
+            [parent] => Ticket Object
+                (
+                    [type:protected] => -1
+                    [displaylist:protected] => 1
+                    [showdebug] => 
+                    [taborientation] => vertical
+                    [get_item_to_display_tab] => 1
+                    [fields] => Array
+                        (
+                            [id] => 1
+                            [entities_id] => 1
+                            [name] => Teszt hibajegy igénylés (ticket1)
+                            [date] => 2024-09-09 12:04:01
+                            [closedate] => 
+                            [solvedate] => 
+                            [takeintoaccountdate] => 2024-09-09 12:07:20
+                            [date_mod] => 2025-01-23 15:16:08
+                            [users_id_lastupdater] => 2
+                            [status] => 1
+                            [users_id_recipient] => 7
+                            [requesttypes_id] => 1
+                            [content] => <p>Valami teszt hibajegy igénylés</p>
+                            [urgency] => 3
+                            [impact] => 3
+                            [priority] => 3
+                            [itilcategories_id] => 0
+                            [type] => 2
+                            [global_validation] => 1
+                            [slas_id_ttr] => 0
+                            [slas_id_tto] => 0
+                            [slalevels_id_ttr] => 0
+                            [time_to_resolve] => 
+                            [time_to_own] => 
+                            [begin_waiting_date] => 
+                            [sla_waiting_duration] => 0
+                            [ola_waiting_duration] => 0
+                            [olas_id_tto] => 0
+                            [olas_id_ttr] => 0
+                            [olalevels_id_ttr] => 0
+                            [ola_tto_begin_date] => 
+                            [ola_ttr_begin_date] => 
+                            [internal_time_to_resolve] => 
+                            [internal_time_to_own] => 
+                            [waiting_duration] => 4870161
+                            [close_delay_stat] => 0
+                            [solve_delay_stat] => 0
+                            [takeintoaccount_delay_stat] => 199
+                            [actiontime] => 45000
+                            [is_deleted] => 0
+                            [locations_id] => 0
+                            [validation_percent] => 0
+                            [date_creation] => 2024-09-09 12:04:01
+                        )
+
+                    [input] => Array
+                        (
+                        )
+
+                    [updates] => Array
+                        (
+                        )
+
+                    [oldvalues] => Array
+                        (
+                        )
+
+                    [dohistory] => 1
+                    [history_blacklist] => Array
+                        (
+                        )
+
+                    [auto_message_on_action] => 1
+                    [no_form_page] => 
+                    [additional_fields_for_dictionnary] => Array
+                        (
+                        )
+
+                    [fkfield:protected] => 
+                    [searchopt:protected] => 
+                    [usenotepad:protected] => 
+                    [deduplicate_queued_notifications] => 
+                    [right] => 
+                    [lazy_loaded_users:protected] => Array
+                        (
+                            [1] => Array
+                                (
+                                    [0] => Array
+                                        (
+                                            [id] => 1
+                                            [tickets_id] => 1
+                                            [users_id] => 7
+                                            [type] => 1
+                                            [use_notification] => 1
+                                            [alternative_email] => 
+                                        )
+
+                                )
+
+                        )
+
+                    [userlinkclass] => Ticket_User
+                    [lazy_loaded_groups:protected] => 
+                    [grouplinkclass] => Group_Ticket
+                    [lazy_loaded_suppliers:protected] => 
+                    [supplierlinkclass] => Supplier_Ticket
+                    [userentity_oncreate:protected] => 1
+                    [last_clone_index:protected] => 
+                    [hardwaredatas] => Array
+                        (
+                        )
+
+                    [computerfound] => 0
+                )
+
+            [_target] => /glpi/front/ticket.form.php
+            [id] => 1
+            [withtemplate] => 
+            [_saved] => Array
+                (
+                )
+
+            [_users_id_requester] => 2
+            [_users_id_requester_notif] => Array
+                (
+                    [use_notification] => Array
+                        (
+                            [0] => 1
+                        )
+
+                    [alternative_email] => Array
+                        (
+                            [0] => 
+                        )
+
+                )
+
+            [_groups_id_requester] => 0
+            [_users_id_assign] => 2
+            [_users_id_assign_notif] => Array
+                (
+                    [use_notification] => Array
+                        (
+                            [0] => 1
+                        )
+
+                    [alternative_email] => Array
+                        (
+                            [0] => 
+                        )
+
+                )
+
+            [_groups_id_assign] => 0
+            [_users_id_observer] => 0
+            [_users_id_observer_notif] => Array
+                (
+                    [use_notification] => Array
+                        (
+                            [0] => 1
+                        )
+
+                    [alternative_email] => Array
+                        (
+                            [0] => 
+                        )
+
+                )
+
+            [_groups_id_observer] => 0
+            [_link] => Array
+                (
+                    [tickets_id_2] => 
+                    [link] => 
+                )
+
+            [_suppliers_id_assign] => 0
+            [_suppliers_id_assign_notif] => Array
+                (
+                    [use_notification] => Array
+                        (
+                            [0] => 1
+                        )
+
+                    [alternative_email] => Array
+                        (
+                            [0] => 
+                        )
+
+                )
+
+            [name] => 
+            [content] => 
+            [itilcategories_id] => 0
+            [urgency] => 3
+            [impact] => 3
+            [priority] => 3
+            [requesttypes_id] => 1
+            [actiontime] => 0
+            [date] => NULL
+            [entities_id] => 0
+            [status] => 1
+            [followup] => Array
+                (
+                )
+
+            [itemtype] => 
+            [items_id] => 0
+            [locations_id] => 0
+            [plan] => Array
+                (
+                )
+
+            [global_validation] => 1
+            [time_to_resolve] => NULL
+            [time_to_own] => NULL
+            [slas_id_tto] => 0
+            [slas_id_ttr] => 0
+            [internal_time_to_resolve] => NULL
+            [internal_time_to_own] => NULL
+            [olas_id_tto] => 0
+            [olas_id_ttr] => 0
+            [_add_validation] => 0
+            [users_id_validate] => Array
+                (
+                )
+
+            [type] => 1
+            [_documents_id] => Array
+                (
+                )
+
+            [_tasktemplates_id] => Array
+                (
+                )
+
+            [_content] => Array
+                (
+                )
+
+            [_tag_content] => Array
+                (
+              …
+    
+    */
