@@ -258,7 +258,7 @@ msgid "Num of ticket Tasks"
 msgstr "Bejelentés feladatok (db)"
 
 msgid "Max duedate of Tasks"
-msgstr "Legkésőbbi 'Szerintünk kész' dátum"
+msgstr "Legkésőbbi (Szerintünk kész) dátum"
 
 
 #---------------------------
