@@ -257,6 +257,10 @@ msgstr "között"
 msgid "Num of ticket Tasks"
 msgstr "Bejelentés feladatok (db)"
 
+msgid "Max duedate of Tasks"
+msgstr "Legkésőbbi 'Szerintünk kész' dátum"
+
+
 #---------------------------
 msgid "iisreportentities_report_title"
 msgstr "Bejelentések Szervezeti egységenként"
