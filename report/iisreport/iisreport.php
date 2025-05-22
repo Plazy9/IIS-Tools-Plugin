@@ -74,11 +74,12 @@ if ($report->criteriasValidated()) {
 
         new PluginReportsColumnDate('ticket_closedate', __('Ticket close date', 'iistools'), ['sorton' => 'ticket_closedate']),
 
-        new PluginReportsColumnInteger('ticket_sum_tasknum', __('Num of ticket Tasks', 'iistools'), ['sorton' => 'ticket_sum_tasknum']),
+        //new PluginReportsColumnInteger('ticket_sum_tasknum', __('Num of ticket Tasks', 'iistools'), ['sorton' => 'ticket_sum_tasknum']),
+        new PluginReportsColumnDate('tickettask_max_duedate', __('Max duedate of Tasks', 'iistools'), ['sorton' => 'tickettask_max_duedate']),
 
-        new PluginReportsColumnFloat('ticket_sum_time_cost', __('Ticket sum cost of time costs', 'iistools'), ['sorton' => 'ticket_sum_time_cost']),
-        new PluginReportsColumnFloat('ticket_sum_fix_cost', __('Ticket sum cost of fixed costs', 'iistools'), ['sorton' => 'ticket_sum_fix_cost']),
-        new PluginReportsColumnFloat('ticket_sum_material_cost', __('Ticket sum cost of material cost', 'iistools'), ['sorton' => 'ticket_sum_material_cost']),
+        //new PluginReportsColumnFloat('ticket_sum_time_cost', __('Ticket sum cost of time costs', 'iistools'), ['sorton' => 'ticket_sum_time_cost']),
+        //new PluginReportsColumnFloat('ticket_sum_fix_cost', __('Ticket sum cost of fixed costs', 'iistools'), ['sorton' => 'ticket_sum_fix_cost']),
+        //new PluginReportsColumnFloat('ticket_sum_material_cost', __('Ticket sum cost of material cost', 'iistools'), ['sorton' => 'ticket_sum_material_cost']),
         new PluginReportsColumnFloat('ticket_sum_cost', __('Ticket sum cost', 'iistools'), ['sorton' => 'ticket_sum_cost']),
 
     ];
@@ -91,6 +92,7 @@ if ($report->criteriasValidated()) {
                 ticketentities.completename as 'entities_completename',
                 glpi_tickets.status as 'ticket_status',
                 (SELECT count(*) FROM glpi_tickettasks WHERE tickets_id=glpi_tickets.id) as 'ticket_sum_tasknum',
+                (SELECT	max(duedate) FROM glpi_plugin_iistools_tasks WHERE ticket_task_id in (SELECT id FROM glpi_tickettasks WHERE tickets_id = glpi_tickets.id)) as 'tickettask_max_duedate',
                 CASE
                     WHEN glpi_tickets.status = 1 THEN '" . Ticket::getStatus(1) . "'
                     WHEN glpi_tickets.status = 2 THEN '" . Ticket::getStatus(2) . "'
