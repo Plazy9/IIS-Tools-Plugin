@@ -41,12 +41,33 @@ if ($report->criteriasValidated()) {
 
     $cols = [
         //new PluginReportsColumnItemCheckbox('id', 'Ticket'),
+        //1. column
+        new PluginReportsColumnInteger('id', __('ID', 'iistools')),
+        //2. column
         new PluginReportsColumnLink('id2', __('Ticket', 'iistools'), 'Ticket', [
             'with_comment' => true,
             'with_navigate' => true
         ]),
+        //3.colum
+        //new PluginReportsColumnLink('requester_user_users_id', __('Requester user', 'iistools'), 'User'),
+        new PluginReportsColumnLink('requester_users_content', __('Requester user', 'iistools'), 'User'),
+        //4. oszlop
+        new PluginReportsColumn('belsmunkaszmfield', __('Belső munkaszám', 'iistools'), ['sorton' => 'belsmunkaszmfield']),
+        
+        //5. column
+        new PluginReportsColumnDate('ticket_date', __('Ticket create date', 'iistools'), ['sorton' => 'ticket_date']),
+        //6. column
+        new PluginReportsColumnDate('ticket_solvedate', __('Ticket solve date', 'iistools'), ['sorton' => 'ticket_solvedate']),
+        //7.col
+        new PluginReportsColumnDate('tickettask_max_duedate', __('Max duedate of Tasks', 'iistools'), ['sorton' => 'tickettask_max_duedate']),
+        //8. col fontosság
+        new PluginReportsColumn('ticket_urgency', __('Urgency'), ['sorton' => 'ticket_urgency']),
+        //9.col Intézkedés megkezdésének időpontja = első reakciónk dátuma, bármi is volt az (Válasz, Üzenet, Megoldás, bármi)
+       
+        
+
         //new PluginReportsColumn('ticket_status', __('Ticket status'), ['sorton' => 'ticket_status']),
-        new PluginReportsColumn('ticket_status2', __('Ticket status', 'iistools')),
+        //new PluginReportsColumn('ticket_status2', __('Ticket status', 'iistools')),
 
         /*
         new PluginReportsColumn('recipient_userid', __('User id'), 'User', [
@@ -56,31 +77,31 @@ if ($report->criteriasValidated()) {
         new PluginReportsColumnLink('recipient_userid', __('User'), 'User'),
         */
 
-        new PluginReportsColumnLink('entities_id', __('Entity'), 'Entity'),
+        //new PluginReportsColumnLink('entities_id', __('Entity'), 'Entity'),
         //new PluginReportsColumnLink('entities_completename', __('Entities'), 'Entity'),
 
 
-        new PluginReportsColumnLink('assign_user_users_id', __('Assign user', 'iistools'), 'User'),
-        new PluginReportsColumnLink('requester_user_users_id', __('Requester user', 'iistools'), 'User'),
-        new PluginReportsColumnLink('observer_user_users_id', __('Observer user', 'iistools'), 'User'),
+        //new PluginReportsColumnLink('assign_user_users_id', __('Assign user', 'iistools'), 'User'),
+        
+        //new PluginReportsColumnLink('observer_user_users_id', __('Observer user', 'iistools'), 'User'),
 
         //new PluginReportsColumn('recipient_username', __('Recipient_user')),
 
         // new PluginReportsColumn('name', __('Login'), ['sorton' => 'name']),
         //new PluginReportsColumn('ticket_name', __('Ticket name', 'iistools')),
-        new PluginReportsColumn('belsmunkaszmfield', __('Belső munkaszám', 'iistools'), ['sorton' => 'belsmunkaszmfield']),
-        new PluginReportsColumnDate('ticket_date', __('Ticket create date', 'iistools'), ['sorton' => 'ticket_date']),
-        new PluginReportsColumnDate('ticket_solvedate', __('Ticket solve date', 'iistools'), ['sorton' => 'ticket_solvedate']),
+        
+        
+        
 
-        new PluginReportsColumnDate('ticket_closedate', __('Ticket close date', 'iistools'), ['sorton' => 'ticket_closedate']),
+        //new PluginReportsColumnDate('ticket_closedate', __('Ticket close date', 'iistools'), ['sorton' => 'ticket_closedate']),
 
         //new PluginReportsColumnInteger('ticket_sum_tasknum', __('Num of ticket Tasks', 'iistools'), ['sorton' => 'ticket_sum_tasknum']),
-        new PluginReportsColumnDate('tickettask_max_duedate', __('Max duedate of Tasks', 'iistools'), ['sorton' => 'tickettask_max_duedate']),
+        
 
         //new PluginReportsColumnFloat('ticket_sum_time_cost', __('Ticket sum cost of time costs', 'iistools'), ['sorton' => 'ticket_sum_time_cost']),
         //new PluginReportsColumnFloat('ticket_sum_fix_cost', __('Ticket sum cost of fixed costs', 'iistools'), ['sorton' => 'ticket_sum_fix_cost']),
         //new PluginReportsColumnFloat('ticket_sum_material_cost', __('Ticket sum cost of material cost', 'iistools'), ['sorton' => 'ticket_sum_material_cost']),
-        new PluginReportsColumnFloat('ticket_sum_cost', __('Ticket sum cost', 'iistools'), ['sorton' => 'ticket_sum_cost']),
+        //new PluginReportsColumnFloat('ticket_sum_cost', __('Ticket sum cost', 'iistools'), ['sorton' => 'ticket_sum_cost']),
 
     ];
 
@@ -88,6 +109,22 @@ if ($report->criteriasValidated()) {
 
     $query = "Select glpi_tickets.id as 'id',
                 glpi_tickets.id as 'id2',
+                glpi_tickets.urgency as 'ticket_urgency2',
+                CASE 
+                    WHEN glpi_tickets.urgency = 5 THEN '" . Ticket::getUrgencyName(5) . "'
+                    WHEN glpi_tickets.urgency = 4 THEN '" . Ticket::getUrgencyName(4) . "'
+                    WHEN glpi_tickets.urgency = 3 THEN '" . Ticket::getUrgencyName(3) . "'
+                    WHEN glpi_tickets.urgency = 2 THEN '" . Ticket::getUrgencyName(2) . "'
+                    WHEN glpi_tickets.urgency = 1 THEN '" . Ticket::getUrgencyName(1) . "'
+                    WHEN glpi_tickets.urgency = 0 THEN '" . Ticket::getUrgencyName(0) . "'
+                    WHEN glpi_tickets.urgency = -1 THEN '" . Ticket::getUrgencyName(-1) . "'
+                    WHEN glpi_tickets.urgency = -2 THEN '" . Ticket::getUrgencyName(-2) . "'
+                    WHEN glpi_tickets.urgency = -3 THEN '" . Ticket::getUrgencyName(-3) . "'
+                    WHEN glpi_tickets.urgency = -4 THEN '" . Ticket::getUrgencyName(-4) . "'
+                    WHEN glpi_tickets.urgency = -5 THEN '" . Ticket::getUrgencyName(-5) . "'
+
+                    ELSE glpi_tickets.urgency
+                END as 'ticket_urgency',
                 glpi_tickets.entities_id as 'entities_id',
                 ticketentities.completename as 'entities_completename',
                 glpi_tickets.status as 'ticket_status',
@@ -107,26 +144,29 @@ if ($report->criteriasValidated()) {
                 glpi_users.name as 'recipient_username' ,
                 glpi_tickets.date as 'ticket_date',
                 glpi_tickets.solvedate as 'ticket_solvedate',
-                glpi_tickets.closedate as 'ticket_closedate',
-                assign_user.users_id as 'assign_user_users_id',
-                requester_user.users_id as 'requester_user_users_id',
-                observer_user.users_id as 'observer_user_users_id',
-                addedfields.belsmunkaszmfield as 'belsmunkaszmfield',
+                glpi_tickets.closedate as 'ticket_closedate', ".
+                //"assign_user.users_id as 'assign_user_users_id',".
+                //"requester_user.users_id as 'requester_user_users_id', ".
+                "(select  GROUP_CONCAT(concat(gu.firstname, \" \", gu.realname ) SEPARATOR ', ')
+                    from glpi_tickets_users tu
+                            left outer join glpi_users gu ON (tu.users_id = gu.id and tu.`type` = 1 )
+                    where `type` = " . CommonITILActor::REQUESTER . " and tickets_id = glpi_tickets.id) as 'requester_users_content',  ".
+                //"observer_user.users_id as 'observer_user_users_id', ".
+                "addedfields.belsmunkaszmfield as 'belsmunkaszmfield',
                 (SELECT sum(actiontime/3600*cost_time) FROM glpi_ticketcosts WHERE tickets_id=glpi_tickets.id) as 'ticket_sum_time_cost',
                 (SELECT sum(cost_fixed) FROM glpi_ticketcosts WHERE tickets_id=glpi_tickets.id) as 'ticket_sum_fix_cost',
                 (SELECT sum(cost_material) FROM glpi_ticketcosts WHERE tickets_id=glpi_tickets.id) as 'ticket_sum_material_cost',
                 (SELECT sum((actiontime/3600*cost_time)+cost_fixed+cost_material) FROM glpi_ticketcosts WHERE tickets_id=glpi_tickets.id) as 'ticket_sum_cost'
-    
             FROM `glpi_tickets` 
-                LEFT OUTER JOIN `glpi_users`  ON glpi_users.id = glpi_tickets.users_id_recipient
-                LEFT OUTER JOIN `glpi_tickets_users` assign_user ON assign_user.tickets_id = glpi_tickets.id and assign_user.type= " . CommonITILActor::ASSIGN . " 
-                LEFT OUTER JOIN `glpi_tickets_users` requester_user ON requester_user.tickets_id = glpi_tickets.id and requester_user.type= " . CommonITILActor::REQUESTER . " 
-                LEFT OUTER JOIN `glpi_tickets_users` observer_user ON observer_user.tickets_id = glpi_tickets.id and observer_user.type= " . CommonITILActor::OBSERVER . " 
-                LEFT OUTER JOIN `glpi_plugin_fields_ticketiisticketaddons` addedfields ON addedfields.items_id = glpi_tickets.id and addedfields.itemtype= 'Ticket' 
+                LEFT OUTER JOIN `glpi_users`  ON glpi_users.id = glpi_tickets.users_id_recipient ".
+                //"LEFT OUTER JOIN `glpi_tickets_users` assign_user ON assign_user.tickets_id = glpi_tickets.id and assign_user.type= " . CommonITILActor::ASSIGN . " ".
+                //"LEFT OUTER JOIN `glpi_tickets_users` requester_user ON requester_user.tickets_id = glpi_tickets.id and requester_user.type= " . CommonITILActor::REQUESTER . " ".
+                //"LEFT OUTER JOIN `glpi_tickets_users` observer_user ON observer_user.tickets_id = glpi_tickets.id and observer_user.type= " . CommonITILActor::OBSERVER . " ".
+                "LEFT OUTER JOIN `glpi_plugin_fields_ticketiisticketaddons` addedfields ON addedfields.items_id = glpi_tickets.id and addedfields.itemtype= 'Ticket' 
                 LEFT OUTER JOIN `glpi_entities` ticketentities ON ticketentities.id = glpi_tickets.entities_id 
             Where 1=1 
             " .
-        getEntitiesRestrictRequest(' AND ', 'glpi_tickets') .
+        //getEntitiesRestrictRequest(' AND ', 'glpi_tickets') .
         $report->addSqlCriteriasRestriction('AND');
 
     if ($filterWithClosed->getParameterValue() == 0) {
