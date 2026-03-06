@@ -6,10 +6,7 @@ use GlpiPlugin\Iistools\iisCameras;
 use GlpiPlugin\Iistools\iisMachineries;
 use GlpiPlugin\Iistools\iisCostReport;
 
-use TicketTask;
-
-
-define('PLUGIN_IISTOOLS_VERSION', '0.0.3');
+define('PLUGIN_IISTOOLS_VERSION', '0.0.5');
 define('PLUGIN_IISTOOLS_MIN_GLPI', '10.0.0');
 define('PLUGIN_IISTOOLS_MAX_GLPI', '10.0.99');
 
@@ -22,7 +19,14 @@ function plugin_init_iistools() {
     //$PLUGIN_HOOKS['item_add']['iistools'] = ['Ticket'];
     $PLUGIN_HOOKS['post_init']['iistools'] = 'plugin_iistools_postinit';
     $PLUGIN_HOOKS['use_massive_action']['iistools'] = 1;
-    
+
+// ticket nyomtatás új tabfülön    
+    Plugin::registerClass('PluginIistoolsTicketprint', ['addtabon' => 'Ticket']);
+
+    $PLUGIN_HOOKS[Hooks::ADD_JAVASCRIPT]['iistools'] = 'js/ajax.js.php';
+
+// checkbox a ticketitemek-hez hogy kell e nyomtatni.    
+    $PLUGIN_HOOKS[Hooks::POST_SHOW_ITEM]['iistools'] = ['PluginIistoolsTicketprint', 'postTicketItemsContent'];
 
     $PLUGIN_HOOKS[Hooks::POST_ITEM_FORM]['iistools'] =  'plugin_iistools_taskForm';
     
@@ -132,5 +136,14 @@ function plugin_iistools_getImageList($item){
     }
 
     return $document_list;
+}
+
+//ticket tab a nyomtatáshoz:
+function plugin_iistools_check_prerequisites() {
+   return true;
+}
+
+function plugin_iistools_check_config() {
+   return true;
 }
 
