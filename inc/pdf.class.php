@@ -3,7 +3,7 @@
 use TCPDF;
 use Html;
 use Plugin;
-use Search;
+//se Search;
 use Glpi\Toolbox\DataExport;
 
 class PluginIistoolsPDF extends TCPDF {
@@ -15,26 +15,6 @@ class PluginIistoolsPDF extends TCPDF {
         // Alapértelmezett margók (bal, felső, jobb)
         $this->SetMargins(10, 30, 10);
         $this->SetAutoPageBreak(TRUE, 15);
-    }
-
-    // FEJLÉC: Ide kerül a logó és a cím
-    public function Header() {
-        $logo = Plugin::getPhpDir('iistools') . "/pics/logo.png";
-        
-        if (file_exists($logo)) {
-            // Image(fájl, x, y, szélesség)
-            $this->Image($logo, 10, 8, 35);
-        }
-
-        $this->SetFont('helvetica', 'B', 15);
-        $this->SetTextColor(44, 62, 80); // Sötétszürke/kék árnyalat
-        $this->SetXY(50, 12);
-        $this->Cell(0, 10, 'IISTOOLS - Rendszer Riport', 0, 0, 'L');
-
-        // Design vonal a fejléc alatt
-        $this->SetDrawColor(52, 152, 219); // GLPI-kékhez hasonló szín
-        $this->SetLineWidth(0.8);
-        $this->Line(10, 25, 287, 25); 
     }
 
     public function outputData(array $data)
@@ -74,7 +54,7 @@ class PluginIistoolsPDF extends TCPDF {
         $item_instance = new $itemtype();
         $display_name = $item_instance->getTypeName(Session::getPluralNumber()); 
 
-        $report_title = mb_strtoupper($display_name, 'UTF-8') . " ÖSSZESÍTŐ";
+        $report_title = mb_strtoupper($display_name, 'UTF-8');
 
         $real_name = trim(($_SESSION['glpifirstname'] ?? '') . ' ' . ($_SESSION['glpirealname'] ?? ''));
 
@@ -92,7 +72,7 @@ class PluginIistoolsPDF extends TCPDF {
 
         <table class=\"header-table\" cellpadding=\"5\">
             <tr>
-                <td width=\"30%\" class=\"logo-cell\">XXX $logo_url
+                <td width=\"30%\" class=\"logo-cell\">
                     <img src=\"".$logo_url."\" style=\"height: 45px;\">
                 </td>
                 <td width=\"70%\" style=\"text-align: right;\">
