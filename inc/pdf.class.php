@@ -1,7 +1,7 @@
 <?php 
 
-use TCPDF;
-use Html;
+//use TCPDF;
+//use Html;
 use Plugin;
 //se Search;
 use Glpi\Toolbox\DataExport;
