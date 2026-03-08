@@ -20,10 +20,13 @@ function plugin_init_iistools() {
     $PLUGIN_HOOKS['post_init']['iistools'] = 'plugin_iistools_postinit';
     $PLUGIN_HOOKS['use_massive_action']['iistools'] = 1;
 
+//új saját pdf exprot
+    $PLUGIN_HOOKS[Hooks::ADD_JAVASCRIPT]['iistools'][] = 'js/export_pdf.js';
+
 // ticket nyomtatás új tabfülön    
     Plugin::registerClass('PluginIistoolsTicketprint', ['addtabon' => 'Ticket']);
 
-    $PLUGIN_HOOKS[Hooks::ADD_JAVASCRIPT]['iistools'] = 'js/ajax.js.php';
+    $PLUGIN_HOOKS[Hooks::ADD_JAVASCRIPT]['iistools'][] = 'js/ajax.js.php';
 
 // checkbox a ticketitemek-hez hogy kell e nyomtatni.    
     $PLUGIN_HOOKS[Hooks::POST_SHOW_ITEM]['iistools'] = ['PluginIistoolsTicketprint', 'postTicketItemsContent'];
