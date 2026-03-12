@@ -357,6 +357,8 @@ msgstr "XLS megtekintés"
 msgid "IIS Tools QR"
 msgstr "IIS Tools QR"
 
-#-----------------------------
 msgid "We are done date:"
 msgstr "Szerintünk kész:"
+
+msgid "Printable Ticket item"
+msgstr "Nyomtatható"
