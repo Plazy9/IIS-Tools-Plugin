@@ -24,7 +24,8 @@ static function getTable() {
         global $CFG_GLPI;
 
         $currentItem = $item['item'];
-        if (1==1 || $currentItem::getType() == 'ITILFollowup') {
+        //echo $currentItem::getType();
+        if (in_array($currentItem::getType(), ['TicketTask','ITILFollowup', 'ITILSolution'])) {
             $checked="";
             // Plugin tábla lekérdezése a checkbox állapotához
             $checked = self::isMarked($currentItem->fields['id'], $currentItem::getType()) ? "checked" : "cccc";
