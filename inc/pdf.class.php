@@ -44,7 +44,15 @@ class PluginIistoolsPDF extends TCPDF {
         //echo Search::showHeader($data['display_type'], $end_display - $begin_display + 1, $nbcols);
         //$plugin_dir = Plugin::getWebDir('iistools');
         $plugin_dir = Plugin::getPhpDir('iistools');
+
         $logo_url =  $plugin_dir . "/pics/iis_logo.png";
+
+        if (file_exists($logo_url)) {
+            $imgData = base64_encode(file_get_contents($logo_url));
+            $logo_src = 'data:image/png;base64,' . $imgData;
+        }else{
+            die("Itt kerestem a logót: " . $logo_url);
+        }
 
         $main_color = "#2c3e50"; // Sötét antracit/kék
         $accent_color = "#3498db"; // GLPI kék
@@ -74,7 +82,7 @@ class PluginIistoolsPDF extends TCPDF {
         <table class=\"header-table\" cellpadding=\"5\">
             <tr>
                 <td width=\"30%\" class=\"logo-cell\">
-                    <img src=\"".$logo_url."\" style=\"height: 45px;\">
+                    <img src=\"".$logo_src."\" style=\"height: 45px;\">
                 </td>
                 <td width=\"70%\" style=\"text-align: right;\">
                     <div class=\"title\">$report_title</div>
