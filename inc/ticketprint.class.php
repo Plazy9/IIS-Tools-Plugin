@@ -1,8 +1,8 @@
 <?php
 
-use Ticket;
-use ITILFollowup;
-use Glpi\Application\View\TemplateRenderer;
+//use Ticket;
+//use ITILFollowup;
+//use Glpi\Application\View\TemplateRenderer;
 
 
 class PluginIistoolsTicketprint extends CommonGLPI {
