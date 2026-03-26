@@ -12,12 +12,12 @@ use Toolbox;
 
 //require GLPI_ROOT.'/plugins/iistools/vendor/autoload.php';
 
-use Endroid\QrCode\QrCode;
-use Endroid\QrCode\Writer\PngWriter;
+// use Endroid\QrCode\QrCode;
+// use Endroid\QrCode\Writer\PngWriter;
 
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
+// use PhpOffice\PhpSpreadsheet\Spreadsheet;
+// use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+// use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 
 
 class iisBarcode extends CommonDBTM {
@@ -43,7 +43,7 @@ class iisBarcode extends CommonDBTM {
     static function processMassiveActionsForOneItemtype(MassiveAction $ma, CommonDBTM $item, array $ids) {
       global $CFG_GLPI;
       $computers = [];
-      $plugin_dir = Plugin::getWebDir('iistools');
+      //$plugin_dir = Plugin::getWebDir('iistools');
       $plugin_php_dir = Plugin::getPhpDir('iistools');
 
       foreach ($ids as $key) {

@@ -42,7 +42,8 @@ class PluginIistoolsPDF extends TCPDF {
 
        // Display List Header
         //echo Search::showHeader($data['display_type'], $end_display - $begin_display + 1, $nbcols);
-        $plugin_dir = Plugin::getWebDir('iistools');
+        //$plugin_dir = Plugin::getWebDir('iistools');
+        $plugin_dir = Plugin::getPhpDir('iistools');
         $logo_url =  $plugin_dir . "/pics/iis_logo.png";
 
         $main_color = "#2c3e50"; // Sötét antracit/kék
