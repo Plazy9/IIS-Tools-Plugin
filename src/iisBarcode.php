@@ -10,7 +10,7 @@ use Session;
 use TCPDF;
 use Toolbox;
 
-require GLPI_ROOT.'/plugins/iistools/vendor/autoload.php';
+//require GLPI_ROOT.'/plugins/iistools/vendor/autoload.php';
 
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
