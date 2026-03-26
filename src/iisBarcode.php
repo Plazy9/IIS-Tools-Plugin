@@ -43,6 +43,8 @@ class iisBarcode extends CommonDBTM {
     static function processMassiveActionsForOneItemtype(MassiveAction $ma, CommonDBTM $item, array $ids) {
       global $CFG_GLPI;
       $computers = [];
+      $plugin_dir = Plugin::getWebDir('iistools');
+      $plugin_php_dir = Plugin::getPhpDir('iistools');
 
       foreach ($ids as $key) {
           $computer = [];
@@ -56,6 +58,7 @@ class iisBarcode extends CommonDBTM {
       
       
       switch ($ma->getAction()) {
+            /* not necessary
             case 'GenerateCSV' :
               $type=Computer::class;
               $csvFile = $_SESSION['glpiID'].'_'.$type.'.csv';
@@ -127,67 +130,96 @@ class iisBarcode extends CommonDBTM {
 
               $ma->itemDone($item->getType(), 0, MassiveAction::ACTION_OK);
               return;    
+            */
             case 'Generate' :
-              $pdf = new TCPDF('portrait', 'mm', 'A4', true, 'UTF-8', false);
-              /*---------------pdf-------- */
-              $pdf->SetCreator(PDF_CREATOR);
-              $pdf->SetAuthor('IIS');
-              $pdf->SetTitle(__('Computers QR code', 'iistools'));
-              $pdf->SetSubject(__('IIS Computers catalog', 'iistools'));
-              $pdf->SetKeywords('IIS, Computers, QR');
+              $width = 60;
+              $height = 40;
 
-              // set default header data
-              //$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' 001', PDF_HEADER_STRING, array(0,64,255), array(0,64,128));
-              $pdf->setFooterData(array(0,64,0), array(0,64,128));
+              $pdf = new TCPDF('L', 'mm', array($width, $height), true, 'UTF-8', false);
+              $pdf->setPrintHeader(false);
+              $pdf->setPrintFooter(false);
+              $pdf->SetMargins(2, 2, 2); // 2mm-es biztonsági margó
+              $pdf->SetAutoPageBreak(false);
 
-              // set header and footer fonts
-              $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
-              $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+              // $pdf = new TCPDF('portrait', 'mm', 'A4', true, 'UTF-8', false);
+              // $pdf->SetCreator(PDF_CREATOR);
+              // $pdf->SetAuthor('IIS');
+              // $pdf->SetTitle(__('Computers QR code', 'iistools'));
+              // $pdf->SetSubject(__('IIS Computers catalog', 'iistools'));
+              // $pdf->SetKeywords('IIS, Computers, QR');
 
-              // set default monospaced font
-              $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+              // // set default header data
+              // //$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' 001', PDF_HEADER_STRING, array(0,64,255), array(0,64,128));
+              // $pdf->setFooterData(array(0,64,0), array(0,64,128));
 
-              // set margins
-              //$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-              $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-              $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
-              $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+              // // set header and footer fonts
+              // $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+              // $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
 
-              // set auto page breaks
-              $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+              // // set default monospaced font
+              // $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
-              // set image scale factor
-              $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+              // // set margins
+              // //$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+              // $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+              // $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+              // $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 
-              $pdf->setFontSubsetting(true);
-              $pdf->SetFont('dejavusans', '', 10, '', true);
-              $pdf->AddPage();
-              $pdf->setTextShadow(array('enabled'=>true, 'depth_w'=>0.2, 'depth_h'=>0.2, 'color'=>array(196,196,196), 'opacity'=>1, 'blend_mode'=>'Normal'));
+              // // set auto page breaks
+              // $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
 
-              $x=0;
-              $y=0;
-              $ComputerIndex=0;
+              // // set image scale factor
+              // $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+              // $pdf->setFontSubsetting(true);
+              // $pdf->SetFont('dejavusans', '', 10, '', true);
+              // $pdf->AddPage();
+              // $pdf->setTextShadow(array('enabled'=>true, 'depth_w'=>0.2, 'depth_h'=>0.2, 'color'=>array(196,196,196), 'opacity'=>1, 'blend_mode'=>'Normal'));
+
+              // $x=0;
+              // $y=0;
+              // $ComputerIndex=0;
               foreach($computers as $computer){
-                $x=$ComputerIndex*60;
-                
-                //$link = Toolbox::formatOutputWebLink($CFG_GLPI["url_base"].Toolbox::getItemTypeFormURL(Computer::class, false)."?id=".$computer['id']);
+                $pdf->AddPage();
                 $link = $computer['link'];
-                $QRCodeFile=self::create($computer['id'], $link);
-                
-                $html ="<div style=\"text-align:center;\">".$computer['id']." - ". $computer['name']."";
-                //$html.="<br>";
-                //$html.="<img src=\"".$QRCodeFile."\" alt=\"".$computer['name']."\" width=\"150\" />";
-                $html.="</div>";
-                // Print text using writeHTMLCell()
-                $pdf->writeHTMLCell(60, 60, $x+PDF_MARGIN_LEFT, $y+PDF_MARGIN_TOP, $html, 1, 1, 0, true, 'center', false);
-                $pdf->Image($QRCodeFile, $x+PDF_MARGIN_LEFT+10, $y+PDF_MARGIN_TOP+15, 40, 40, 'PNG', $link, '', true, 150, '', false, false, 1, false, false, false);
 
-                if($ComputerIndex==2){
-                  $ComputerIndex=0;
-                  $y+=60;
-                }else{
-                  $ComputerIndex++;
+                $style = array(
+                    'border' => false,
+                    'vpadding' => 0,
+                    'hpadding' => 0,
+                    'fgcolor' => array(0,0,0),
+                    'bgcolor' => false
+                );
+                //tartalom, típus, x, y, szélesség, magasság, stílus, igazítás
+                $pdf->write2DBarcode($link, 'QRCODE,H', 2, 2, 25, 25, $style, 'N');
+
+                $pdf->SetFont('dejavusans', 'B', 8);
+                $pdf->SetXY(28, 5);
+                $pdf->Cell(0, 0, "ID: " . $computer['id'], 0, 1);
+                
+                $pdf->SetFont('dejavusans', '', 7);
+                $pdf->SetX(28);
+                // MultiCell, hogy ha hosszú a név, törje le több sorba
+                $pdf->MultiCell($width - 30, 0, $computer['name'], 0, 'L');
+                
+                
+                if (!empty($computer['serial'])) {
+                    $pdf->SetX(28);
+                    $pdf->Write(0, "S/N: " . $computer['serial']);
                 }
+
+                $logo_url = $plugin_php_dir . "/pics/iis_logo.png";
+                if (file_exists($logo_url)) {
+                    $logoWidth = 20; 
+                    //$logoX = $width - $logoWidth - 2; // Szélesség - logó szélesség - margó
+                    $logoY = $height - 12; // A címke aljától kicsit feljebb (igazítsd a logó magasságához)
+
+                    // Paraméterek: fájl, x, y, szélesség, magasság, típus...
+                    $pdf->Image($logo_url, 2, $logoY, $logoWidth, 0, 'PNG', '', '', true, 150, '', false, false, 0, false, false, false);
+                }else{
+                  die("Itt kerestem a logót: " . $logo_url);
+                }
+
               }
 
               /*---------------pdf end........... */
@@ -195,13 +227,13 @@ class iisBarcode extends CommonDBTM {
               $type=Computer::class;
               $pdfFile = $_SESSION['glpiID'].'_'.$type.'.pdf';
               $pdf->Output(self::$docsPath.$pdfFile, 'FI');
-              self::deleteTemporaryPNGs();
+              //self::deleteTemporaryPNGs();
               //file_put_contents(self::$docsPath.$pdfFile, $file);
               $testFile=self::$docsPath.$pdfFile;
 
               if (file_exists($testFile)) {
                 $msg = "<a href='".Plugin::getWebDir('iistools').'/front/send.php?file='.urlencode($pdfFile)
-                ."'>".__('PDF Download', 'iistools')."</a>";
+                ."' target='_blank'>".__('PDF Download', 'iistools')."</a>";
                 Session::addMessageAfterRedirect($msg);
               }else{
                 die("A fájl nem létezik -> ".$testFile);
@@ -212,7 +244,7 @@ class iisBarcode extends CommonDBTM {
         }
         return;
     }
-
+/* deprecated
     static function deleteTemporaryPNGs() {
       $tempDir = self::$docsPath;
       $tempFiles = glob($tempDir . $_SESSION['glpiID'].'_*.png'); 
@@ -224,6 +256,7 @@ class iisBarcode extends CommonDBTM {
       return $file;
     }
 
+  
     static function create($item_id, $p_code, $p_type= 'QRcode', $p_ext = 'png') {
         $file = self::$docsPath.$_SESSION['glpiID']."_".$item_id."_qrcode.png";  
         $qrCode = new QrCode($p_code); 
@@ -231,6 +264,7 @@ class iisBarcode extends CommonDBTM {
         $writer->write($qrCode)->saveToFile($file);
       return $file;
     }
+*/
 
     public static function getTypeName($nb = 0)
     {

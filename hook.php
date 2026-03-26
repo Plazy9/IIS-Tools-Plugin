@@ -357,7 +357,7 @@ function plugin_iistools_MassiveActions($itemtype){
             $action_key   = 'Generate';
             $action_label = __("IIS QRcode Print PDF", 'iistools');
             $actions[$myclass.MassiveAction::CLASS_ACTION_SEPARATOR.$action_key] = $action_label;
-
+/* not necessary
             $action_key   = 'GenerateCSV';
             $action_label = __("IIS QRcode Print CSV", 'iistools');
             $actions[$myclass.MassiveAction::CLASS_ACTION_SEPARATOR.$action_key] = $action_label;
@@ -365,7 +365,7 @@ function plugin_iistools_MassiveActions($itemtype){
             $action_key   = 'GenerateXLS';
             $action_label = __("IIS QRcode Print XLS", 'iistools');
             $actions[$myclass.MassiveAction::CLASS_ACTION_SEPARATOR.$action_key] = $action_label;
-
+*/
             break;
     }
     return $actions;
